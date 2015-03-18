@@ -30,7 +30,7 @@ This project uses GruntJs which is a task manager. To Create a nice build and ex
 
     {
 	"targets" : {
-        "whashingapp": {
+        "washingapp": {
             "targetHost"      : "host FTP",
             "targetUser"      : "user FTP",
             "targetPwd"      :  "user password FTP ",

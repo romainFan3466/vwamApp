@@ -1,6 +1,6 @@
 {
 	"targets" : {
-        "whashingapp": {
+        "washingapp": {
             "targetHost"      : "host FTP",
             "targetUser"      : "user FTP",
             "targetPwd"      :  "user password FTP ",
