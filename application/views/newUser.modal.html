@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">Create account </h4>
+</div>
+
+<form role="form" ng-submit="send()">
+    <div class="modal-body modal-block">
+
+        <div class="form-group" ng-class="{invalid : forgotPassword.success===false}">
+            <label for="email-adress" class="control-label">Adresse email</label>
+            <input type="email" class="form-control" id="email-adress" placeholder="Entrer email"
+                   ng-model="forgotPassword.email">
+            <span ng-show="forgotPassword.success===false"
+                  class="glyphicon glyphicon-remove form-control-feedback"></span>
+        </div>
+        <div class="form-group" ng-class="{invalid : forgotPassword.success===false}">
+            <label for="email-adress" class="control-label">Password</label>
+            <input type="email" class="form-control" id="email-adress" placeholder="Entrer email"
+                   ng-model="forgotPassword.email">
+            <span ng-show="forgotPassword.success===false"
+                  class="glyphicon glyphicon-remove form-control-feedback"></span>
+        </div>
+        <div ng-show="forgotPassword.success===true" class="alert alert-success">L'email a bien été envoyé</div>
+        <div ng-show="forgotPassword.success===false" class="alert alert-danger">Erreur</div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="forgotPasswordModal" ng-click="cancel()">Quitter</button>
+        <input type="submit" class="btn btn-primary" value="Envoyer" ng-show="forgotPassword.success!==true">
+    </div>
+</form>

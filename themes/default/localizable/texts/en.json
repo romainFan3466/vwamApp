@@ -1,0 +1,56 @@
+{
+	"vendor": "com.of",
+	"meta"  : {
+		"title"      : "Web Kiosk",
+		"author"     : "Aquafadas",
+		"description": "Web Kiosk Aquafadas"
+	},
+
+	"common"  : {
+		"ok"                         : "Ok",
+		"id"                         : "ID",
+		"home"                       : "Home",
+		"code"                       : "Code",
+		"user"                       : "User",
+		"role"                       : "Role",
+		"email"                      : "Email",
+		"logIn"                      : "Log in",
+		"reset"                      : "Reset",
+		"cancel"                     : "Cancel",
+		"redeem"                     : "Redeem",
+		"signUp"                     : "Sign up",
+		"signIn"                     : "Sign in",
+		"student"                    : "Student",
+		"teacher"                    : "Teacher",
+		"orSignUp"                   : "Or sign up",
+		"password"                   : "Password",
+		"disconnect"                 : "Disconnect",
+		"rememberMe"                 : "Remember me",
+		"enterACode"                 : "Enter a code",
+		"codeExpired"                : "This code is expired !",
+		"codeNotFound"               : "Code not found !",
+		"invalidEmail"               : "Invalid email",
+		"resetPassword"              : "Resetting your password",
+		"forgotPassword"             : "Forgot your password ?",
+		"codeAlreadyUsed"            : "You have already used this code !",
+		"confirmPassword"            : "Confirm password",
+		"toggleNavigation"           : "Toggle navigation",
+		"wrongCredentials"           : "Wrong credentials",
+		"emailAlreadyUsed"           : "Email already used",
+		"invalidCodeFormat"          : "This is not a valid code format",
+		"codeRedeemSuccess"          : "Code redeemed successfully !",
+		"resetPasswordSuccess"       : "Your password has been reset successfully ! An email with a new generated password has been sent to :",
+		"accountCreationSuccess"     : "Account successfully created ! You can now login using the above form",
+		"accountCreationFailure"     : "An error has occurred ! Account not created",
+		"passwordConfirmFailure"     : "Passwords do not match each other",
+		"codeActivationLimitReached" : "This redeem code has reached its activation limit !"
+	},
+
+	"voucher" : {
+		"appName"  : "My Student Application",
+
+		"redeem"   : {
+			"title" : "Redeeming a voucher code"
+		}
+	}
+}

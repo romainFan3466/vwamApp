@@ -1,0 +1,26 @@
+<ul class="nav navbar-nav navbar-right">
+
+    <li class="dropdown" ng-show="form.isLogged && form.email!='anonymous' && !loggingIn" >
+        <a href="#" class="dropdown-toggle ng-cloak" data-toggle="dropdown" ng-cloak>{{form.email}}<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li><a href="#/library">Librairie</a></li>
+            <li class="divider"></li>
+            <li> <button class="btn btn-primary navbar-btn" ng-click="logout()">
+                Logout
+            </button>
+            </li>
+        </ul>
+    </li>
+
+    <li ng-show="loggingIn">
+        <div class="spinner-global">
+            <div class ="spinner-img"></div>
+        </div>
+    </li>
+
+    <li>
+        <button class="ng-cloak btn btn-primary navbar-btn" ng-show="form.isLogged != undefined && !form.isLogged && !loggingIn" ng-cloak ng-click="login()">
+            Login
+        </button>
+    </li>
+</ul>

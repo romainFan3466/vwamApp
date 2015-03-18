@@ -1,0 +1,11 @@
+// Theme variables
+@white : #FFF;
+<<<<<<< HEAD
+@colorFont :  #EEEDED;
+@backgroundColor: #FFF;
+=======
+@colorFont : #333;
+@backgroundColor: #FFFFFF;
+>>>>>>> feature/edinumenTemplate_US23629
+@backgroundElt: #ddd;
+@blueInformation : #0064cd;

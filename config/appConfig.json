@@ -1,0 +1,9 @@
+{
+	"targets" : {
+        "whashingapp": {
+            "targetHost"      : "host FTP",
+            "targetUser"      : "user FTP",
+            "targetPwd"      :  "user password FTP ",
+            "targetServer"    : "www/directory_on_ftp_server"
+        }
+}

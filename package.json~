@@ -1,0 +1,10 @@
+{
+  "name": "Washing App",
+  "appName": "Washing-App",
+  "description": "Washing App.",
+  "version": "0.8.0",
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
+}

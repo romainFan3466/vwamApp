@@ -1,0 +1,236 @@
+{
+	"bower"         : {
+		"install": {
+			"options": {
+				"targetDir"     : "<%= vendorPath %>",
+				"install"       : true,
+				"cleanTargetDir": false,
+				"copy"          : false,
+				"verbose"       : true,
+				"layout"        : "byComponent",
+                "bowerOptions": {
+                    "allow-root" : true
+                }
+			}
+		}
+	},
+	"less": {
+        "options": {
+            "yuicompress": true,
+            "report": "min"
+        },
+        "app": {
+            "src": [
+               "./themes/default/less/main.less",
+                "<%= vendorPath %>/fontawesome/less/font-awesome.less"
+                ],
+            "dest": "<%= buildPath %>/<%= pkg.appName %>.min.css"
+        }
+    },
+    "concat": {
+        "app": {
+            "src": [
+                "<%= appPath %>/application.js",
+                "<%= appPath %>/run.js",
+                "<%= appPath %>/mappers/**/*.js",
+                "<%= appPath %>/services/**/*.js",
+                "<%= appPath %>/controllers/**/*.js"
+
+            ],
+            "dest": "<%= buildPath %>/<%= pkg.appName %>-app.js"
+        },
+        "lib": {
+            "src": [
+                "<%= vendorPath %>/angular/angular.min.js",
+	            "<%= vendorPath %>/jquery/dist/jquery.min.js",
+                "<%= vendorPath %>/bootstrap/dist/js/bootstrap.min.js",
+                "<%= vendorPath %>/angular-resource/angular-resource.min.js",
+                "<%= vendorPath %>/angular-route/angular-route.min.js",
+                "<%= vendorPath %>/angular-bootstrap/ui-bootstrap.min.js",
+                "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.min.js",
+                "<%= vendorPath %>/fastclick/lib/fastclick.js"
+            ],
+            "dest": "<%= buildPath %>/<%= pkg.appName %>-lib.min.js"
+        }
+    },
+    "uglify": {
+        "options": {
+            "mangle": false,
+            "compress": false,
+            "beautify": true,
+            "report": "min"
+        },
+        "app": {
+            "src": "<%= concat.app.dest %>",
+            "dest": "<%= buildPath %>/<%= pkg.appName %>-app.min.js"
+        }
+    },
+    "copy": {
+        "default": {
+            "files": [
+                {
+                    "expand": true,
+                    "cwd": "<%= appPath %>/php",
+                    "src": "**/*",
+                    "dest": "<%= buildPath %>/php/"
+                },
+                {
+                    "expand": true,
+                    "cwd": "<%= vendorPath %>",
+                    "src": "slim/**/*",
+                    "dest": "<%= buildPath %>/php/"
+                },
+                {
+                    "expand": true,
+                    "cwd": "<%= vendorPath %>/angular-route/",
+                    "src": "angular-route.min.js.map",
+                    "dest": "<%= buildPath %>/js/"
+                },
+                {
+                    "expand": true,
+                    "cwd": "<%= vendorPath %>/angular-resource/",
+                    "src": "angular-resource.min.js.map",
+                    "dest": "<%= buildPath %>/js/"
+                },
+                {
+                    "expand": true,
+                    "cwd"   : "./themes/default/images",
+                    "src"   : ["**/*"],
+                    "dest"  : "<%= buildPath %>/images/"
+                },
+                {
+					"expand": true,
+					"cwd"   : "<%= appPath %>",
+					"src"   : ["{templates,views}/**/*"],
+					"dest"  : "<%= buildPath %>/html"
+				},
+                {
+                    "expand": true,
+                    "flatten": true,
+                    "src": ["<%= less.app.dest %>"],
+                    "dest": "<%= buildPath %>/css/"
+                },
+                {
+                    "expand": true,
+                    "cwd": "<%= vendorPath %>/fontawesome/",
+                    "src": "fonts/**/*",
+                    "dest": "<%= buildPath %>/css/"
+                },
+                {
+                    "expand": true,
+                    "flatten": true,
+                    "src": [
+                        "<%= uglify.app.dest %>",
+                        "<%= concat.lib.dest %>"
+                    ],
+                    "dest": "<%= buildPath %>/js/"
+                },
+                {
+                    "expand": true,
+                    "cwd": "<%= appPath %>",
+                    "src": ["index.php"],
+                    "dest": "<%= buildPath %>/"
+                }
+            ]
+        }
+    },
+    "patternReplace": {
+        "default": {
+            "options": {
+                "prefix": "\\[\\[",
+                "suffix": "\\]\\]",
+                "includesDir": "./",
+                "tokens": {
+                    "pkg" : {
+                        "appName" : "<%= pkg.appName %>",
+                        "version" :  "<%= pkg.version %>"
+                    },
+                    "meta"  : {
+                        "title"      : "Washing App",
+                        "author"     : "Rofa",
+                        "description": "Web washing app by R."
+                    }
+                }
+            },
+            "files": [
+                {
+                    "expand": true,
+                    "cwd": "<%= buildPath %>",
+                    "dest": "<%= buildPath %>",
+                    "src": ["**/*.{js,php,html}"]
+                }
+            ]
+        }
+    },
+    "htmlmin": {},
+    "ftpsync": {
+        "local": "<%= buildPath %>",
+        "remote": "<%= target.targetServer %>",
+        "host": "<%= target.targetHost %>",
+        "port": 21,
+        "user": "<%= target.targetUser %>",
+        "pass": "<%= target.targetPwd %>",
+        "connections": 1,
+        "ignore": [
+            ".htaccess"
+        ]
+    },
+    "compress" : {
+		"default": {
+			"options": {
+                    "archive": "dist/snapshot-<%= grunt.template.date('yyyy-mm-dd_HH-MM-ss') %>.zip",
+				"mode"   : "zip",
+				"pretty" : true
+			},
+			"files" : [
+				{
+					"expand" : true,
+					"cwd"    : "<%= buildPath %>/",
+					"src"    : ["**"],
+					"dest"   : "webkiosk-<%= template %>-src"
+				}
+			]
+		}
+	},
+    "clean": {
+        "pre-deploy": [
+            "<%= concat.app.dest %>",
+            "<%= concat.lib.dest %>",
+            "<%= uglify.app.dest %>",
+            "<%= less.app.dest %>"
+        ],
+        "post-deploy": "<%= buildPath %>"
+    },
+	"watch"    : {
+    },
+    "sync": {
+        "main": {
+            "files": [
+                {
+                    "cwd":"./",
+                    "src": [
+                        "**/*",
+                        "!vendors/**/*",
+                        "!nbproject/**/*",
+                        "!gitReposit/**",
+                        "!node_modules/**/*",
+                        "!bower_components/**/*",
+                        "!config/appConfig.json",
+                        "!application/php/configDB.php"
+                    ],
+                    "dest": "./gitReposit"
+                }
+            ],
+            "verbose": true,
+            "pretend": false,
+            "ignoreInDest": [
+                "README.md",
+                ".git",
+                ".git/**/*",
+                "config/appConfig.json",
+                "application/php/configDB.php"
+            ],
+            "updateAndDelete": true
+        }
+    }
+}

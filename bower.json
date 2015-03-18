@@ -1,0 +1,24 @@
+{
+  "name": "WashingApp",
+  "version": "0.0.0",
+  "authors": [
+    "RomFan3466"
+  ],
+  "description": "Washing App for vehicles",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.14",
+    "bootstrap": "~3.3.2",
+    "fastclick": "~1.0.6",
+    "angular-route": "~1.3.14",
+    "angular-resource": "~1.3.14",
+    "fontawesome": "~4.3.0"
+  }
+}
