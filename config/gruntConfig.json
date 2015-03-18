@@ -213,6 +213,7 @@
                         "!vendors/**/*",
                         "!nbproject/**/*",
                         "!gitReposit/**",
+                        "!build/**",
                         "!node_modules/**/*",
                         "!bower_components/**/*",
                         "!config/appConfig.json",
