@@ -1,6 +1,5 @@
 washingApp
 ==========
------------------
 Description
 -------
 Washing Car App, project for Software Dev. year 3
@@ -11,9 +10,11 @@ Requierement
 Install
 -------
 Firstly, download and install [Node.js](https://nodejs.org). 
- then make sure you have installed npm as general :
+ then make sure you have installed npm updated as general :
 
      sudo npm install npm -g
+You can check the last npm version :
+     sudo npm --version
 
 Go into the directory where you have pull the git reposit, and using npm install all dependencies and dev dependencies for this project : 
 
@@ -21,7 +22,7 @@ Go into the directory where you have pull the git reposit, and using npm install
 Once  all dependencies are installed successfully, you have to download all vendors used for this project by installing and running bower.
 
 Install : `sudo npm install bower -g`
-Then install all vendors : `bower install 
+Then install all vendors : `bower install`
 
 Configuration
 -------
