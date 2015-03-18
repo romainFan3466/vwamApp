@@ -27,7 +27,7 @@ Then install all vendors : `bower install`
 Configuration
 -------
 
-This project uses GruntJs which is a task manager. To Create a nice build and export it on you server (I use an FTP server, but you can modify the following files if you wish), you have to configure config/appConfig.json : 
+This project uses GruntJs which is a task manager. To Create a nice build and export it on you server (I use a FTP server, but you can modify the following files if you wish), you have to configure config/appConfig.json : 
 
     {
 	"targets" : {
