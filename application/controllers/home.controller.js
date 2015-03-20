@@ -1,13 +1,13 @@
 AppModule.controller("HomeController", [
-    "$scope", "$authService",
-    function ($scope, $authService) {
+    "$scope", "$authentication",
+    function ($scope, $authentication) {
 
         $scope.credentials = {
             username: '',
             password: ''
         };
 
-        $scope.user = $authService.getUserMail();
+        $scope.user = $authentication.getUserMail();
 
 
 

@@ -1,19 +1,19 @@
 AppModule.controller("BodyHeaderController",[
-    "$scope", "$authService", "$log", "$location",
-    function ($scope, $authService, $log, $location) {
+    "$scope", "$authentication", "$log", "$location",
+    function ($scope, $authentication, $log, $location) {
         $scope.authenticated = undefined;
         $scope.loading = false;
         $scope.user = "";
-       // $scope.authenticated = $authService.modelSession();
+       // $scope.authenticated = $authentication.modelSession();
 
-        $scope.$watch($authService.isAuthenticated, function(newValue, oldValue) {
+        $scope.$watch($authentication.isAuthenticated, function(newValue, oldValue) {
             console.log(newValue);
             $log.log("watch auth");
             if(angular.isDefined(newValue)){
                 $scope.authenticated = newValue;
                 if(newValue==true){
-                    $scope.$watch($authService.getUserMail, function(newValue){
-                        $scope.user= $authService.getUserMail();
+                    $scope.$watch($authentication.getUserMail, function(newValue){
+                        $scope.user= $authentication.getUserMail();
                         $log.log("watch user");
                     });
 
@@ -28,22 +28,22 @@ AppModule.controller("BodyHeaderController",[
 
         $scope.logout = function(){
             $scope.loading = true;
-            $authService.logout().then(function(){
+            $authentication.logout().then(function(){
                 $scope.loading = false;
                 $location.path("#/login");
             });
         };
 
-        /*$authService.getSession().then(function(result){
+        /*$authentication.getSession().then(function(result){
             // debugger;
-            $scope.authenticated = $authService.isAuthenticated();
+            $scope.authenticated = $authentication.isAuthenticated();
             if(auth ===false){
                 $location.path("/login");
             }
         });*/
 
-       // $scope.user = $authService.getUserMail();
-       // $scope.authenticated = $authService.isAuthenticated();
+       // $scope.user = $authentication.getUserMail();
+       // $scope.authenticated = $authentication.isAuthenticated();
 
     }
 ]);

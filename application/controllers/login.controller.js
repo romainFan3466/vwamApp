@@ -1,6 +1,6 @@
 AppModule.controller("LoginController",[
-    "$scope", "$log", "$modal", "$authService", "$location",
-    function ($scope, $log, $modal, $authService, $location) {
+    "$scope", "$log", "$modal", "$authentication", "$location",
+    function ($scope, $log, $modal, $authentication, $location) {
 
         $scope.login = {
             email : "",
@@ -11,34 +11,39 @@ AppModule.controller("LoginController",[
         $scope.signupCredentials = {
             email:'',
             password:'',
-            name:'',
-            phone:'',
-            address:''
+            confirmedPassword:""
         };
+
+        $scope.loading=false;
+        $scope.wrongCredentials=false;
 
 
         $scope.loginIn = function (credentials) {
-            $authService.loginIn({user: credentials}).then(function (user) {
-                $location.path("/home");
-              //  $log("user logged : "+ user.email);
-            });
+            $scope.loading=true;
+            $authentication.loginIn({user: credentials}).then(
+                function (result) {
+                    $scope.loading=false;
+                    $location.path("/home");
+                },
+                function(result){
+                    $scope.loading=false;
+                    $scope.wrongCredentials=true;
+                }
+
+            );
         };
 
 
-        $scope.signUp = function (credentials) {
-            $authService.signUp({customer: credentials}).then(function (results) {
-                //TODO :
-            });
-        };
+
 
 
         $scope.logout = function () {
-            $authService.logout().then(function (results) {
+            $authentication.logout().then(function (results) {
                 //TODO :
             });
         };
 
-   // $log.log("success getSession:" + $authService.getUserMail());
+   // $log.log("success getSession:" + $authentication.getUserMail());
         $log.log("test log");
 
     $scope.openNewUserModal = function () {

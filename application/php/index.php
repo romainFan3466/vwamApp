@@ -29,17 +29,6 @@ function setAuthentication($value) {
  */
 function echoResponse($status_code, $response) {
 
-
-  /*  $to      = 'romain.fanara@sfr.fr';
-    $subject = 'WashingApp : new account';
-    $message = 'Your account has been created, here is your credentials';
-    $headers = 'From: webmaster@example.com' . "\r\n" .
-        'Reply-To: webmaster@example.com' . "\r\n" .
-        'X-Mailer: PHP/' . phpversion();
-
-    mail($to, $subject, $message, $headers);*/
-
-
     $app = \Slim\Slim::getInstance();
     // Http response code
     $app->status($status_code);
@@ -50,7 +39,23 @@ function echoResponse($status_code, $response) {
     echo json_encode($response);
 }
 
+function sendMail($email, $password){
+    $subject = 'WashingApp : new account';
+    $message = "Your account has been created, your credentials are: \r\n\r\n"
+        ."email : ". (string)$email . "\r\n"
+        ."password : ". (string)$password;
+
+    $headers = 'From: washing-app@romainfanara.com' . "\r\n" .
+        'Reply-To: washing-app@romainfanara.com' . "\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+
+    mail($email, $subject, $message, $headers);
+
+}
+
 require_once 'authentication.php';
+require_once 'customerModule.php';
+
 
 
 $app->run();

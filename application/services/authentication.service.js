@@ -1,4 +1,4 @@
-AppModule.factory('$authService',[
+AppModule.factory('$authentication',[
  "$http", "SessionMapper", "$q", "$log",
     function ($http, SessionMapper, $q, $log) {
 
@@ -60,6 +60,9 @@ AppModule.factory('$authService',[
             .post('/php/signUp', credentials)
             .success(function (res) {
                 defered.resolve(res);
+            })
+            .error(function(res){
+                defered.reject(res);
             });
 
         return defered.promise;

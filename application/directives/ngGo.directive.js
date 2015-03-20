@@ -9,7 +9,7 @@
  * @description
  * When you click on the current element, you will be redirected to the path
  */
-kioskLibModule.directive("ngGo", function ($location) {
+AppModule.directive("ngGo", function ($location) {
     return {
         restrict  : "A",
         scope     : {

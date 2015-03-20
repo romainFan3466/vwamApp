@@ -29,7 +29,8 @@
                         ng-cloak>
                         <button type="button" class="btn btn-primary" ng-click="goLogin()">Login</button></li>
 
-                    <li class=" ng-cloak navbar-text" ng-show="loading"><i class="fa fa-refresh fa-spin"></i></li>
+                    <spinner loading="loading"></spinner>
+
                     <li class="ng-cloak btn-login"
                         ng-show="authenticated != undefined && authenticated"
                         ng-cloak

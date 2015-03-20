@@ -32,6 +32,7 @@
             "src": [
                 "<%= appPath %>/application.js",
                 "<%= appPath %>/run.js",
+                "<%= appPath %>/directives/**/*.js",
                 "<%= appPath %>/mappers/**/*.js",
                 "<%= appPath %>/services/**/*.js",
                 "<%= appPath %>/controllers/**/*.js"
@@ -94,9 +95,9 @@
                 },
                 {
                     "expand": true,
-                    "cwd"   : "./themes/default/images",
-                    "src"   : ["**/*"],
-                    "dest"  : "<%= buildPath %>/images/"
+                    "cwd"   : "./themes/default/",
+                    "src"   : ["{images,fonts}**/*"],
+                    "dest"  : "<%= buildPath %>/"
                 },
                 {
 					"expand": true,

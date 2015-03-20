@@ -1,12 +1,12 @@
 AppModule.factory("$start", [
-    "$q", "$authService","$log",
+    "$q", "$authentication","$log",
 
-    function ($q, $authService, $log) {
+    function ($q, $authentication, $log) {
 
         var defered = $q.defer();
 
-        $authService.getSession().then(function(result){
-            $log.log("user logged: " + $authService.getUserMail());
+        $authentication.getSession().then(function(result){
+            $log.log("user logged: " + $authentication.getUserMail());
             defered.resolve("ok");
         });
 

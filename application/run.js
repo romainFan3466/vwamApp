@@ -1,12 +1,12 @@
 //Session checking watcher
-AppModule.run(["$rootScope", "$location", "$authService","$log",
-    function ($rootScope, $location, $authService, $log) {
+AppModule.run(["$rootScope", "$location", "$authentication","$log",
+    function ($rootScope, $location, $authentication, $log) {
 
-       // $authService.getSession();
+       // $authentication.getSession();
 
         $rootScope.$on("$routeChangeStart", function (event, next, current) {
-            $authService.getSession().then(function(result){
-                var auth = $authService.isAuthenticated();
+            $authentication.getSession().then(function(result){
+                var auth = $authentication.isAuthenticated();
                 if(auth ===false){
                     $location.path("/login");
                 }

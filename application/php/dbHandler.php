@@ -10,11 +10,19 @@ class DbHandler {
         $db = new dbConnect();
         $this->conn = $db->connect();
     }
+
+    public function getConnection(){
+        return $this->conn;
+    }
+
+    public function query($query) {
+        $this->conn->query($query) or die($this->conn->error.__LINE__);
+    }
+
     /**
      * Fetching single record
      */
-   /* public function getSession() {
-        $query = "SELECT * FROM session";
+    public function getSeveralRecords($query) {
 
         $r = $this->conn->query($query) or die($this->conn->error.__LINE__);
         $result = [];
@@ -23,7 +31,8 @@ class DbHandler {
             $result[] = $data;
         }
         return $result;
-    }*/
+    }
+
     public function getOneRecord($query) {
         $r = $this->conn->query($query.' LIMIT 1') or die($this->conn->error.__LINE__);
         return $result = $r->fetch_assoc();
@@ -95,6 +104,7 @@ class DbHandler {
             return NULL;
         }
     }
+
 }
 
 ?>

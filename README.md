@@ -2,7 +2,7 @@ washingApp
 ==========
 Description
 -------
-Washing Car App, project for Software Dev. year 3
+Car Washing App, project for Software Dev. year 3
 
 Requierement
 -------

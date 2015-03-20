@@ -26,7 +26,7 @@ $app->post('/login', function() use ($app) {
 
     $email = $r->user->email;
 
-    $user = $db->getOneRecord("select uid,name,password,email,created from customers_auth where email='$email'");
+    $user = $db->getOneRecord("select uid,password,email,created from customers_auth where email='$email'");
 
     if ($user != NULL) {
         if(passwordHash::check_password($user['password'],$password)){
@@ -77,18 +77,15 @@ $app->post('/signUp', function() use ($app) {
 
     $db = new DbHandler();
 
-    $phone = $r->user->phone;
-    $name = $r->user->name;
     $email = $r->user->email;
-    $address = $r->user->address;
     $password = $r->user->password;
 
-    $isUserExists = $db->getOneRecord("select 1 from customers_auth where phone='$phone' or email='$email'");
+    $isUserExists = $db->getOneRecord("select 1 from customers_auth where email='$email'");
 
     if(!$isUserExists){
         $r->user->password = passwordHash::hash($password);
         $table_name = "customers_auth";
-        $column_names = array('phone', 'name', 'email', 'password', 'city', 'address');
+        $column_names = array('email','password');
         $result = $db->insertIntoTable($r->user, $column_names, $table_name);
 
         if ($result != NULL) {
@@ -100,37 +97,20 @@ $app->post('/signUp', function() use ($app) {
             }
 
             $_SESSION['uid'] = $response["uid"];
-            $_SESSION['phone'] = $phone;
-            $_SESSION['name'] = $name;
             $_SESSION['email'] = $email;
+            sendMail($email,$password);
             echoResponse(200, $response);
         } else {
             $response["status"] = "error";
             $response["message"] = "Failed to create user. Please try again";
-            echoResponse(201, $response);
+            echoResponse(400, $response);
         }
     }else{
         $response["status"] = "error";
-        $response["message"] = "An user with the provided phone or email exists!";
-        echoResponse(201, $response);
+        $response["message"] = "An user with the provided  email exists!";
+        echoResponse(400, $response);
     }
+
 });
 
-/**
- * Vehicle requests
- */
 
-
-
-/**
- * Customer requests
- */
-
-
-/**
- * Invoice request
- */
-
-
-
-?>

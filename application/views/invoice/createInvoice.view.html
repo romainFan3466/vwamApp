@@ -3,24 +3,25 @@
         <form role="form" class="col-xs-offset-1 col-xs-10 col-md-offset-2 col-md-8">
 
                 <div class="form-group">
-                    <label for="InputCompany">Enter Name</label>
+                    <label for="InputCompany">Customer name</label>
                     <input type="text"
                            ng-model="retrieved"
                            id="InputCompany"
-                           placeholder="Enter Company Name"
-                           typeahead="company as company.name for company in companies | filter:{name:$viewValue} "
+                           placeholder="Enter customer name"
+                           typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue} "
                            typeahead-loading="loadingCompanies"
                            typeahead-on-select='onSelect($item, $model, $label)'
                            class="form-control" required>
                     <i ng-show="loadingCompanies" class="glyphicon glyphicon-refresh"></i>
                 </div>
 
-                <div class="form-group">
-                    {{item}}<br>
-                    {{model}}<br>
-                    {{label}}<br>
-
-                   adress company updated
+                <div class="form-group ng-cloak" ng-show="found" ng-cloak>
+                    <p>id :      {{customer.ID}}</p>
+                    <p>name :    {{customer.name}}</p>
+                    <p>phone :   {{customer.phone}}</p>
+                    <p>city :    {{customer.city}}</p>
+                    <p>address : {{customer.address}}</p>
+                    <p>country : {{customer.country}}</p>
                 </div>
 
                 <div class="form-group">
@@ -44,6 +45,17 @@
 
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
+
+
+       <!-- <input type="text" placeholder="enter name " ng-model="data.name">
+        <button class="btn btn-default" ng-click="getCustomer(data)">Retrieve</button>
+        <p>id :{{ret.ID}}</p>
+        <p>name : {{ret.name}}</p>
+        <p>phone : {{ret.phone}}</p>
+        <p>city : {{ret.city}}</p>
+        <p>address : {{ret.address}}</p>
+        <p>country : {{ret.country}}</p>-->
+
 
 
         <!-- col-xs-offset-1 col-xs-10 col-md-offset-2 col-md-8 -->
