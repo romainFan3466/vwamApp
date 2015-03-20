@@ -39,13 +39,16 @@ This project uses GruntJs which is a task manager. To Create a nice build and ex
         }
     }
 
-Then you have to configure application/php/configDB.php with your DataBase credentials : 
+Then you have to configure application/php/configDB.php with your DataBase credentials
+and MAIL_FROM is used to send an automatic email to new users.
 
     <?php
     define('DB_USERNAME', 'user name of MySQL');
     define('DB_PASSWORD', 'password of MySQL');
     define('DB_HOST', 'host of MySQL Data Base');
     define('DB_NAME', 'name of DataBase');
+
+    define('MAIL_FROM', 'email_address@example.com');
     ?>
 
 Deploy project on your FTP Server 

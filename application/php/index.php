@@ -45,8 +45,8 @@ function sendMail($email, $password){
         ."email : ". (string)$email . "\r\n"
         ."password : ". (string)$password;
 
-    $headers = 'From: washing-app@romainfanara.com' . "\r\n" .
-        'Reply-To: washing-app@romainfanara.com' . "\r\n" .
+    $headers = 'From: '. MAIL_FROM . "\r\n" .
+        'Reply-To: ' . MAIL_FROM . "\r\n" .
         'X-Mailer: PHP/' . phpversion();
 
     mail($email, $subject, $message, $headers);

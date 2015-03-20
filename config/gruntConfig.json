@@ -218,7 +218,8 @@
                         "!node_modules/**/*",
                         "!bower_components/**/*",
                         "!config/appConfig.json",
-                        "!application/php/configDB.php"
+                        "!application/php/configDB.php",
+                        "!themes/default/localizable/**/*"
                     ],
                     "dest": "./gitReposit"
                 }
