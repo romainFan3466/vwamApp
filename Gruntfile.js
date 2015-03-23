@@ -55,7 +55,7 @@ module.exports = function (grunt) {
         configPath    : configPath,
         watch         : gruntConfig.watch,
         ftpsync       : gruntConfig.ftpsync,
-        sync          : gruntConfig.sync,
+        sync          : gruntConfig.sync
         //'ftp-deploy'  : gruntConfig.ftpDeploy
 	});
 

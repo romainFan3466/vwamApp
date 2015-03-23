@@ -8,64 +8,64 @@ AppModule.factory('$authentication',[
     };
 
     var _getSession = function(){
-        var defered = $q.defer();
+        var deferred = $q.defer();
 
         $http
             .get('/php/session')
             .success(function (res) {
                 _modelSession = new SessionMapper(res);
 
-                defered.resolve( {email : _modelSession.email});
+                deferred.resolve( {email : _modelSession.email});
             })
             .error(function(res){
-                defered.reject({message : res});
+                deferred.reject({message : res});
             });
 
-        return defered.promise;
+        return deferred.promise;
     };
 
     var _loginIn = function (credentials) {
-        var defered = $q.defer();
+        var deferred = $q.defer();
 
         $http
             .post('/php/login', credentials)
             .success(function (res) {
                 _modelSession = new SessionMapper(res);
-                defered.resolve( {email : _modelSession.email});
+                deferred.resolve( {email : _modelSession.email});
             })
             .error(function(res){
-                 defered.reject({message : res.message});
+                 deferred.reject({message : res.message});
             });
 
-        return defered.promise;
+        return deferred.promise;
     };
 
 
     var _logout = function () {
-        var defered = $q.defer();
+        var deferred = $q.defer();
         $http
             .get('/php/logout')
             .success(function (res) {
                 _modelSession = new SessionMapper(res);
-                defered.resolve( _modelSession.email);
+                deferred.resolve( _modelSession.email);
             });
 
-        return defered.promise;
+        return deferred.promise;
     };
 
 
     var _signUp = function (credentials) {
-        var defered = $q.defer();
+        var deferred = $q.defer();
         $http
             .post('/php/signUp', credentials)
             .success(function (res) {
-                defered.resolve(res);
+                deferred.resolve(res);
             })
             .error(function(res){
-                defered.reject(res);
+                deferred.reject(res);
             });
 
-        return defered.promise;
+        return deferred.promise;
     };
 
 

@@ -61,7 +61,7 @@ $app->post('/customer/add', function() use($app){
     }
     else{
         $response["status"] = "error";
-        $response["message"] = "A customer with the provided name exists!";
+        $response["message"] = "A customer with the provided name already exists!";
         echoResponse(400, $response);
     }
 });
@@ -72,9 +72,9 @@ $app->post('/customer/delete', function() use($app){
 
     //retrieve POST params
     $request = json_decode($app->request->getBody());
-    $name = $request->customer->name;
+    $ID = $request->customer->ID;
 
-    $isCustomerExists = $db->getOneRecord("select ID from customers where name='$name'");
+    $isCustomerExists = $db->getOneRecord("select ID from customers where ID='$ID'");
 
     if($isCustomerExists){
         $ID=(int)$isCustomerExists["ID"];
@@ -93,9 +93,51 @@ $app->post('/customer/delete', function() use($app){
     }
     else{
         $response["status"] = "error";
-        $response["message"] = "the customer to deleted with the provided name exists!";
+        $response["message"] = "the customer to deleted with the provided ID doesn't exist!";
         echoResponse(400, $response);
     }
 });
+
+
+$app->post('/customer/update', function() use($app){
+
+    $db = new DbHandler();
+
+    //retrieve POST params
+    $request = json_decode($app->request->getBody());
+    $ID = $request->customer->ID;
+
+    $isCustomerExists = $db->getOneRecord("select ID from customers where ID='$ID'");
+
+    if($isCustomerExists){
+        $ID=(int)$isCustomerExists["ID"];
+
+        $query="UPDATE customers
+                SET name=?, address=?, city=?, country=?, phone=?
+                WHERE ID=?;";
+        $conn = $db->getConnection();
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('sssssi',
+            $request->customer->name,
+            $request->customer->address,
+            $request->customer->city,
+            $request->customer->country,
+            $request->customer->phone,
+            $ID);
+        $stmt->execute();
+
+        $result= array();
+        $result["status"] = "success";
+        $result["message"] = "Customer changed successfully";
+        echoResponse(200,$result);
+
+    }
+    else{
+        $response["status"] = "error";
+        $response["message"] = "the customer to change with the provided ID doesn't exist!";
+        echoResponse(400, $response);
+    }
+});
+
 
 

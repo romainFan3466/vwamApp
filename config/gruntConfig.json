@@ -43,13 +43,13 @@
         "lib": {
             "src": [
                 "<%= vendorPath %>/angular/angular.min.js",
+                "<%= vendorPath %>/angular-route/angular-route.min.js",
+                "<%= vendorPath %>/angular-resource/angular-resource.min.js",
+                "<%= vendorPath %>/angular-touch/angular-touch.min.js",
 	            "<%= vendorPath %>/jquery/dist/jquery.min.js",
                 "<%= vendorPath %>/bootstrap/dist/js/bootstrap.min.js",
-                "<%= vendorPath %>/angular-resource/angular-resource.min.js",
-                "<%= vendorPath %>/angular-route/angular-route.min.js",
                 "<%= vendorPath %>/angular-bootstrap/ui-bootstrap.min.js",
-                "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.min.js",
-                "<%= vendorPath %>/fastclick/lib/fastclick.js"
+                "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.min.js"
             ],
             "dest": "<%= buildPath %>/<%= pkg.appName %>-lib.min.js"
         }
@@ -91,6 +91,12 @@
                     "expand": true,
                     "cwd": "<%= vendorPath %>/angular-resource/",
                     "src": "angular-resource.min.js.map",
+                    "dest": "<%= buildPath %>/js/"
+                },
+                {
+                    "expand": true,
+                    "cwd": "<%= vendorPath %>/jquery/dist/",
+                    "src": "jquery.min.map",
                     "dest": "<%= buildPath %>/js/"
                 },
                 {

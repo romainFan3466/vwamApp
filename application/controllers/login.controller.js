@@ -43,8 +43,6 @@ AppModule.controller("LoginController",[
             });
         };
 
-   // $log.log("success getSession:" + $authentication.getUserMail());
-        $log.log("test log");
 
     $scope.openNewUserModal = function () {
         var modalInstance = $modal.open({

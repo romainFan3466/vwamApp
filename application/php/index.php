@@ -28,7 +28,7 @@ function setAuthentication($value) {
  * @param $response
  */
 function echoResponse($status_code, $response) {
-
+    sleep(1);
     $app = \Slim\Slim::getInstance();
     // Http response code
     $app->status($status_code);

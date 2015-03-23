@@ -2,25 +2,36 @@ AppModule.factory('$customer',[
     "$http", "CustomerMapper", "$q", "$log",
     function ($http, CustomerMapper, $q, $log) {
 
-
+        /**
+         *
+         * @param customerName
+         * @returns {Deferred.promise|*|promise|Q.promise|fd.g.promise|qFactory.Deferred.promise}
+         * @private
+         */
         var _get = function(customerName){
-            var defered = $q.defer();
+            var deferred = $q.defer();
 
             $http
                 .post('/php/customer',customerName)
                 .success(function (res) {
                     var customer = new CustomerMapper(res);
-                    defered.resolve( {customer : customer});
+                    deferred.resolve( {customer : customer});
                 })
                 .error(function(res){
-                    defered.reject({message : res});
+                    deferred.reject({message : res});
                 });
 
-            return defered.promise;
+            return deferred.promise;
         };
 
+
+        /**
+         *
+         * @returns {Deferred.promise|*|promise|Q.promise|fd.g.promise|qFactory.Deferred.promise}
+         * @private
+         */
         var _getAllName = function(){
-            var defered = $q.defer();
+            var deferred = $q.defer();
 
             $http
                 .post('/php/customer/all',{})
@@ -30,20 +41,96 @@ AppModule.factory('$customer',[
                         var customer = new CustomerMapper(value);
                         list.push(customer);
                     });
-                    defered.resolve( {list : list});
+                    deferred.resolve( {list : list});
                 })
                 .error(function(res){
-                    defered.reject({message : res});
+                    deferred.reject({message : res});
                 });
 
-            return defered.promise;
+            return deferred.promise;
         };
 
 
+        /**
+         *
+         * @param customer
+         * @returns {Deferred.promise|*|promise|Q.promise|fd.g.promise|qFactory.Deferred.promise}
+         * @private
+         */
+        var _add = function(customer){
+            var deferred = $q.defer();
+            var parsedCustomer = new CustomerMapper(customer);
+
+            $http
+                .post('/php/customer/add',{customer:parsedCustomer})
+                .success(function(res){
+                    deferred.resolve(res);
+                })
+                .error(function(res, status){
+                    var response = {};
+                    response.status=status;
+
+                    if(status==500){
+                        response.message="server doesn't respond"
+                    }
+                    else if (status==400){
+                        response.message=res.message;
+                    }
+                    deferred.reject(response);
+                });
+
+            return deferred.promise;
+        };
+
+
+        /**
+         *
+         * @param ID
+         * @private
+         */
+        var _delete = function(ID){
+            var deferred = $q.defer();
+
+            $http
+                .post('/php/customer/delete', ID)
+                .success(function(res){
+                   deferred.resolve(res);
+                })
+                .error(function(res, status){
+                    var response = {
+                        status : status,
+                        message : res.message
+                    };
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        };
+
+
+        var _update = function(customer){
+            var deferred = $q.defer();
+            $http
+                .post('/php/customer/update', customer)
+                .success(function(res){
+                    deferred.resolve(res);
+                })
+                .error(function(res, status){
+                    var response = {
+                        status : status,
+                        message : res.message
+                    };
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        };
+
 
         return {
-           get : _get,
-           getAllName : _getAllName
+            get : _get,
+            getAllName : _getAllName,
+            add : _add,
+            delete : _delete,
+            update : _update
         };
     }]
 );

@@ -12,16 +12,15 @@
                            typeahead-loading="loadingCompanies"
                            typeahead-on-select='onSelect($item, $model, $label)'
                            class="form-control" required>
-                    <i ng-show="loadingCompanies" class="glyphicon glyphicon-refresh"></i>
                 </div>
 
                 <div class="form-group ng-cloak" ng-show="found" ng-cloak>
-                    <p>id :      {{customer.ID}}</p>
-                    <p>name :    {{customer.name}}</p>
-                    <p>phone :   {{customer.phone}}</p>
-                    <p>city :    {{customer.city}}</p>
-                    <p>address : {{customer.address}}</p>
-                    <p>country : {{customer.country}}</p>
+                    <p><strong>ID :      </strong>{{customer.ID}}</p>
+                    <p><strong>Name :    </strong>{{customer.name}}</p>
+                    <p><strong>Address : </strong>{{customer.address}}</p>
+                    <p><strong>Phone :   </strong>{{customer.phone}}</p>
+                    <p><strong>City :    </strong>{{customer.city}}</p>
+                    <p><strong>Country : </strong>{{customer.country}}</p>
                 </div>
 
                 <div class="form-group">
@@ -46,29 +45,5 @@
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
 
-
-       <!-- <input type="text" placeholder="enter name " ng-model="data.name">
-        <button class="btn btn-default" ng-click="getCustomer(data)">Retrieve</button>
-        <p>id :{{ret.ID}}</p>
-        <p>name : {{ret.name}}</p>
-        <p>phone : {{ret.phone}}</p>
-        <p>city : {{ret.city}}</p>
-        <p>address : {{ret.address}}</p>
-        <p>country : {{ret.country}}</p>-->
-
-
-
-        <!-- col-xs-offset-1 col-xs-10 col-md-offset-2 col-md-8 -->
-
-       <!-- <div class="col-lg-5 col-md-push-1">
-            <div class="col-md-12">
-                <div class="alert alert-success">
-                    <strong><span class="glyphicon glyphicon-ok"></span> Success! Message sent.</strong>
-                </div>
-                <div class="alert alert-danger">
-                    <span class="glyphicon glyphicon-remove"></span><strong> Error! Please check all page inputs.</strong>
-                </div>
-            </div>
-        </div>-->
     </div>
 </div>

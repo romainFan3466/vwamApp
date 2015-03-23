@@ -7,14 +7,11 @@ AppModule.controller("BodyHeaderController",[
        // $scope.authenticated = $authentication.modelSession();
 
         $scope.$watch($authentication.isAuthenticated, function(newValue, oldValue) {
-            console.log(newValue);
-            $log.log("watch auth");
             if(angular.isDefined(newValue)){
                 $scope.authenticated = newValue;
                 if(newValue==true){
                     $scope.$watch($authentication.getUserMail, function(newValue){
                         $scope.user= $authentication.getUserMail();
-                        $log.log("watch user");
                     });
 
                 }

@@ -3,13 +3,13 @@ AppModule.factory("$start", [
 
     function ($q, $authentication, $log) {
 
-        var defered = $q.defer();
+        var deferred = $q.defer();
 
         $authentication.getSession().then(function(result){
             $log.log("user logged: " + $authentication.getUserMail());
-            defered.resolve("ok");
+            deferred.resolve("ok");
         });
 
-        return defered.promise;
+        return deferred.promise;
     }
 ]);

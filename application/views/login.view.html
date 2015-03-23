@@ -1,52 +1,63 @@
-<div class="container-fluid">
-    <form role="form"
-          class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4"
-          ng-controller="LoginController" ng-submit="loginIn(credentials)">
+<div class="container-fluid" ng-controller="LoginController">
+    <div class="row">
+        <form role="form" name="form"
+              class="col-xs-offset-1 col-xs-10 col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4"
+              ng-submit="loginIn(credentials)">
 
-        <div class="form-group">
-            <h2 class="form-signin-heading">Washing App</h2>
-        </div>
+            <div class="form-group">
+                <h2 class="form-signin-heading">Washing App</h2>
+            </div>
 
-        <div class="form-group">
-            <label for="inputEmail">Email :</label>
-            <input type="email"
-                   id="inputEmail"
-                   class="form-control"
-                   placeholder="Enter email address"
-                   ng-model="credentials.email" required="" autofocus="">
-            <span ng-show="credentials.badLogin" class="glyphicon glyphicon-remove form-control-feedback"></span>
-        </div>
+            <div class="form-group">
+                <label for="inputEmail">Email :</label>
+                <input type="email"
+                       id="inputEmail"
+                       name="email"
+                       class="form-control"
+                       placeholder="Enter email address"
+                       ng-model="credentials.email" required="" autofocus="">
+                <span ng-show="credentials.badLogin" class="glyphicon glyphicon-remove form-control-feedback"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="inputPassword">Password :</label>
-            <input type="password"
-                   id="inputPassword"
-                   class="form-control"
-                   placeholder="Password"
-                   ng-model="credentials.password" required="">
-            <span ng-show="credentials.badLogin" class="glyphicon glyphicon-remove form-control-feedback"></span>
-        </div>
+            <div class="form-group">
+                <label for="inputPassword">Password :</label>
+                <input type="password"
+                       id="inputPassword"
+                       name="password"
+                       class="form-control"
+                       placeholder="Password"
+                       ng-model="credentials.password" required="">
+                <span ng-show="credentials.badLogin" class="glyphicon glyphicon-remove form-control-feedback"></span>
+            </div>
 
-        <div class="form-group">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
+            <div ng-show="success" class="alert alert-success">
+                User account created successfully,<br/>An email has been sent to your mailbox
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
 
-        <div class="form-group">
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        </div>
+            <div class="form-group alert alert-danger" ng-show="wrongCredentials">
+                Bad email or password, please correct or sign up
+            </div>
 
-        <div class="form-group">
+            <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block"
+                        type="submit"
+                        ng-disabled="form.email.$invalid || form.password.$invalid">Sign in</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-offset-1 col-xs-10 col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4">
             <button class="btn btn-lg btn-success btn-block" ng-click="openNewUserModal()">New user ?</button>
+            <spinner loading="loading"></spinner>
         </div>
-
-
-
-
-        <spinner loading="loading"></spinner>
-
-    </form>
+    </div>
 
 
 </div>

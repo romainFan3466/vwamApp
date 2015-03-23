@@ -37,7 +37,6 @@
 	 */
 	var _getTarget = function(grunt, appConfig, targetName) {
 		var target= appConfig[targetName];
-        grunt.log.write(appConfig.targetHost);
         return target;
 	};
 

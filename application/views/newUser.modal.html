@@ -3,31 +3,82 @@
     <h4 class="modal-title" id="myModalLabel">Create account </h4>
 </div>
 
-<form role="form" ng-submit="signUp(credentials)">
+<form role="form" name="form" ng-submit="signUp(credentials)">
     <div class="modal-body modal-block">
 
-        <div class="form-group" ng-class="{invalid : error}">
-            <label for="inputEmail" class="control-label">Adresse email</label>
-            <input type="email" class="form-control" id="inputEmail" placeholder="Entrer email"
-                   ng-model="credentials.email">
-            <span ng-show="error" class="glyphicon glyphicon-remove form-control-feedback"></span>
+        <div class="form-group" ng-class="{invalid : error,
+        valid : form.email.$valid && !error}">
+            <label for="inputEmail" class="control-label">Email address :</label>
+            <input type="email"
+                   class="form-control"
+                   id="inputEmail"
+                   placeholder="Entrer email"
+                   ng-model="credentials.email"
+                   name="email"
+                   required>
+            <span ng-show="error"
+                  class="glyphicon glyphicon-remove form-control-feedback"></span>
+            <span ng-show="form.email.$valid && !error"
+                  class="glyphicon glyphicon-ok form-control-feedback"></span>
         </div>
 
 
-        <div class="form-group">
-            <label for="inputPassword" class="control-label">Password</label>
-            <input type="password" class="form-control" id="inputPassword" placeholder="Entrer password"
-                   ng-model="credentials.password">
+        <div class="form-group"
+             ng-class="{invalid : form.password1.$dirty && form.password1.$invalid ,
+             valid : form.password1.$valid }">
+            <label for="inputPassword" class="control-label" >Password :</label>
+            <input type="password"
+                   class="form-control"
+                   id="inputPassword"
+                   placeholder="Entrer password"
+                   ng-model="credentials.password"
+                   name="password1"
+                    required>
+            <span ng-show="(form.password1.$dirty && form.password1.$invalid)"
+                  class="glyphicon glyphicon-remove form-control-feedback"></span>
+            <span ng-show="form.password1.$valid"
+                  class="glyphicon glyphicon-ok form-control-feedback"></span>
         </div>
 
-        <div ng-show="success" class="alert alert-success">L'email a bien été envoyé</div>
+        <div class="form-group"
+             ng-class="{invalid : (form.password2.$dirty && differentPassword)
+             , valid : form.password2.$valid && !differentPassword }">
+            <label for="inputPassword" class="control-label">Confirm Password :</label>
+            <input type="password"
+                   class="form-control"
+                   id="inputPassword"
+                   placeholder="Retype password"
+                   ng-model="credentials.confirmedPassword"
+                   name="password2"
+                   required>
+            <span ng-show="(form.password2.$dirty && differentPassword)"
+                  class="glyphicon glyphicon-remove form-control-feedback"></span>
+            <span ng-show="form.password2.$valid && !differentPassword"
+                  class="glyphicon glyphicon-ok form-control-feedback"></span>
+        </div>
+
+
+        <div ng-show="success" class="alert alert-success">
+            User account created successfully,<br/>An email has been sent to your mailbox
+        </div>
         <div ng-show="error" class="alert alert-danger">
             Email provided is already used for an existing account
         </div>
+
+        <!--<div ng-show="differentPassword" class="alert alert-danger">
+            Confirmed password is different from the first one
+        </div>-->
+
+        <div ng-show="(form.password1.$dirty && form.password1.$invalid) ||
+                        (form.password2.$dirty && form.password2.$invalid)"
+             class="alert alert-danger">
+            Please provide password and its confirmation
+        </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default"  ng-click="cancel()">Quitter</button>
-        <input type="submit" class="btn btn-primary" value="Create" ng-show="!success">
+        <button type="button" class="btn btn-default"  ng-click="cancel()">Cancel</button>
+        <input type="submit" class="btn btn-primary" value="Create" ng-show="!success"
+               ng-disabled="form.$error.required|| form.$invalid || differentPassword">
     </div>
     <spinner loading="loading"></spinner>
 </form>
