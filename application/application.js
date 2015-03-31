@@ -11,12 +11,12 @@ AppModule.config(['$routeProvider', function ($routeProvider) {
         {url: "/invoice", templateUrl: "html/views/invoice.view.html"},
         {url: "/invoice/create", templateUrl: "html/views/invoice/createInvoice.view.html"},
         {url: "/invoice/edit", templateUrl: "html/views/invoice/editInvoice.view.html"},
-        {url: "/invoice/list", templateUrl: "html/views/invoice/listInvoice.view.html"},
+        {url: "/invoice/list", templateUrl: "html/views/invoice/invoice.view.html"},
 
-        {url: "/vehicle", templateUrl: "html/views/vehicle.view.html"},
-        {url: "/vehicle/create", templateUrl: "html/views/vehicle/createVehicle.view.html"},
-        {url: "/vehicle/edit", templateUrl: "html/views/vehicle/editVehicle.view.html"},
-        {url: "/vehicle/list", templateUrl: "html/views/vehicle/listVehicle.view.html"},
+        {url: "/item", templateUrl: "html/views/item.view.html"},
+        {url: "/item/create", templateUrl: "html/views/item/createItem.view.html"},
+        {url: "/item/edit", templateUrl: "html/views/item/editItem.view.html"},
+        {url: "/item/list", templateUrl: "html/views/item/listItem.view.html"},
 
         {url: "/customer", templateUrl: "html/views/customer.view.html"},
         {url: "/customer/create", templateUrl: "html/views/customer/createCustomer.view.html"},

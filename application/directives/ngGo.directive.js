@@ -1,13 +1,13 @@
 /**
  * @ngdoc directive
- * @name Directives.directive:ngGo
+ * @name appModule.directive:ngGo
  * @element ANY
  * @restrict A
 
  @param {expression} ngGo  Path expression to evaluate and go to it
 
  * @description
- * When you click on the current element, you will be redirected to the path
+ * When you click on the current element, you will be redirected to the provided path
  */
 AppModule.directive("ngGo", function ($location) {
     return {

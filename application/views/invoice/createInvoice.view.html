@@ -1,48 +1,74 @@
 <div class="container-fluid" ng-controller="CreateInvoiceController">
     <div class="row">
-        <form role="form" class="col-xs-offset-1 col-xs-10 col-md-offset-2 col-md-8">
+        <form role="form" name="form"
+              class="col-xs-offset-1 col-xs-10 col-md-offset-2 col-md-8"
+              ng-submit="createInvoice()">
 
                 <div class="form-group">
                     <label for="InputCompany">Customer name</label>
                     <input type="text"
+                           name="company"
                            ng-model="retrieved"
                            id="InputCompany"
                            placeholder="Enter customer name"
                            typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue} "
                            typeahead-loading="loadingCompanies"
-                           typeahead-on-select='onSelect($item, $model, $label)'
+                           typeahead-on-select='onSelectCustomer($item, $model, $label)'
                            class="form-control" required>
                 </div>
 
-                <div class="form-group ng-cloak" ng-show="found" ng-cloak>
-                    <p><strong>ID :      </strong>{{customer.ID}}</p>
+                <div class="form-group ng-cloak" ng-show="found.customer && form.company.$valid" ng-cloak>
                     <p><strong>Name :    </strong>{{customer.name}}</p>
                     <p><strong>Address : </strong>{{customer.address}}</p>
                     <p><strong>Phone :   </strong>{{customer.phone}}</p>
                     <p><strong>City :    </strong>{{customer.city}}</p>
                     <p><strong>Country : </strong>{{customer.country}}</p>
                 </div>
+            <hr/>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label for="InputMatriculation1">Matriculation 1</label>
+                        <input type="text"
+                               class="form-control"
+                               id="InputMatriculation1"
+                               placeholder="Enter matriculation"
+                               ng-model="matriculation.first">
+                    </div>
 
-                <div class="form-group">
-                    <label for="InputMatriculation1">Matriculation 1</label>
-                    <input type="text" class="form-control" id="InputMatriculation1" placeholder="Enter matriculation">
+                    <div class="form-group">
+                        <label for="InputMatriculation2">Matriculation 2</label>
+                        <input type="text"
+                               class="form-control"
+                               id="InputMatriculation2"
+                               placeholder="Enter matriculation"
+                               ng-model="matriculation.second">
+                    </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="InputMatriculation2">Matriculation 2</label>
-                    <input type="text" class="form-control" id="InputMatriculation2" placeholder="Enter matriculation">
-                </div>
+            <hr/>
 
-                <div class="form-group">
-                    <label for="InputItem">Items & washing type</label>
-                    <input type="text" class="form-control" id="InputItem" placeholder="Enter items">
-                </div>
+            <div class="form-group">
+                <label for="InputItem">Item :</label>
+                <input type="text"
+                       id="InputItem"
+                       name="itemName"
+                       ng-model="retrievedItem"
+                       typeahead-loading="loadingCompanies"
+                       placeholder="Enter item name"
+                       typeahead="item as item.description for item in items | filter:{description:$viewValue} "
+                       typeahead-on-select='onSelectItem($item, $model, $label)'
+                       class="form-control" required>
+            </div>
 
-                <div class="form-group">
-                    invoice review
-                </div>
+            <div class="form-group ng-cloak" ng-show="found.item && form.itemName.$valid" ng-cloak>
+                <p><strong>Name :    </strong>{{item.name}}</p>
+                <p><strong>Type : </strong>{{item.type}}</p>
+                <p><strong>Price :   </strong>{{item.price}} &euro;</p>
+            </div>
 
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-success">Create Invoice</button>
         </form>
 
     </div>

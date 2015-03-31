@@ -1,0 +1,84 @@
+<div class="container-fluid" ng-controller="CreateItemController">
+    <div class="row">
+        <div class="col-xs-offset-1 col-xs-10 col-md-offset-2 col-md-8">
+            <form role="form"
+                  ng-submit="addItem(item)"
+                  name="form">
+
+                <div class="form-group">
+                    <label for="InputName">Item type :</label>
+                    <input type="text"
+                           ng-model="item.name"
+                           id="InputName"
+                           name="name"
+                           placeholder="Enter item name"
+                           class="form-control" required>
+                </div>
+
+
+                <div class="form-group">
+                    <label> Washing type :</label>
+                    <div class="radio">
+                        <label>
+                            <input type="radio"
+                                   ng-model="item.type"
+                                   value="Inside"
+                                   checked>
+                            Inside
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio"
+                                   ng-model="item.type"
+                                   value="Outside">
+                            Outside
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio"
+                                   ng-model="item.type"
+                                   value="Other">
+                            Other
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="InputPrice">Price (&euro;) :</label>
+                    <input type="text" class="form-control" id="InputPrice" placeholder="Enter price : XXX.XX"
+                           ng-model="item.price" >
+                </div>
+
+                <button type="submit" class="btn btn-success"
+                        ng-disabled="form.name.$invalid">Create item</button>
+
+            </form>
+        </div>
+
+    </div>
+
+    <div class="row row-space text-center">
+        <div class="col-xs-offset-3 col-xs-6">
+            <div ng-show="success && form.name.$invalid" class="alert alert-success">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                Item has been created
+            </div>
+
+            <div ng-show="error && !success" class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                Error, item hasn't been created, server doesn't respond
+            </div>
+
+            <div ng-show="invalidName" class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                Name and type are already used for another item, change name or type
+            </div>
+
+            <spinner loading="loading"></spinner>
+        </div>
+    </div>
+
+</div>

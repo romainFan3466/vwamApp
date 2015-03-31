@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name appModule.controller:CreateCustomerController
+ * @name appModule.controller:CreateItemController
  * @require $scope
  * @require $authentication
  * @require $location
@@ -9,36 +9,36 @@
  *
  *
  */
-AppModule.controller("CreateCustomerController", [
-    "$scope", "$log", "$customer", "$timeout",
-    function ($scope, $log, $customer, $timeout) {
+AppModule.controller("CreateItemController", [
+    "$scope", "$log", "$item", "$timeout",
+    function ($scope, $log, $item, $timeout) {
 
 
 
         var _initialize = function(){
-            $scope.customer={
+            $scope.item={
                 name : "",
-                address : "",
-                country : "",
-                phone : ""
+                type : "Inside",
+                price : ""
             };
             $scope.loading = false;
             $scope.invalidName = false;
-            $scope.customers = {};
+            $scope.items = [];
             $scope.error= false;
             $scope.success=false;
-            _getAllCustomerName();
+            getAllItem();
 
         };
 
-        var _isValidName = function(name){
+        var _isValidName = function(item){
             var isValid = true;
-            var _customers = $scope.customers;
-            var exp = "^" + name + "$";
+            var _items = $scope.items;
+            var exp = "^" + item.name + "$";
             var regex = new RegExp(exp,"i");
 
-            angular.forEach(_customers,function(value){
-                if(regex.test(value.name)){
+            angular.forEach(_items,function(value){
+                //if names don't match and types don't match
+                if(regex.test(value.name) && angular.equals(value.type, item.type)){
                     isValid=false;
                 }
             });
@@ -47,25 +47,28 @@ AppModule.controller("CreateCustomerController", [
 
 
 
-        var _affectListCustomerName = function(customerList){
-            $scope.customers =customerList ;
+        var _affectListItemName = function(itemList){
+            $scope.items =itemList ;
         };
 
 
 
-        var _getAllCustomerName = function () {
-            $customer.getAllName().then(
+        var getAllItem = function () {
+            $item.getAll().then(
                 function (result) {
                     $log.log(result.list);
-                    _affectListCustomerName(result.list);
+                    _affectListItemName(result.list);
                 },
                 function (result) {
                     //TODO : washingapp
                 });
         };
 
-        var _makeRequest = function(customer){
-            $customer.add(customer).then(
+        var _makeRequest = function(item){
+            var parsePhone = parseFloat(item.price);
+            item.price = isNaN(parsePhone) ? "" : parsePhone;
+
+            $item.add(item).then(
                 function(res){
                     _initialize();
                     $scope.success=true;
@@ -78,15 +81,11 @@ AppModule.controller("CreateCustomerController", [
         };
 
 
-
-
-
-
-        $scope.addCustomer = function (customer){
+        $scope.addItem = function (item){
             $scope.loading = true;
 
-            if(_isValidName(customer.name)){
-                _makeRequest(customer);
+            if(_isValidName(item)){
+                _makeRequest(item);
             }
             else{
                 $scope.invalidName = true;
@@ -96,8 +95,8 @@ AppModule.controller("CreateCustomerController", [
         };
 
         _initialize();
-
-
     }
 ]);
+
+
 

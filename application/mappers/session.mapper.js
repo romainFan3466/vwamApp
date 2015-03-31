@@ -1,3 +1,12 @@
+/**
+ * @ngdoc object
+ * @name appModule.object:SessionMapper
+ *
+ * @description
+ * This object parses session data into a SessionMapper object
+ *
+ *
+ */
 AppModule.factory('SessionMapper',
     function () {
 

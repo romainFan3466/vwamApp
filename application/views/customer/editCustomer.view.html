@@ -17,12 +17,6 @@
     <div class="row row-lg-space">
         <div class="ng-cloak col-xs-offset-1 col-xs-10 col-md-offset-2 col-md-8"
              ng-cloak>
-           <!-- <p><strong>ID :      </strong><input ng-model="customer.ID"></p>
-            <p><strong>Name :    </strong><input ng-model="customer.name"></p>
-            <p><strong>Address : </strong><input ng-model="customer.address"></p>
-            <p><strong>Phone :   </strong><input ng-model="customer.phone"></p>
-            <p><strong>City :    </strong><input ng-model="customer.city"></p>
-            <p><strong>Country : </strong><input ng-model="customer.country"></p>-->
 
             <form class="form-horizontal">
                 <div class="form-group">
@@ -71,7 +65,7 @@
     </div>
     <div class="row space-lg-row">
         <button class="btn btn-danger col-xs-offset-5 col-xs-2 col-sm-offset-2 col-sm-2 col-space"
-                ng-click="delete(customer.ID)"
+                ng-click="remove(customer)"
                 ng-disabled="!found">
             Delete
         </button>
@@ -97,7 +91,22 @@
 
     <div class="row space-lg-row" ng-show="edited">
        <div class="alert alert-success">
+           <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
            Customer <strong>{{customer.name}}</strong> edited successfully
        </div>
+    </div>
+
+    <div class="row space-lg-row" ng-show="deleted">
+        <div class="alert alert-success">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            Customer <strong>{{customer.name}}</strong> deleted successfully
+        </div>
+    </div>
+
+    <div class="row space-lg-row" ng-show="doublon">
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            Customer <strong>{{customer.name}}</strong> can't be edited, an existing customer has the same name
+        </div>
     </div>
 </div>

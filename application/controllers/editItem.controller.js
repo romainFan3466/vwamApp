@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name appModule.controller:EditCustomerController
+ * @name appModule.controller:EditItemController
  * @require $scope
  * @require $authentication
  * @require $location
@@ -9,12 +9,12 @@
  *
  *
  */
-AppModule.controller("EditCustomerController", [
-    "$scope", "$log", "$customer",
-    function ($scope, $log, $customer) {
+AppModule.controller("EditItemController", [
+    "$scope", "$log", "$item",
+    function ($scope, $log, $item_app) {
 
-        $scope.customer = {};
-        $scope.customers =[];
+        $scope.item = {};
+        $scope.items =[];
         $scope.loading=false;
         $scope.found = false;
         $scope.editor=false;
@@ -22,29 +22,40 @@ AppModule.controller("EditCustomerController", [
         $scope.deleted=false;
         $scope.errorDelete = false;
         $scope.doublon = false;
-        var _customerTemp;
+        $scope.itemPrev ={};
+        var _itemTemp;
 
 
         $scope.onSelect = function ($item, $model, $label) {
-            $scope.loading= true;
-            _getCustomer($item);
+            $scope.item = angular.copy($item);
+            _itemTemp = angular.copy($scope.item);
             $scope.found=true;
+            $scope.loading= false;
+            $scope.edited=false;
+            $scope.deleted=false;
+            $scope.errorDelete = false;
+            $scope.doublon = false;
         };
 
 
         $scope.resetChange = function(){
-            $scope.customer = angular.copy(_customerTemp);
+            $scope.item = angular.copy(_itemTemp);
         };
 
 
-        $scope.update = function(customer){
+        $scope.update = function(item){
             $scope.loading=true;
-            if(!_isPresent(customer.name)){
-                $customer.update({customer : customer}).then(
+            if(!_isPresent(item.name)){
+                $item_app.update({item : item}).then(
                     function(res){
                         $scope.loading=false;
                         $scope.edited=true;
-                        _getAllCustomerName();
+                        $scope.editor = false;
+                        $scope.retrieved ="";
+                        $scope.itemPrev.name = angular.copy($scope.item.name);
+                        $scope.item={};
+                        $scope.found=false;
+                        _getAllItems();
                     },
                     function(res){
                         $scope.loading=false;
@@ -59,15 +70,18 @@ AppModule.controller("EditCustomerController", [
         };
 
 
-        $scope.remove = function(customer){
+        $scope.remove = function(item){
             $scope.loading=true;
-            $customer.delete(customer.ID).then(
+            $item_app.delete(item.ID).then(
                 function(res){
                     $log.log(res);
                     $scope.loading=false;
                     $scope.deleted=true;
-                    _getAllCustomerName();
-                    $scope.customer={};
+                    _getAllItems();
+                    $scope.retrieved ="";
+                    $scope.itemPrev.name = angular.copy($scope.item.name);
+                    $scope.item={};
+                    $scope.found=false;
                 },
                 function(res){
                     $scope.loading=false;
@@ -84,52 +98,35 @@ AppModule.controller("EditCustomerController", [
             var regex = new RegExp(exp,"i");
 
 
-            if(regex.test(_customerTemp.name)){
+            if(regex.test(_itemTemp.name)){
                 return false;
             }
 
-            //look if the name doesn't match with an other customer
+            //look if the name doesn't match with an other item
             else{
                 var found = false;
                 regex = new RegExp(exp);
-                angular.forEach($scope.customers, function(customer){
-                    if(regex.test(customer.name)){
+                angular.forEach($scope.items, function(item){
+                    if(regex.test(item.name)){
                         found = true;
                     }
                 });
-               return found;
+                return found;
             }
         };
 
 
-        var affectCustomer = function(res){
-            $scope.customer = res;
-            _customerTemp = angular.copy($scope.customer);
+        var _affectListItemName = function(itemList){
+            $scope.items=[];
+            $scope.items =itemList
         };
 
 
-        var _affectListCustomerName = function(customerList){
-            $scope.customers=[];
-            $scope.customers =customerList
-        };
-
-
-        var _getCustomer = function (customer) {
-            $customer.get(customer.name).then(
+        var _getAllItems = function () {
+            $item_app.getAll().then(
                 function (result) {
-                    $scope.loading= false;
-                    affectCustomer(result.customer);
-                },
-                function (result) {
-                    $scope.loading= false;
-                });
-        };
-
-
-        var _getAllCustomerName = function () {
-            $customer.getAllName().then(
-                function (result) {
-                    _affectListCustomerName(result.list);
+                    $log.log(result.list);
+                    _affectListItemName(result.list);
                 },
                 function (result) {
                     $log.log("error getAllname");
@@ -137,7 +134,7 @@ AppModule.controller("EditCustomerController", [
         };
 
 
-        _getAllCustomerName();
+        _getAllItems();
 
 
 

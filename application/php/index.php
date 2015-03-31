@@ -28,7 +28,7 @@ function setAuthentication($value) {
  * @param $response
  */
 function echoResponse($status_code, $response) {
-    sleep(1);
+  //  sleep(1);
     $app = \Slim\Slim::getInstance();
     // Http response code
     $app->status($status_code);
@@ -55,6 +55,8 @@ function sendMail($email, $password){
 
 require_once 'authentication.php';
 require_once 'customerModule.php';
+require_once 'itemModule.php';
+require_once 'invoiceModule.php';
 
 
 

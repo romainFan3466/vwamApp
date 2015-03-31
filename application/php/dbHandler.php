@@ -49,6 +49,7 @@ class DbHandler {
             $sess["uid"] = $_SESSION['uid'];
             $sess["email"] = $_SESSION['email'];
             $sess["authenticated"] = $_SESSION['authenticated'];
+
         }
         else{
             $sess["authenticated"] = false;

@@ -1,4 +1,14 @@
-
+/**
+ * @ngdoc controller
+ * @name appModule.controller:NewUserModalController
+ * @require $scope
+ * @require $authentication
+ * @require $location
+ *
+ * @description
+ *
+ *
+ */
 AppModule.controller('NewUserModalController',[
     "$scope", "$modalInstance","$authentication", "$log",
  function ($scope, $modalInstance, $authentication, $log) {
@@ -6,7 +16,12 @@ AppModule.controller('NewUserModalController',[
     $scope.credentials = {
         email : "",
         password : "",
-        confirmedPassword:""
+        confirmedPassword:"",
+        company : "",
+        address : "",
+        city : "",
+        country :"",
+        phone : ""
     };
 
 
@@ -28,7 +43,7 @@ AppModule.controller('NewUserModalController',[
      $scope.signUp = function (credentials) {
          $scope.loading= true;
 
-             $authentication.signUp({user: credentials}).then(
+             $authentication.signUp(credentials).then(
                  function (results) {
                      $scope.loading=false;
                      $scope.success=true;

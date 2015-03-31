@@ -1,3 +1,14 @@
+/**
+ * @ngdoc controller
+ * @name appModule.controller:BodyHeaderController
+ * @require $scope
+ * @require $authentication
+ * @require $location
+ *
+ * @description
+ *
+ *
+ */
 AppModule.controller("BodyHeaderController",[
     "$scope", "$authentication", "$log", "$location",
     function ($scope, $authentication, $log, $location) {

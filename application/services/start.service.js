@@ -1,3 +1,14 @@
+/**
+ * @ngdoc service
+ * @name appModule.service:$start
+ * @require $q
+ * @require $authentication
+ *
+ * @description
+ * This service is called by the app before each every route redirection.
+ *
+ *
+ */
 AppModule.factory("$start", [
     "$q", "$authentication","$log",
 
@@ -6,7 +17,6 @@ AppModule.factory("$start", [
         var deferred = $q.defer();
 
         $authentication.getSession().then(function(result){
-            $log.log("user logged: " + $authentication.getUserMail());
             deferred.resolve("ok");
         });
 

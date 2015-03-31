@@ -1,15 +1,22 @@
-AppModule.constant('AUTH_EVENTS', {
-    loginSuccess: 'auth-login-success',
-    loginFailed: 'auth-login-failed',
-    logoutSuccess: 'auth-logout-success',
-    sessionTimeout: 'auth-session-timeout',
-    notAuthenticated: 'auth-not-authenticated',
-    notAuthorized: 'auth-not-authorized'
-});
-
-AppModule.constant('USER_ROLES', {
-    all: '*',
-    admin: 'admin',
-    editor: 'editor',
-    guest: 'guest'
+/**
+ * @ngdoc object
+ * @name appModule.object:Config
+ *
+ * @description
+ * Config is a global object regrouping constant variables for the entire app.
+ *
+ *
+ */
+AppModule.constant('Config', {
+    /**
+     * @ngdoc property
+     * @name baseUrl
+     * @propertyOf appModule.object:Config
+     * @description
+     * Base Url of the API.
+     *
+     * The rest of the URL is completed by services, depends of the methods.
+     * @returns {String} baseUrl
+     */
+    baseUrl : "http://washing-app.romainfanara.com"
 });

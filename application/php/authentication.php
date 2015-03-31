@@ -12,6 +12,23 @@ $app->get('/session', function() {
 });
 
 
+$app->post('/session/user', function(){
+    $db = new DbHandler();
+    $session = $db->getSession();
+
+    if(!$session["authenticated"]){
+        $response = array();
+        $response["message"] = "Unauthorized access, need to login in";
+        echoResponse(401, $response);
+    }
+    else {
+        $uid = $session["uid"];
+        $user = $db->getOneRecord("select company, address, city ,country, phone from users where uid='$uid'");
+        echoResponse(200, $user);
+    }
+});
+
+
 $app->post('/login', function() use ($app) {
     require_once 'passwordHash.php';
 
@@ -26,7 +43,7 @@ $app->post('/login', function() use ($app) {
 
     $email = $r->user->email;
 
-    $user = $db->getOneRecord("select uid,password,email,created from customers_auth where email='$email'");
+    $user = $db->getOneRecord("select uid,password,email,created from users where email='$email'");
 
     if ($user != NULL) {
         if(passwordHash::check_password($user['password'],$password)){
@@ -80,12 +97,12 @@ $app->post('/signUp', function() use ($app) {
     $email = $r->user->email;
     $password = $r->user->password;
 
-    $isUserExists = $db->getOneRecord("select 1 from customers_auth where email='$email'");
+    $isUserExists = $db->getOneRecord("select 1 from users where email='$email'");
 
     if(!$isUserExists){
         $r->user->password = passwordHash::hash($password);
-        $table_name = "customers_auth";
-        $column_names = array('email','password');
+        $table_name = "users";
+        $column_names = array('email','password','company', 'address', 'city', 'country', 'phone');
         $result = $db->insertIntoTable($r->user, $column_names, $table_name);
 
         if ($result != NULL) {

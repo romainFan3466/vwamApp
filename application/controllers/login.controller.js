@@ -1,3 +1,14 @@
+/**
+ * @ngdoc controller
+ * @name appModule.controller:LoginController
+ * @require $scope
+ * @require $authentication
+ * @require $location
+ *
+ * @description
+ *
+ *
+ */
 AppModule.controller("LoginController",[
     "$scope", "$log", "$modal", "$authentication", "$location",
     function ($scope, $log, $modal, $authentication, $location) {
@@ -39,7 +50,7 @@ AppModule.controller("LoginController",[
 
         $scope.logout = function () {
             $authentication.logout().then(function (results) {
-                //TODO :
+                //TODO : washingapp
             });
         };
 
