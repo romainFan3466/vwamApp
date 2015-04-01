@@ -4,7 +4,7 @@ Description
 -------
 Car Washing App, project for Software Dev. year 3
 
-Requierement
+Requirement
 -------
 
 Install
