@@ -106,6 +106,22 @@ AppModule.factory('$customer',[
             return deferred.promise;
         };
 
+        //TODO : washingapp doc
+        var _getByID = function(customerID){
+            var deferred = $q.defer();
+            $http
+                .post(Config.baseUrl + '/php/customers/id/' + customerID)
+                .success(function (res) {
+                    var customer = new CustomerMapper(res.customer);
+                    deferred.resolve(customer);
+                })
+                .error(function(res){
+                    deferred.reject({message : res.message});
+                });
+
+            return deferred.promise;
+        };
+
 
         /**
          * @ngdoc method
@@ -473,6 +489,7 @@ AppModule.factory('$customer',[
 
         return {
             get : _get,
+            getByID : _getByID,
             getAllName : _getAllName,
             add : _add,
             delete : _delete,

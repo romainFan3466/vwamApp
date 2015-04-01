@@ -10,8 +10,8 @@
  *
  */
 AppModule.controller("CreateInvoiceController", [
-    "$scope", "$log", "$customer", "$item","InvoiceMapper",
-    function ($scope, $log, $customer, $item_app, InvoiceMapper) {
+    "$scope", "$log", "$customer", "$item","InvoiceMapper","$invoice",
+    function ($scope, $log, $customer, $item_app, InvoiceMapper, $invoice) {
 
 
         /*
@@ -33,6 +33,10 @@ AppModule.controller("CreateInvoiceController", [
         $scope.customers =[];
         $scope.items = [];
         $scope.item = {};
+        $scope.invoiceID="";
+
+        $scope.loading=false;
+        $scope.addedSuccess = false;
 
         $scope.matriculation={
             first : "",
@@ -50,7 +54,7 @@ AppModule.controller("CreateInvoiceController", [
                 first : "",
                 second : ""
             },
-            itemID : ""
+            items : []
         };
 
         var _invoice = {
@@ -101,19 +105,34 @@ AppModule.controller("CreateInvoiceController", [
 
 
         $scope.createInvoice = function(){
-             invoice = {
-                customerID : $scope.customer.ID,
-                 matriculation : {
-                     first : $scope.matriculation.first,
-                     second : $scope.matriculation.second
-                 },
-                itemID : $scope.item.ID
+            var invoice = {
+                customerID : "",
+                matriculation : {
+                    first : "",
+                    second : ""
+                },
+                items : []
             };
+            $scope.loading=true;
+            invoice.matriculation.first  = angular.copy($scope.matriculation.first);
+            invoice.matriculation.second  = angular.copy($scope.matriculation.second);
+            invoice.matriculation.first = invoice.matriculation.first.replace(/[\'\"]/g,"");
+            invoice.matriculation.second = invoice.matriculation.second.replace(/[\'\"]/g,"");
+            var _item = angular.copy($scope.item.ID);
+            invoice.items.push({itemID :_item, quantity : 1});
+            invoice.customerID = angular.copy($scope.customer.ID);
 
-            var i = new InvoiceMapper(_invoice);
-
-
-            $log.log(i);
+             $invoice.add(invoice).then(
+               function(res){
+                   $scope.loading=false;
+                   $scope.addedSuccess = true;
+                   $scope.invoiceID=res;
+               },
+                 function(res){
+                     $log.log(res);
+                 }
+             );
+            $log.log(invoice);
         };
 
 
@@ -141,11 +160,14 @@ AppModule.controller("CreateInvoiceController", [
 
 
         var _getCustomer = function (customer) {
+            $scope.loading=true;
             $customer.get(customer.name).then(
                 function (result) {
+                    $scope.loading=false;
                     affectCustomer(result.customer);
                 },
                 function (result) {
+
                     //TODO : washingapp
                 });
         };

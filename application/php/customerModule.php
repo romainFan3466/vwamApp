@@ -21,7 +21,7 @@ $app->post('/customers', function() use ($app) {
 
         if($customer== NULL){
             $response = array();
-            $response["message"] = "no customer with a such name";
+            $response["message"] = "no customer with a such name for the logged user";
             echoResponse(400, $response);
         }
         else {
@@ -29,6 +29,36 @@ $app->post('/customers', function() use ($app) {
         }
     }
 });
+
+
+$app->post('/customers/id/:ID', function($ID) use ($app) {
+
+    $db = new DbHandler();
+    $session = $db->getSession();
+    $response = array();
+
+    if(!$session["authenticated"]){
+        $response["message"] = "Unauthorized access, need to login in";
+        echoResponse(401, $response);
+    }
+    else{
+        $userID =$session["uid"];
+        $query ="select * from customers where ID='$ID' and userID='$userID'";
+
+        $customer = $db->getOneRecord($query);
+
+        if($customer== NULL){
+            $response["message"] = "no customer with a such ID for the logged user";
+            echoResponse(400, $response);
+        }
+        else {
+            $response["customer"] = $customer;
+            echoResponse(200, $response);
+        }
+    }
+});
+
+
 
 
 $app->post('/customers/all', function() {

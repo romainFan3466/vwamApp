@@ -22,18 +22,18 @@ AppModule.factory('$invoice',[
         var _add = function(invoice){
             var deferred = $q.defer();
             $http
-                .post(Config.baseUrl + '/php/invoices/add', invoice)
+                .post(Config.baseUrl + '/php/invoices/add',{invoice : invoice})
                 .success(function (res) {
-                    deferred.resolve(res);
+                    deferred.resolve(res.ID);
                 })
                 .error(function(res){
-                    var response = {
+                   /* var response = {
                         status : status,
                         message : res.message
-                    };
-                    deferred.reject(response);
+                    };*/
+                    deferred.reject(res);
                 });
-
+            return deferred.promise;
         };
 
 
@@ -43,9 +43,9 @@ AppModule.factory('$invoice',[
             var deferred = $q.defer();
 
             $http
-                .post(Config.baseUrl + '/php/items/' + invoiceID, {})
+                .post(Config.baseUrl + '/php/invoices/' + invoiceID, {})
                 .success(function (res) {
-                    var invoice = new InvoiceMapper(res);
+                    var invoice = new InvoiceMapper(res.invoice);
                     deferred.resolve(invoice);
                 })
                 .error(function(res){

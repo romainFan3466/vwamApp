@@ -29,7 +29,12 @@ AppModule.factory('ItemMapper',
                 var self = this;
                 angular.forEach(data, function (value, key) {
                     self[key] = value;
+                    if(angular.equals(key, "price")){
+
+                        self[key] = parseFloat(value).toFixed(2);
+                    }
                 });
+
             }
         };
 

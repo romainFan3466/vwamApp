@@ -11,6 +11,7 @@ AppModule.config(['$routeProvider', function ($routeProvider) {
         {url: "/invoice", templateUrl: "html/views/invoice.view.html"},
         {url: "/invoice/create", templateUrl: "html/views/invoice/createInvoice.view.html"},
         {url: "/invoice/edit", templateUrl: "html/views/invoice/editInvoice.view.html"},
+        {url: "/invoice/list/:invoiceID", templateUrl: "html/views/invoice/invoice.view.html"},
         {url: "/invoice/list", templateUrl: "html/views/invoice/invoice.view.html"},
 
         {url: "/item", templateUrl: "html/views/item.view.html"},

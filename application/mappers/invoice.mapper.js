@@ -16,7 +16,6 @@ AppModule.factory('InvoiceMapper',[
 
             this.ID="";
             this.customer = {};
-            this.from  = {};
             this.items= [];
             this.matriculation = {
                 first : "",
@@ -34,23 +33,23 @@ AppModule.factory('InvoiceMapper',[
             if (data) {
                 var self = this;
                 angular.forEach(data, function (value, key) {
-                    if(angular.equals(key,"customer") ||
-                        angular.equals(key, "from")){
-                        self[key] = new CustomerMapper(value);
-                    }
 
-                    else if(angular.equals(key, "items")){
+                    self[key] = value;
+
+
+                    /*else if(angular.equals(key, "items")){
                         angular.forEach(value, function (itemRow) {
                             var _itemRow = {
-                                item : new ItemMapper(itemRow.item),
-                                quantity : itemRow.quantity
+                                itemID : itemRow.itemID,
+                                quantity : itemRow.quantity,
+                                subTotal : itemRow.subTotal
                             };
                             self[key].push(_itemRow);
                         });
                     }
                     else{
                         self[key] = value;
-                    }
+                    }*/
                 });
             }
         };

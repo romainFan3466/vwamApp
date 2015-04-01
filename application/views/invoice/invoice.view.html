@@ -1,139 +1,134 @@
-<div class="row">
-    <div class="col-xs-6">
-        <h1>
+<div ng-controller="InvoiceViewController" ng-cloak class="ng-cloak">
 
-        </h1>
-    </div>
-    <div class="col-xs-6 text-right">
-        <h1>INVOICE</h1>
-        <h1><small>Invoice #001</small></h1>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-5">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>To : <a href="#">Client Name</a></h4>
-            </div>
-            <div class="panel-body">
-                <p>
-                    Address <br>
-                    details <br>
-                    more <br>
-                </p>
-            </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <h1>
+
+            </h1>
+        </div>
+        <div class="col-xs-6 text-right">
+            <h1>INVOICE</h1>
+            <h1><small>Invoice #{{invoice.ID}}</small></h1>
         </div>
     </div>
-    <div class="col-xs-5 col-xs-offset-2 text-right">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>From: <a href="#">Your Name</a></h4>
-            </div>
-            <div class="panel-body">
-                <p>
-                    Address <br>
-                    details <br>
-                    more <br>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- / end client details section -->
 
-<table class="table table-bordered">
-    <thead>
-    <tr class="active">
-        <th>
-            <h4>Service</h4>
-        </th>
-        <th>
-            <h4>Description</h4>
-        </th>
-        <th>
-            <h4>Hrs/Qty</h4>
-        </th>
-        <th>
-            <h4>Rate/Price</h4>
-        </th>
-        <th>
-            <h4>Sub Total</h4>
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Article</td>
-        <td><a href="#">Title of your article here</a></td>
-        <td class="text-right">-</td>
-        <td class="text-right">$200.00</td>
-        <td class="text-right">$200.00</td>
-    </tr>
-    <tr>
-        <td>Template Design</td>
-        <td><a href="#">Details of project here</a></td>
-        <td class="text-right">10</td>
-        <td class="text-right">75.00</td>
-        <td class="text-right">$750.00</td>
-    </tr>
-    <tr>
-        <td>Development</td>
-        <td><a href="#">WordPress Blogging theme</a></td>
-        <td class="text-right">5</td>
-        <td class="text-right">50.00</td>
-        <td class="text-right">$250.00</td>
-    </tr>
-    </tbody>
-</table>
-<div class="row text-right">
-    <div class="col-xs-2">
-        <p> <strong>I am here</strong></p>
-
-    </div>
-    <div class="col-xs-2 col-xs-offset-6">
-        <p>
-            <strong>
-                Sub Total : <br>
-                TAX : <br>
-                Total : <br>
-            </strong>
-        </p>
-    </div>
-    <div class="col-xs-2">
-        <strong>
-            $1200.00 <br>
-            N/A <br>
-            $1200.00 <br>
-        </strong>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-5">
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <h4>Invoice details</h4>
-            </div>
-            <div class="panel-body">
-                <p>Invoice number :</p>
-                <p>Edited : </p>
-                <p>Payment mode :CB/Cash/DKV</p>
-                <p class="text-success">Payment state : Paid</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-7">
-        <div class="span7">
-            <div class="panel panel-info">
+    <div class="row">
+        <div class="col-xs-5">
+            <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Contact Details</h4>
+                    <h4><strong>To :</strong> {{invoice.customer.name}}</h4>
                 </div>
                 <div class="panel-body">
                     <p>
-                        Email : you@example.com <br><br>
-                        Mobile : -------- <br> <br>
+                        {{invoice.customer.address}} <br>
+                        {{invoice.customer.city}} <br>
+                        {{invoice.customer.country}} <br>
+                        {{invoice.customer.phone}} <br>
+                    </p>
+                    <hr/>
+                    <p>Vehicle matriculation #1 : {{invoice.matriculation.first}}</p>
+                    <p>Vehicle matriculation #2 : {{invoice.matriculation.second}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-5 col-xs-offset-2 text-right">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><strong>From :</strong> {{invoice.user.company}}</h4>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        {{invoice.user.address}} <br>
+                        {{invoice.user.city}} <br>
+                        {{invoice.user.country}} <br>
                     </p>
                 </div>
             </div>
         </div>
     </div>
+    <!-- / end client details section -->
+
+    <table class="table table-bordered">
+        <thead>
+        <tr class="active">
+            <th>
+                <h4>Ref</h4>
+            </th>
+            <th>
+                <h4>Type</h4>
+            </th>
+            <th>
+                <h4>Description</h4>
+            </th>
+            <th>
+                <h4>Qty</h4>
+            </th>
+            <th>
+                <h4>Rate/Price</h4>
+            </th>
+            <th>
+                <h4>Sub Total</h4>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="obj in invoice.items">
+            <td>{{obj.item.ID}}</td>
+            <td class="text-right">{{obj.item.type}}</td>
+            <td class="text-right">{{obj.item.name}}</td>
+            <td class="text-right">{{obj.quantity}}</td>
+            <td class="text-right">{{obj.item.price}} &euro;</td>
+            <td class="text-right">{{obj.subTotal}} &euro;</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row text-right">
+        <div class="col-xs-2 col-xs-offset-8">
+            <p>
+                <strong>
+                    Sub Total : <br>
+                    TAX : <br>
+                    Total : <br>
+                </strong>
+            </p>
+        </div>
+        <div class="col-xs-2">
+            <strong>
+                {{invoice.totalPrice}} &euro; <br>
+                N/A <br>
+                {{invoice.totalPrice}} &euro; <br>
+            </strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-5">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4>Invoice details</h4>
+                </div>
+                <div class="panel-body">
+                    <p>Invoice number : {{invoice.ID}}</p>
+                    <p>Created : {{invoice.created}}</p>
+                    <p>Payment mode :CB/Cash/DKV</p>
+                    <p class="text-success">Payment status : Paid</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-7">
+            <div class="span7">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4>Contact Details</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            Email : {{invoice.user.email}} <br><br>
+                            Mobile : {{invoice.user.phone}} <br> <br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

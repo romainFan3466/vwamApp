@@ -98,6 +98,21 @@ AppModule.factory('$authentication',[
         };
 
 
+        var _getUserData = function(){
+            var deferred = $q.defer();
+
+            $http
+                .post(Config.baseUrl + '/php/session/user', {})
+                .success(function (res) {
+                    deferred.resolve(res.user);
+                })
+                .error(function(res){
+                    deferred.reject(res);
+                });
+
+            return deferred.promise;
+        };
+
         /**
          * @ngdoc method
          * @name loginIn
@@ -364,7 +379,8 @@ AppModule.factory('$authentication',[
             signUp  : _signUp,
             isAuthenticated : _isAuthenticated,
             getUserMail : _getUserMail,
-            getSession : _getSession
+            getSession : _getSession,
+            getUserData : _getUserData
         };
     }]
 );

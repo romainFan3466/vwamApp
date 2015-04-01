@@ -72,4 +72,27 @@
         </form>
 
     </div>
+
+    <div class="row row-space text-center">
+        <div class="col-xs-offset-3 col-xs-6">
+            <div ng-show="addedSuccess" class="alert alert-success">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                Invoice has been created successfully
+            </div>
+
+            <div ng-show="error && !success" class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                Error, customer hasn't been created, server doesn't respond
+            </div>
+
+            <div ng-show="invalidName" class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                Name is already used for another customer, change it
+            </div>
+
+            <spinner loading="loading"></spinner>
+
+            <button class="btn btn-success" ng-go="/invoice/list/{{invoiceID}}" ng-show="addedSuccess">View the invoice</button>
+        </div>
+    </div>
 </div>

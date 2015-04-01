@@ -23,8 +23,10 @@ $app->post('/session/user', function(){
     }
     else {
         $uid = $session["uid"];
-        $user = $db->getOneRecord("select company, address, city ,country, phone from users where uid='$uid'");
-        echoResponse(200, $user);
+        $user = $db->getOneRecord("select email, company, address, city ,country, phone from users where uid='$uid'");
+        $result["user"] = $user;
+        $result["status"] = "success";
+        echoResponse(200, $result);
     }
 });
 
