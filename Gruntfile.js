@@ -55,8 +55,8 @@ module.exports = function (grunt) {
         configPath    : configPath,
         watch         : gruntConfig.watch,
         ftpsync       : gruntConfig.ftpsync,
-        sync          : gruntConfig.sync
-        //'ftp-deploy'  : gruntConfig.ftpDeploy
+        sync          : gruntConfig.sync,
+        ngdocs        : gruntConfig.ngdocs
 	});
 
 	// Load dependencies.
@@ -72,8 +72,9 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-pattern-replace');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-sync');
-    //grunt.loadNpmTasks('grunt-ftp-deploy');
     grunt.loadNpmTasks('grunt-ftpsync');
+    grunt.loadNpmTasks('grunt-ngdocs');
+
 
     //Test Task.
 
@@ -87,10 +88,10 @@ module.exports = function (grunt) {
     grunt.registerTask("deploy-git",  ["sync"]);
 
     // Main Task.
-    grunt.registerTask("deploy", ["clean:post-deploy","minify", "copy","patternReplace","clean:pre-deploy", "ftpsync"]);
+    grunt.registerTask("deploy", ["clean:post-deploy","minify", "copy","patternReplace","clean:pre-deploy", "ftpsync:app"]);
 
     // Doc Task.
-
+    grunt.registerTask("doc", ["clean:doc","ngdocs", "ftpsync:doc"]);
     // Default task.
     grunt.registerTask("default", ["bower", "deploy"]);
 

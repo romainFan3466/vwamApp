@@ -44,9 +44,9 @@
             "src": [
                 "<%= vendorPath %>/angular/angular.min.js",
                 "<%= vendorPath %>/angular-route/angular-route.min.js",
+                "<%= vendorPath %>/angular-animate/angular-animate.min.js",
                 "<%= vendorPath %>/angular-resource/angular-resource.min.js",
-                "<%= vendorPath %>/angular-touch/angular-touch.min.js",
-	            "<%= vendorPath %>/jquery/dist/jquery.min.js",
+	            "<%= vendorPath %>/jquery/dist/jquery.js",
                 "<%= vendorPath %>/bootstrap/dist/js/bootstrap.min.js",
                 "<%= vendorPath %>/angular-bootstrap/ui-bootstrap.min.js",
                 "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.min.js"
@@ -171,16 +171,14 @@
     },
     "htmlmin": {},
     "ftpsync": {
-        "local": "<%= buildPath %>",
+        "local": "<%= target.local %>",
         "remote": "<%= target.targetServer %>",
         "host": "<%= target.targetHost %>",
         "port": 21,
         "user": "<%= target.targetUser %>",
         "pass": "<%= target.targetPwd %>",
         "connections": 1,
-        "ignore": [
-            ".htaccess"
-        ]
+        "ignore": [".htaccess"]
     },
     "compress" : {
 		"default": {
@@ -206,7 +204,8 @@
             "<%= uglify.app.dest %>",
             "<%= less.app.dest %>"
         ],
-        "post-deploy": "<%= buildPath %>"
+        "post-deploy": "<%= buildPath %>",
+        "doc": "./docular_generated"
     },
 	"watch"    : {
     },
@@ -220,6 +219,9 @@
                         "!vendors/**/*",
                         "!nbproject/**/*",
                         "!gitReposit/**",
+                        "!doc/**",
+                        "!docular_generated/**",
+                        "!downloaded/**",
                         "!build/**",
                         "!node_modules/**/*",
                         "!bower_components/**/*",
@@ -241,5 +243,34 @@
             ],
             "updateAndDelete": true
         }
+    },
+    "ngdocs": {
+        "options": {
+            "dest": "docular_generated",
+            "scripts": [
+                "build/js/Washing-App-lib.min.js",
+                "build/js/Washing-App-app.min.js"
+            ],
+            "startPage": "/api",
+            "html5Mode": false,
+            "title": "DOC API",
+            "bestMatch": true
+        },
+        "washing-api": {
+            "src": [],
+            "title": "Washing App API",
+            "api": false
+        },
+        "api": {
+            "src": [
+                "application/services/**/*.js",
+                "application/mappers/**/*.js",
+                "application/directives/**/*.js",
+                "application/controllers/**/*.js"
+            ],
+            "title": "Washing App",
+            "api": true
+        }
     }
 }
+

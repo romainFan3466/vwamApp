@@ -59,6 +59,15 @@ In the project directory, run the grunt CLI :
    
    you can use `--verbose` grunt option to see what the task is doing.
 
+Documentation
+-------
+For more information about using the AngularJs module in this app,
+a generated API has been done : [API doc](https://doc.romainfanara.com).
+
+This API is split in two main part :
+ - Washing App : AngularJs module
+ - Washing App API : Explanation on the restful API.
+
 References
 -------
 
