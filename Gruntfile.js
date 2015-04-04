@@ -56,7 +56,8 @@ module.exports = function (grunt) {
         watch         : gruntConfig.watch,
         ftpsync       : gruntConfig.ftpsync,
         sync          : gruntConfig.sync,
-        ngdocs        : gruntConfig.ngdocs
+        ngdocs        : gruntConfig.ngdocs,
+        karma         : gruntConfig.karma
 	});
 
 	// Load dependencies.
@@ -74,6 +75,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-sync');
     grunt.loadNpmTasks('grunt-ftpsync');
     grunt.loadNpmTasks('grunt-ngdocs');
+    grunt.loadNpmTasks('grunt-karma');
 
 
     //Test Task.
@@ -92,6 +94,10 @@ module.exports = function (grunt) {
 
     // Doc Task.
     grunt.registerTask("doc", ["clean:doc","ngdocs", "ftpsync:doc"]);
+
+    // Doc Task.
+    grunt.registerTask("doc", ["clean:doc","ngdocs", "ftpsync:doc"]);
+
     // Default task.
     grunt.registerTask("default", ["bower", "deploy"]);
 
