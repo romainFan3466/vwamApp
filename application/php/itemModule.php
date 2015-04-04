@@ -36,11 +36,11 @@ $app->post('/items/add', function() use($app){
         $name = $request->item->name;
         $type = $request->item->type;
         $userID =$session["uid"];
-        $isCustomerExists = $db->getOneRecord(
+        $isItemExists = $db->getOneRecord(
             "select 1 from items
         where (name='$name' AND type='$type' AND userID='$userID')");
 
-        if(!$isCustomerExists){
+        if(!$isItemExists){
             $table_name = "items";
             $request->item->userID = $userID;
 
@@ -123,10 +123,18 @@ $app->put('/items', function() use($app){
         //retrieve POST params
         $request = json_decode($app->request->getBody());
         $ID = $request->item->ID;
-        $userID =$session["uid"];
-        $isItemExists = $db->getOneRecord("select ID from items where ID='$ID' AND userID='$userID'");
 
-        if($isItemExists){
+        $userID =$session["uid"];
+        $isItemExists = $db->getOneRecord("select ID, name, type from items where ID='$ID' AND userID='$userID'");
+
+        $name = (isset($request->item->name) && $request->item->name!="") ? $request->item->name : $isItemExists->name;
+        $type = (isset($request->item->type) && $request->item->type!="") ? $request->item->type : $isItemExists->type;
+
+        $isItemDuplicated= $db->getOneRecord(
+            "select 1 from items where ID!='$ID' AND name='$name' AND type='$type' AND userID='$userID'");
+
+
+        if($isItemExists && !$isItemDuplicated){
             $ID=(int)$isItemExists["ID"];
 
             $query="UPDATE items
@@ -150,7 +158,7 @@ $app->put('/items', function() use($app){
         }
         else{
             $response["status"] = "error";
-            $response["message"] = "the item to change with the provided ID doesn't exist!";
+            $response["message"] = "the item to change with the provided ID or name doesn't exist!";
             echoResponse(400, $response);
         }
     }

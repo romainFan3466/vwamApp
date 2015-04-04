@@ -46,7 +46,8 @@ AppModule.controller("EditItemController", [
         $scope.update = function(item){
             $scope.loading=true;
             if(!_isPresent(item.name)){
-                $item_app.update({item : item}).then(
+
+                $item_app.update(item).then(
                     function(res){
                         $scope.loading=false;
                         $scope.edited=true;

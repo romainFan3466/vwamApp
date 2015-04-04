@@ -60,7 +60,6 @@ AppModule.controller("CreateCustomerController", [
                     _affectListCustomerName(result.list);
                 },
                 function (result) {
-                    //TODO : washingapp
                 });
         };
 

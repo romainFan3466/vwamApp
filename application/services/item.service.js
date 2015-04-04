@@ -71,6 +71,11 @@ AppModule.factory('$item',[
          *
          * - Otherwise, if there is any error, method will promise the result from server.
          * Go to see {@link http://doc.romainfanara.com/#/washing-api API} to know the returns.
+         * <pre>
+               var result ={
+                    "message": "Unauthorized access, need to login in"
+                };
+         </pre>
          */
         var _getAll = function(){
             var deferred = $q.defer();
@@ -87,7 +92,7 @@ AppModule.factory('$item',[
                     deferred.resolve( {list : list});
                 })
                 .error(function(res){
-                    deferred.reject(res);
+                    deferred.reject({message : res.message});
                 });
 
             return deferred.promise;
@@ -165,7 +170,6 @@ AppModule.factory('$item',[
          *
          *<pre>
                 var result = {
-                    status : 401,
                     message : "An Item with the provided name already exists!"
                 };
          *</pre>
@@ -180,15 +184,9 @@ AppModule.factory('$item',[
                     deferred.resolve(res);
                 })
                 .error(function(res, status){
-                    var response = {};
-                    response.status=status;
-                    $log.log(status);
-                    if(status==500){
-                        response.message="server doesn't respond"
-                    }
-                    else {
-                        response.message=res.message;
-                    }
+                    var response = {
+                        message : res.message
+                    };
                     deferred.reject(response);
                 });
 
@@ -205,9 +203,8 @@ AppModule.factory('$item',[
                 .success(function(res){
                     deferred.resolve(res);
                 })
-                .error(function(res, status){
+                .error(function(res){
                     var response = {
-                        status : status,
                         message : res.message
                     };
                     deferred.reject(response);
@@ -218,14 +215,14 @@ AppModule.factory('$item',[
 
         var _update = function(item){
             var deferred = $q.defer();
+            var itemParse = new ItemMapper(item);
             $http
-                .put(Config.baseUrl + '/php/items', item)
+                .put(Config.baseUrl + '/php/items', {item : itemParse})
                 .success(function(res){
                     deferred.resolve(res);
                 })
-                .error(function(res, status){
+                .error(function(res){
                     var response = {
-                        status : status,
                         message : res.message
                     };
                     deferred.reject(response);

@@ -80,7 +80,7 @@ AppModule.factory('$customer',[
          *
          *<pre>
          var result = {
-                    message : "no customer with a such name"
+                    message : "no customer with a such name for the logged user"
          };
          *</pre>
          *
@@ -96,7 +96,7 @@ AppModule.factory('$customer',[
             $http
                 .post(Config.baseUrl + '/php/customers',objRequest)
                 .success(function (res) {
-                    var customer = new CustomerMapper(res);
+                    var customer = new CustomerMapper(res.customer);
                     deferred.resolve( {customer : customer});
                 })
                 .error(function(res){
@@ -106,11 +106,77 @@ AppModule.factory('$customer',[
             return deferred.promise;
         };
 
-        //TODO : washingapp doc
+        /**
+         * @ngdoc method
+         * @name getByID
+         * @methodOf appModule.service:$customer
+         * @param {string} customerID customer's ID to provide
+         *
+         * @description
+         * Get a customer data from a provided ID
+         *
+         * This method requires you are currently logged.
+         *
+         * You must provide a customer's ID.
+         *
+         * See {@link http://doc.romainfanara.com/#/washing-api API} and live example to see how to call method
+         * and what are the server results.
+         * @example
+         <example module="getByIDExample">
+         <file name="index.html">
+         <div ng-controller="ExampleController">
+         <p>Nothing to display, see script.js for method call</p>
+         </div>
+         </file>
+         <file name="script.js">
+         angular.module('getByIDExample', ['WashingModule.app'])
+         .controller('ExampleController', ['$scope', '$customer',
+         function($scope, $customer) {
+           $scope.result = {};
+           var affect = function(obj){
+                $scope.result=obj;
+           };
+
+           var exec = function(){
+                $customer.get(15).then(
+                    function(result){
+                        affect(result);
+                    },
+                    function(result){
+                        affect(result);
+                    });
+           };
+           // call exec function to retrieve data. Do not forget you must be logged before.
+         }]);
+         </file>
+         </example>
+         * @returns {Promise} Promise within an object as result from server
+         *
+         * - if the server receives a well formatted object, user logged, and customer exists,
+         * method promises as a success an object like :
+         *
+         *<pre>
+         var result = {
+                customer : CustomerMapper;
+                };
+         *</pre>
+         *
+         * See {@link appModule.CustomerMapper CustomerMapper} for more information.
+         *
+         * - Otherwise, if there is any error, method will promises an object as error like:
+         *
+         *<pre>
+         var result = {
+                    message : "no customer with a such ID for the logged user"
+         };
+         *</pre>
+         *
+         * See {@link http://doc.romainfanara.com/#/washing-api API} for more information
+         */
         var _getByID = function(customerID){
             var deferred = $q.defer();
             $http
-                .post(Config.baseUrl + '/php/customers/id/' + customerID)
+                .post(Config.baseUrl + '/php/customers/id/' + customerID,{})
                 .success(function (res) {
                     var customer = new CustomerMapper(res.customer);
                     deferred.resolve(customer);
@@ -190,7 +256,6 @@ AppModule.factory('$customer',[
          */
         var _getAllName = function(){
             var deferred = $q.defer();
-
             $http
                 .post(Config.baseUrl + '/php/customers/all',{})
                 .success(function (res) {
@@ -199,7 +264,7 @@ AppModule.factory('$customer',[
                         var customer = new CustomerMapper(value);
                         list.push(customer);
                     });
-                    deferred.resolve( {list : list});
+                    deferred.resolve({list : list});
                 })
                 .error(function(res){
                     deferred.reject({message : res.message});
@@ -279,7 +344,6 @@ AppModule.factory('$customer',[
          *
          *<pre>
          var result = {
-                    status : 401,
                     message : "A Customer with the provided name already exists!"
                 };
          *</pre>
@@ -293,17 +357,8 @@ AppModule.factory('$customer',[
                 .success(function(res){
                     deferred.resolve(res);
                 })
-                .error(function(res, status){
-                    var response = {};
-                    response.status=status;
-
-                    if(status==500){
-                        response.message="server doesn't respond"
-                    }
-                    else if (status==400){
-                        response.message=res.message;
-                    }
-                    deferred.reject(response);
+                .error(function(res){
+                    deferred.reject({message : res.message});
                 });
 
             return deferred.promise;
@@ -367,11 +422,11 @@ AppModule.factory('$customer',[
          *
          *<pre>
          var result = {
-                    status : 400,
                     message : "the customer to deleted with the provided ID doesn't exist!"
                 };
          *</pre>
          */
+
         var _delete = function(customerID){
             var deferred = $q.defer();
 
@@ -380,9 +435,8 @@ AppModule.factory('$customer',[
                 .success(function(res){
                    deferred.resolve(res);
                 })
-                .error(function(res, status){
+                .error(function(res){
                     var response = {
-                        status : status,
                         message : res.message
                     };
                     deferred.reject(response);
@@ -455,7 +509,6 @@ AppModule.factory('$customer',[
          *
          *<pre>
          var result = {
-                    status: "success",
                     message: "Customer changed successfully"
                 };
          *</pre>
@@ -464,21 +517,23 @@ AppModule.factory('$customer',[
          *
          *<pre>
          var result = {
-                    status : 400,
                     message : "the customer to change with the provided ID doesn't exist!"
                 };
          *</pre>
          */
         var _update = function(customer){
             var deferred = $q.defer();
+            var request = {
+                customer : new CustomerMapper(customer)
+            };
+
             $http
-                .put(Config.baseUrl + '/php/customers', customer)
+                .put(Config.baseUrl + '/php/customers', request)
                 .success(function(res){
-                    deferred.resolve(res);
+                    deferred.resolve({message : res.message});
                 })
                 .error(function(res, status){
                     var response = {
-                        status : status,
                         message : res.message
                     };
                     deferred.reject(response);
@@ -486,6 +541,9 @@ AppModule.factory('$customer',[
             return deferred.promise;
         };
 
+        var _test = function(){
+          return 4;
+        };
 
         return {
             get : _get,

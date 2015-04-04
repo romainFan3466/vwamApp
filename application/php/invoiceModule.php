@@ -131,15 +131,6 @@ $app->post('/invoices/:ID', function($ID) use ($app) {
     $db = new DbHandler();
     $session = $db->getSession();
 
-    /* TODO washingapp
-     *
-     * 1/ retrieve user info
-     * 2/ retrieve item info
-     * 3/ rerieve all invoice data like created,...
-     *
-     */
-
-
     if(!$session["authenticated"]){
         $response = array();
         $response["message"] = "Unauthorized access, need to login in";

@@ -31,7 +31,7 @@ AppModule.controller("LoginController",[
 
         $scope.loginIn = function (credentials) {
             $scope.loading=true;
-            $authentication.loginIn({user: credentials}).then(
+            $authentication.loginIn(credentials).then(
                 function (result) {
                     $scope.loading=false;
                     $location.path("/home");

@@ -14,29 +14,20 @@ AppModule.factory('$invoice',[
     "$http", "InvoiceMapper", "$q", "$log", "Config",
     function ($http, InvoiceMapper, $q, $log, Config) {
 
-
-        var cache = {
-            authenticated : true
-        };
-
+//TODO : washingapp create doc
         var _add = function(invoice){
             var deferred = $q.defer();
+            var parsedInvoice = new InvoiceMapper(invoice);
             $http
-                .post(Config.baseUrl + '/php/invoices/add',{invoice : invoice})
+                .post(Config.baseUrl + '/php/invoices/add',{invoice : parsedInvoice})
                 .success(function (res) {
-                    deferred.resolve(res.ID);
+                    deferred.resolve({ID : res.ID});
                 })
                 .error(function(res){
-                   /* var response = {
-                        status : status,
-                        message : res.message
-                    };*/
-                    deferred.reject(res);
+                    deferred.reject({message : res.message});
                 });
             return deferred.promise;
         };
-
-
 
 
         var _get = function(invoiceID){

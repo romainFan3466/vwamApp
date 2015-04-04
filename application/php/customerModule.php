@@ -25,7 +25,8 @@ $app->post('/customers', function() use ($app) {
             echoResponse(400, $response);
         }
         else {
-            echoResponse(200, $customer);
+            $response["customer"] = $customer;
+            echoResponse(200, $response);
         }
     }
 });
@@ -152,7 +153,7 @@ $app->delete('/customers/:ID', function($ID) use($app){
 
             $result= array();
             $result["status"] = "success";
-            $result["message"] = "Customer deleted successfully";
+            $result["message"] = "Customer and his invoices deleted successfully";
             echoResponse(200,$result);
 
         }
@@ -180,31 +181,41 @@ $app->put('/customers', function() use($app){
         $request = json_decode($app->request->getBody());
         $ID = $request->customer->ID;
         $userID =$session["uid"];
-        $isCustomerExists = $db->getOneRecord("select ID from customers where ID='$ID' AND userID='$userID'");
+        $isCustomerExists = $db->getOneRecord("select ID, name from customers where ID='$ID' AND userID='$userID'");
 
         if($isCustomerExists){
-            $ID=(int)$isCustomerExists["ID"];
+            $name = (isset($request->customer->name) && $request->customer->name!="") ? $request->customer->name : $isCustomerExists->name;
+            $isCustomerDuplicated= $db->getOneRecord(
+                "select 1 from customers where ID!='$ID' AND name='$name' AND userID='$userID'");
 
-            $query="UPDATE customers
+            if(!isset($isCustomerDuplicated)){
+                $ID=(int)$isCustomerExists["ID"];
+
+                $query="UPDATE customers
                 SET name=?, address=?, city=?, country=?, phone=?
                 WHERE ID=? AND userID=?;";
-            $conn = $db->getConnection();
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param('sssssii',
-                $request->customer->name,
-                $request->customer->address,
-                $request->customer->city,
-                $request->customer->country,
-                $request->customer->phone,
-                $ID,
-                $userID);
-            $stmt->execute();
+                $conn = $db->getConnection();
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param('sssssii',
+                    $request->customer->name,
+                    $request->customer->address,
+                    $request->customer->city,
+                    $request->customer->country,
+                    $request->customer->phone,
+                    $ID,
+                    $userID);
+                $stmt->execute();
 
-            $result= array();
-            $result["status"] = "success";
-            $result["message"] = "Customer changed successfully";
-            echoResponse(200,$result);
-
+                $result= array();
+                $result["status"] = "success";
+                $result["message"] = "Customer changed successfully";
+                echoResponse(200,$result);
+            }
+            else {
+                $response["status"] = "error";
+                $response["message"] = "the provided name already exists for an other customer ";
+                echoResponse(400, $response);
+            }
         }
         else{
             $response["status"] = "error";

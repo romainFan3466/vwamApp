@@ -12,8 +12,8 @@
  *
  */
 AppModule.controller("InvoiceViewController", [
-    "$scope", "$log", "$customer", "$item","$authentication", "$invoice", "$routeParams",
-    function ($scope, $log, $customer, $item, $authentication, $invoice, $routeParams) {
+    "$scope", "$log", "$customer", "$item","$authentication", "$invoice", "$routeParams","$window",
+    function ($scope, $log, $customer, $item, $authentication, $invoice, $routeParams, $window) {
 
         if (angular.isDefined($routeParams.invoiceID)) {
            var invoiceID = $routeParams.invoiceID;
@@ -109,7 +109,7 @@ AppModule.controller("InvoiceViewController", [
             var _getUserData = function(){
                 $authentication.getUserData().then(
                     function(res){
-                        $scope.invoice.user = res;
+                        $scope.invoice.user = res.user;
                     },
                     function(res){
 
@@ -148,15 +148,20 @@ AppModule.controller("InvoiceViewController", [
             _getInvoice();
 
 
+            $scope.print = function(){
 
+                $window.print();
+            };
 
 
 
 
 
         } else {
-            $log.error("titleId expected as route Params");
+            $log.error("invoiceID expected as route Params");
         }
+
+
 
 
 

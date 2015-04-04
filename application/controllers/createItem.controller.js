@@ -60,14 +60,12 @@ AppModule.controller("CreateItemController", [
                     _affectListItemName(result.list);
                 },
                 function (result) {
-                    //TODO : washingapp
                 });
         };
 
         var _makeRequest = function(item){
-            var parsePhone = parseFloat(item.price);
-            item.price = isNaN(parsePhone) ? "" : parsePhone;
-            item.price = item.price.toFixed(2);
+
+
             //TODO washingapp , inform user that his price's wrong ?
             $item.add(item).then(
                 function(res){

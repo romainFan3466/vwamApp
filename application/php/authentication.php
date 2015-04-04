@@ -72,7 +72,7 @@ $app->post('/login', function() use ($app) {
 
     }else {
         $response['status'] = "error";
-        $response['message'] = 'No such user is registered, please sign up';
+        $response['message'] = 'Login failed. Incorrect credentials';
         echoResponse(401, $response);
     }
 
@@ -82,7 +82,7 @@ $app->post('/login', function() use ($app) {
 $app->get('/logout', function() {
     $db = new DbHandler();
     $session = $db->destroySession();
-    $response["status"] = "info";
+    $response["status"] = "success";
     $response["message"] = $session;
     echoResponse(200, $response);
 });

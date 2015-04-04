@@ -14,21 +14,6 @@ AppModule.controller("CreateInvoiceController", [
     function ($scope, $log, $customer, $item_app, InvoiceMapper, $invoice) {
 
 
-        /*
-         * TODO washingapp :
-         * Just send to $invoice:
-          *  - customerID,
-          *  - array of {item : itemID, quantity : 1}
-          *  - matriculation1,
-          *  - matriculation2,
-          *
-          * service function has to return ID of invoice ,
-          * and offer a location to the view
-          *
-          * php : check total price !!!
-          *
-         */
-
         $scope.customer = "";
         $scope.customers =[];
         $scope.items = [];
@@ -126,7 +111,7 @@ AppModule.controller("CreateInvoiceController", [
                function(res){
                    $scope.loading=false;
                    $scope.addedSuccess = true;
-                   $scope.invoiceID=res;
+                   $scope.invoiceID=res.ID;
                },
                  function(res){
                      $log.log(res);

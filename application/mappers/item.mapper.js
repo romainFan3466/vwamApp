@@ -31,7 +31,11 @@ AppModule.factory('ItemMapper',
                     self[key] = value;
                     if(angular.equals(key, "price")){
 
+                        if(angular.isString(value)){
+                            value = value.replace(/\,/g,".");
+                        }
                         self[key] = parseFloat(value).toFixed(2);
+                        self[key] = isNaN(self[key]) ? "" : self[key];
                     }
                 });
 

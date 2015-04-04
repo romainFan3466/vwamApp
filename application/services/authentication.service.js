@@ -98,20 +98,74 @@ AppModule.factory('$authentication',[
         };
 
 
+        /**
+         * @ngdoc method
+         * @name getUserData
+         * @methodOf appModule.service:$authentication
+         * @description
+         * Get data of user who is logged.
+         * These data are provided when the user has subscribed.
+         * @example
+         <example module="getUserDataExample">
+         <file name="index.html">
+         <div ng-controller="ExampleController">
+         <p>nothing to display, see script.js</p>
+         </div>
+         </file>
+         <file name="script.js">
+         angular.module('getUserDataExample', ['WashingModule.app'])
+         .controller('ExampleController', ['$scope', '$authentication',
+         function($scope, $authentication) {
+           $scope.userData = {};
+           var affect = function(obj){
+                $scope.userData=obj;
+           };
+
+           var getSession = function(){
+                $authentication.getUserData().then(
+                    function(result){
+                        affect(result);
+                    },
+                    function(result){
+                        affect(result);
+                    });
+           };
+           //call getSession function to retrieve session data
+         }]);
+         </file>
+         </example>
+         * @returns {Promise} Promise within an object as result from server
+         *
+         * - if the server receives a well formatted object, and item added successfully,
+         * method promises as a success an object like :
+         *
+         *<pre>
+         var result = {
+                     email : "test@sgf.fr",
+                     company : "SARL something",
+                     address : "Main Street",
+                     city : "Dublin",
+                     country : "IRELAND",
+                     phone : "3544576756"
+         };
+         *</pre>
+         *
+         */
         var _getUserData = function(){
             var deferred = $q.defer();
 
             $http
                 .post(Config.baseUrl + '/php/session/user', {})
                 .success(function (res) {
-                    deferred.resolve(res.user);
+                    deferred.resolve({user : res.user});
                 })
                 .error(function(res){
-                    deferred.reject(res);
+                    deferred.reject({message : res.message});
                 });
 
             return deferred.promise;
         };
+
 
         /**
          * @ngdoc method
@@ -189,9 +243,12 @@ AppModule.factory('$authentication',[
          */
         var _loginIn = function (credentials) {
             var deferred = $q.defer();
+            var cred = {
+                user : credentials
+            };
 
             $http
-                .post(Config.baseUrl + '/php/login', credentials)
+                .post(Config.baseUrl + '/php/login', cred)
                 .success(function (res) {
                     _modelSession = new SessionMapper(res);
                     deferred.resolve( {email : _modelSession.email});
@@ -259,7 +316,7 @@ AppModule.factory('$authentication',[
                 .get(Config.baseUrl + '/php/logout')
                 .success(function (res) {
                     _modelSession = new SessionMapper(res);
-                    deferred.resolve(res.message);
+                    deferred.resolve({message : res.message});
                 });
 
             return deferred.promise;
@@ -292,7 +349,12 @@ AppModule.factory('$authentication',[
            // structure expectation
            var credentials = {
                 email : "example@test.com",
-                password : "pwd"
+                password : "pwd",
+                company : "SARL something",
+                address : "Main Street",
+                city : "Dublin",
+                country : "IRELAND",
+                phone : "3544576756"
          };
 
          var affect = function(obj){
@@ -329,7 +391,6 @@ AppModule.factory('$authentication',[
          *
          *<pre>
          var result = {
-                    status : "error";
                     message : "An user with the provided  email exists!";
          };
          *</pre>
@@ -345,33 +406,39 @@ AppModule.factory('$authentication',[
                     deferred.resolve(res);
                 })
                 .error(function(res){
-                    deferred.reject(res);
+                    deferred.reject({message : res.message});
                 });
 
             return deferred.promise;
         };
 
 
+        /**
+         * @ngdoc method
+         * @name isAuthenticated
+         * @methodOf appModule.service:$authentication
+         * @description
+         * Call this method to know if one user is logged in app or not
+         *
+         * @returns {boolean} true if one user is authenticated, otherwise false
+         */
         var _isAuthenticated = function () {
             return _modelSession.authenticated;
         };
 
 
-
+        /**
+         * @ngdoc method
+         * @name getUserMail
+         * @methodOf appModule.service:$authentication
+         * @description
+         * Call this method to know the email of the user currently logged
+         *
+         * @returns {string} email or empty string if no user is not logged.
+         */
         var _getUserMail = function(){
             return _modelSession.email;
         };
-
-
-
-        /* authService.isAuthorized = function (authorizedRoles) {
-         if (!angular.isArray(authorizedRoles)) {
-         authorizedRoles = [authorizedRoles];
-         }
-         return (authService.isAuthenticated() &&
-         authorizedRoles.indexOf(SessionMapper.userRole) !== -1);
-         };*/
-
 
         return {
             loginIn : _loginIn,
