@@ -1,5 +1,5 @@
 /**
- * Angular.js route and module declaration. and blabla
+ * Angular.js route and module declaration
  */
 var AppModule = angular.module('WashingModule.app', ['ngRoute', 'ui.bootstrap']);
 

@@ -223,7 +223,6 @@
                         "!vendors/**/*",
                         "!nbproject/**/*",
                         "!gitReposit/**",
-                        "!docs/**",
                         "!docular_generated/**",
                         "!downloaded/**",
                         "!Documents/**",
@@ -262,7 +261,7 @@
             "bestMatch": true
         },
         "washing-api": {
-            "src": [],
+            "src": ["docs/api/**/*.ngdoc"],
             "title": "Washing App API",
             "api": false
         },
