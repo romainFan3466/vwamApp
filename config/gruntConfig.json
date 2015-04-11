@@ -49,11 +49,7 @@
 	            "<%= vendorPath %>/jquery/dist/jquery.js",
                 "<%= vendorPath %>/bootstrap/dist/js/bootstrap.min.js",
                 "<%= vendorPath %>/angular-bootstrap/ui-bootstrap.min.js",
-                "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.min.js",
-                "<%= vendorPath %>/html2canvas/build/html2canvas.min.js",
-                "<%= vendorPath %>/jspdf/dist/jspdf.min.js",
-                "<%= vendorPath %>/jspdf/jspdf.plugin.addhtml.js"
-
+                "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.js"
             ],
             "dest": "<%= buildPath %>/<%= pkg.appName %>-lib.min.js"
         }
@@ -82,7 +78,7 @@
                 {
                     "expand": true,
                     "cwd": "<%= vendorPath %>",
-                    "src": "slim/**/*",
+                    "src": "{slim,mpdf}/**/*",
                     "dest": "<%= buildPath %>/php/"
                 },
                 {
@@ -182,8 +178,28 @@
         "user": "<%= target.targetUser %>",
         "pass": "<%= target.targetPwd %>",
         "connections": 1,
-        "ignore": [".htaccess"]
+        "ignore": [
+          ".htaccess",
+          "php/slim/**/*",
+          "php/mpdf/*",
+          "<%= buildPath %>/php"
+        ]
     },
+  "ftpush": {
+    "build": {
+      "auth": {
+        "host": "<%= target.targetHost %>",
+        "port": 21,
+        "authKey": "key1"
+      },
+      "src":  "<%= target.local %>",
+      "dest": "<%= target.targetServer %>",
+      "exclusions": ["/php/mpdf/ttfontdata"],
+      "keep": ["/php/.htaccess"],
+      "simple": false,
+      "useList": false
+    }
+  },
     "compress" : {
 		"default": {
 			"options": {
@@ -290,9 +306,6 @@
                 "<%= vendorPath %>/angular-bootstrap/ui-bootstrap.min.js",
                 "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.min.js",
                 "<%= vendorPath %>/angular-mocks/angular-mocks.js",
-                "<%= vendorPath %>/html2canvas/build/html2canvas.min.js",
-                "<%= vendorPath %>/jspdf/dist/jspdf.min.js",
-                "<%= vendorPath %>/jspdf/jspdf.plugin.addhtml.js",
                 "<%= appPath %>/**/*.js",
                 "./test/**/*.js"
 

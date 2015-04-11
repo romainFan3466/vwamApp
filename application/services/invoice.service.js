@@ -37,10 +37,40 @@ AppModule.factory('$invoice',[
                 .post(Config.baseUrl + '/php/invoices/' + invoiceID, {})
                 .success(function (res) {
                     var invoice = new InvoiceMapper(res.invoice);
-                    deferred.resolve(invoice);
+                    deferred.resolve({invoice : invoice});
                 })
                 .error(function(res){
-                    deferred.reject(res);
+                    deferred.reject({message : res.message});
+                });
+
+            return deferred.promise;
+        };
+
+        var _getAll = function(dateFrom, dateTo, customerID){
+            var deferred = $q.defer();
+
+            var objRequest = {
+                from : dateFrom,
+                to : dateTo
+            };
+
+            if(angular.isDefined(customerID) && !angular.equals(customerID,"")){
+                objRequest.customerID = parseInt(customerID);
+            }
+
+            $http
+                .post(Config.baseUrl + '/php/invoices/all' , objRequest)
+                .success(function (res) {
+                    var invoices = [];
+                    angular.forEach(res.list, function(value){
+                        var invoice = new InvoiceMapper(value);
+                        invoices.push(invoice);
+                    });
+
+                    deferred.resolve({invoice : invoice});
+                })
+                .error(function(res){
+                    deferred.reject({message : res.message});
                 });
 
             return deferred.promise;
@@ -49,7 +79,8 @@ AppModule.factory('$invoice',[
 
         return {
             add : _add,
-            get : _get
+            get : _get,
+            getAll : _getAll
         };
 
 

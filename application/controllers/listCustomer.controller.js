@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name appModule.controller:InvoiceListController
+ * @name appModule.controller:ListCustomerController
  * @require $scope
  * @require $authentication
  * @require $location
@@ -9,10 +9,10 @@
  *
  *
  */
-AppModule.controller("InvoiceListController", [
+AppModule.controller("ListCustomerController", [
     "$scope", "$log", "$item",
     function ($scope, $log, $item_app) {
 
-        $scope.alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
     }
 ]);

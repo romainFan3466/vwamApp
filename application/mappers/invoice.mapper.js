@@ -34,22 +34,26 @@ AppModule.factory('InvoiceMapper',[
                 var self = this;
                 angular.forEach(data, function (value, key) {
 
-                    self[key] = value;
+//                    self[key] = value;
 
 
-                    /*else if(angular.equals(key, "items")){
+                    if(angular.equals(key, "items")){
                         angular.forEach(value, function (itemRow) {
                             var _itemRow = {
-                                itemID : itemRow.itemID,
+                                item : new ItemMapper(itemRow.item),
                                 quantity : itemRow.quantity,
                                 subTotal : itemRow.subTotal
                             };
                             self[key].push(_itemRow);
                         });
                     }
+                    else if(angular.equals(key, "customer") ||
+                        angular.equals(key, "from")){
+                           self[key] = new CustomerMapper(value);
+                    }
                     else{
                         self[key] = value;
-                    }*/
+                    }
                 });
             }
         };

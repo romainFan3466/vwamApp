@@ -50,7 +50,6 @@ AppModule.controller("LoginController",[
 
         $scope.logout = function () {
             $authentication.logout().then(function (results) {
-                //TODO : washingapp
             });
         };
 

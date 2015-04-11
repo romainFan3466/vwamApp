@@ -41,18 +41,6 @@ AppModule.controller("BodyHeaderController",[
                 $location.path("#/login");
             });
         };
-
-        /*$authentication.getSession().then(function(result){
-            // debugger;
-            $scope.authenticated = $authentication.isAuthenticated();
-            if(auth ===false){
-                $location.path("/login");
-            }
-        });*/
-
-       // $scope.user = $authentication.getUserMail();
-       // $scope.authenticated = $authentication.isAuthenticated();
-
     }
 ]);
 

@@ -25,12 +25,31 @@ $app->post('/customers', function() use ($app) {
             echoResponse(400, $response);
         }
         else {
+            unset($customer["userID"]);
             $response["customer"] = $customer;
             echoResponse(200, $response);
         }
     }
 });
 
+
+function getCustomerByID($db, $session, $ID){
+    $userID =$session["uid"];
+    $query ="select * from customers where ID='$ID' and userID='$userID'";
+
+    $customer = $db->getOneRecord($query);
+
+    if($customer== NULL){
+        $response["message"] = "no customer with a such ID for the logged user";
+        $response["code"] = 400;
+    }
+    else {
+        unset($customer["userID"]);
+        $response["customer"] = $customer;
+        $response["code"] = 200;
+    }
+    return $response;
+};
 
 $app->post('/customers/id/:ID', function($ID) use ($app) {
 
@@ -43,19 +62,10 @@ $app->post('/customers/id/:ID', function($ID) use ($app) {
         echoResponse(401, $response);
     }
     else{
-        $userID =$session["uid"];
-        $query ="select * from customers where ID='$ID' and userID='$userID'";
-
-        $customer = $db->getOneRecord($query);
-
-        if($customer== NULL){
-            $response["message"] = "no customer with a such ID for the logged user";
-            echoResponse(400, $response);
-        }
-        else {
-            $response["customer"] = $customer;
-            echoResponse(200, $response);
-        }
+       //retrieve customer by ID
+        $result = getCustomerByID($db, $session, $ID);
+        $content = (isset($result["customer"])) ? $result["customer"] : $result["message"];
+        echoResponse($result["code"], $content);
     }
 });
 

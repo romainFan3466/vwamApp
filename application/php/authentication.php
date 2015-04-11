@@ -12,6 +12,14 @@ $app->get('/session', function() {
 });
 
 
+function getUserData($db, $session){
+    $uid = $session["uid"];
+    $user = $db->getOneRecord("select email, company, address, city ,country, phone from users where uid='$uid'");
+    $result["user"] = $user;
+    $result["status"] = "success";
+    return $result;
+};
+
 $app->post('/session/user', function(){
     $db = new DbHandler();
     $session = $db->getSession();
@@ -22,10 +30,7 @@ $app->post('/session/user', function(){
         echoResponse(401, $response);
     }
     else {
-        $uid = $session["uid"];
-        $user = $db->getOneRecord("select email, company, address, city ,country, phone from users where uid='$uid'");
-        $result["user"] = $user;
-        $result["status"] = "success";
+        $result = getUserData($db, $session);
         echoResponse(200, $result);
     }
 });

@@ -17,32 +17,42 @@ AppModule.controller("CreateInvoiceController", [
         $scope.customer = "";
         $scope.customers =[];
         $scope.items = [];
-        $scope.item = {};
-        $scope.invoiceID="";
+
+
+        $scope.error ={
+          flag : false,
+            message : ""
+        };
+
+
 
         $scope.loading=false;
         $scope.addedSuccess = false;
 
-        $scope.matriculation={
-            first : "",
-            second : ""
-        };
 
         $scope.found ={
             customer : false,
             item : false
         };
 
-        var invoice = {
-            customerID : "",
-            matriculation : {
-                first : "",
-                second : ""
-            },
-            items : []
+        var _initScope = function(){
+            $scope.retrieved = {
+                customer : "",
+                item : ""
+            };
+            $scope.item = {};
+            $scope.invoice = {
+                customer : {},
+                matriculation : {
+                    first : "",
+                    second : ""
+                },
+                items : []
+            };
         };
 
-        var _invoice = {
+
+                var _invoice = {
             ID : 346,
             created : '24/03/2015',
             totalPrice : 700.54,
@@ -90,34 +100,38 @@ AppModule.controller("CreateInvoiceController", [
 
 
         $scope.createInvoice = function(){
-            var invoice = {
-                customerID : "",
-                matriculation : {
-                    first : "",
-                    second : ""
-                },
-                items : []
-            };
-            $scope.loading=true;
-            invoice.matriculation.first  = angular.copy($scope.matriculation.first);
-            invoice.matriculation.second  = angular.copy($scope.matriculation.second);
-            invoice.matriculation.first = invoice.matriculation.first.replace(/[\'\"]/g,"");
-            invoice.matriculation.second = invoice.matriculation.second.replace(/[\'\"]/g,"");
-            var _item = angular.copy($scope.item.ID);
-            invoice.items.push({itemID :_item, quantity : 1});
-            invoice.customerID = angular.copy($scope.customer.ID);
 
-             $invoice.add(invoice).then(
+            $scope.loading=true;
+            if(angular.isDefined($scope.invoice.matriculation.first )){
+                $scope.invoice.matriculation.first = $scope.invoice.matriculation.first.replace(/[\'\"]/g,"");
+            } else {
+                $scope.invoice.matriculation.first = "";
+            }
+            
+            if(angular.isDefined($scope.invoice.matriculation.second )){
+                $scope.invoice.matriculation.second = $scope.invoice.matriculation.second.replace(/[\'\"]/g,"");
+            } else {
+                $scope.invoice.matriculation.second = "";
+            }
+            var item ={
+              ID : $scope.item.ID
+            };
+            $scope.invoice.items.push({item : item, quantity : 1});
+            $log.debug($scope.invoice);
+
+             $invoice.add($scope.invoice).then(
                function(res){
                    $scope.loading=false;
                    $scope.addedSuccess = true;
                    $scope.invoiceID=res.ID;
+                   _initScope();
                },
                  function(res){
-                     $log.log(res);
+                     $scope.error.flag = true;
+                     $scope.error.message = result.message;
                  }
              );
-            $log.log(invoice);
+
         };
 
 
@@ -131,29 +145,17 @@ AppModule.controller("CreateInvoiceController", [
             $scope.found.item=true;
         };
 
-        var affectCustomer = function(res){
-            $scope.customer = res;
-        };
-
-        var _affectListCustomerName = function(customerList){
-            $scope.customers =customerList ;
-        };
-
-        var _affectItemList = function(itemList){
-            $scope.items = itemList;
-        };
-
 
         var _getCustomer = function (customer) {
             $scope.loading=true;
             $customer.get(customer.name).then(
                 function (result) {
                     $scope.loading=false;
-                    affectCustomer(result.customer);
+                    $scope.invoice.customer = result.customer;
                 },
                 function (result) {
-
-                    //TODO : washingapp
+                    $scope.error.flag = true;
+                    $scope.error.message = result.message;
                 });
         };
 
@@ -161,23 +163,26 @@ AppModule.controller("CreateInvoiceController", [
             $customer.getAllName().then(
                 function (result) {
                     $log.log(result.list);
-                    _affectListCustomerName(result.list);
+                    $scope.customers =result.list;
                 },
                 function (result) {
-                    //TODO : washingapp
+                    $scope.error.flag = true;
+                    $scope.error.message = result.message;
                 });
         };
 
         var _getAllItems = function(){
             $item_app.getAll().then(
                 function(result){
-                   _affectItemList(result.list);
+                    $scope.items= result.list;
                 },
                 function(result){
-                    //TODO : washingapp
+                    $scope.error.flag = true;
+                    $scope.error.message = result.message;
                 });
         };
 
+        _initScope();
         _getAllCustomerName();
         _getAllItems();
 

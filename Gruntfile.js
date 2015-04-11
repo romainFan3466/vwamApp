@@ -57,7 +57,8 @@ module.exports = function (grunt) {
         ftpsync       : gruntConfig.ftpsync,
         sync          : gruntConfig.sync,
         ngdocs        : gruntConfig.ngdocs,
-        karma         : gruntConfig.karma
+        karma         : gruntConfig.karma,
+        ftpush        : gruntConfig.ftpush
 	});
 
 	// Load dependencies.
@@ -76,6 +77,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ftpsync');
     grunt.loadNpmTasks('grunt-ngdocs');
     grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-ftpush');
+
 
 
     //Test Task.
@@ -90,7 +93,7 @@ module.exports = function (grunt) {
     grunt.registerTask("deploy-git",  ["sync"]);
 
     // Main Task.
-    grunt.registerTask("deploy", ["clean:post-deploy","minify", "copy","patternReplace","clean:pre-deploy", "ftpsync:app"]);
+    grunt.registerTask("deploy", ["clean:post-deploy","minify", "copy","patternReplace","clean:pre-deploy", "ftpush"]);
 
     // Doc Task.
     grunt.registerTask("doc", ["clean:doc","ngdocs", "ftpsync:doc"]);

@@ -1,14 +1,17 @@
 <div class="container-fluid" ng-controller="CreateInvoiceController">
     <div class="row">
+        <h1 class="text-center">Create Invoice</h1>
+    </div>
+    <div class="row row-space">
         <form role="form" name="form"
-              class="col-xs-offset-1 col-xs-10 col-md-offset-2 col-md-8"
+              class="col-xs-offset-1 col-xs-10 col-md-offset-3 col-md-6"
               ng-submit="createInvoice()">
 
                 <div class="form-group">
                     <label for="InputCompany">Customer name</label>
                     <input type="text"
                            name="company"
-                           ng-model="retrieved"
+                           ng-model="retrieved.customer"
                            id="InputCompany"
                            placeholder="Enter customer name"
                            typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue} "
@@ -18,31 +21,31 @@
                 </div>
 
                 <div class="form-group ng-cloak" ng-show="found.customer && form.company.$valid" ng-cloak>
-                    <p><strong>Name :    </strong>{{customer.name}}</p>
-                    <p><strong>Address : </strong>{{customer.address}}</p>
-                    <p><strong>Phone :   </strong>{{customer.phone}}</p>
-                    <p><strong>City :    </strong>{{customer.city}}</p>
-                    <p><strong>Country : </strong>{{customer.country}}</p>
+                    <p><strong>Name :    </strong>{{invoice.customer.name}}</p>
+                    <p><strong>Address : </strong>{{invoice.customer.address}}</p>
+                    <p><strong>Phone :   </strong>{{invoice.customer.phone}}</p>
+                    <p><strong>City :    </strong>{{invoice.customer.city}}</p>
+                    <p><strong>Country : </strong>{{invoice.customer.country}}</p>
                 </div>
             <hr/>
             <div class="form-group">
                 <div class="form-inline">
-                    <div class="form-group">
+                    <div class="form-group col-space">
                         <label for="InputMatriculation1">Matriculation 1</label>
                         <input type="text"
                                class="form-control"
                                id="InputMatriculation1"
                                placeholder="Enter matriculation"
-                               ng-model="matriculation.first">
+                               ng-model="invoice.matriculation.first">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-space">
                         <label for="InputMatriculation2">Matriculation 2</label>
                         <input type="text"
                                class="form-control"
                                id="InputMatriculation2"
                                placeholder="Enter matriculation"
-                               ng-model="matriculation.second">
+                               ng-model="invoice.matriculation.second">
                     </div>
                 </div>
             </div>
@@ -50,11 +53,11 @@
             <hr/>
 
             <div class="form-group">
-                <label for="InputItem">Item :</label>
+                <label for="InputItem">Item</label>
                 <input type="text"
                        id="InputItem"
                        name="itemName"
-                       ng-model="retrievedItem"
+                       ng-model="retrieved.item"
                        typeahead-loading="loadingCompanies"
                        placeholder="Enter item name"
                        typeahead="item as item.description for item in items | filter:{description:$viewValue} "
@@ -68,31 +71,46 @@
                 <p><strong>Price :   </strong>{{item.price}} &euro;</p>
             </div>
 
-            <button type="submit" class="btn btn-success">Create Invoice</button>
+            <button type="submit" class="btn btn-success"
+                    ng-disabled="form.$invalid || error.flag">Create</button>
         </form>
 
     </div>
 
     <div class="row row-space text-center">
         <div class="col-xs-offset-3 col-xs-6">
-            <div ng-show="addedSuccess" class="alert alert-success">
+            <div ng-show="addedSuccess && form.$invalid" class="alert alert-success">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 Invoice has been created successfully
             </div>
 
-            <div ng-show="error && !success" class="alert alert-danger">
+            <div ng-show="error.flag" class="alert alert-danger">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                Error, customer hasn't been created, server doesn't respond
-            </div>
-
-            <div ng-show="invalidName" class="alert alert-danger">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                Name is already used for another customer, change it
+                Error : {{error.message}} . Try later or contact administrator
             </div>
 
             <spinner loading="loading"></spinner>
-
-            <button class="btn btn-success" ng-go="/invoice/list/{{invoiceID}}" ng-show="addedSuccess">View the invoice</button>
         </div>
+    </div>
+
+    <div class="row" ng-show="addedSuccess && form.$invalid">
+        <a class="btn btn-success col-xs-offset-4 col-xs-4 col-sm-offset-2 col-sm-2 col-space"
+                ng-href="#/invoice/list/{{invoiceID}}"
+                target="_blank">
+            <span class="glyphicon glyphicon-eye-open"></span>
+            View (HTML)
+        </a>
+        <a class="btn btn-success col-xs-offset-4 col-xs-4 col-sm-offset-1 col-sm-2 col-space"
+                ng-href="/php/invoices/pdf/{{invoiceID}}"
+                target="_blank">
+            <span class="glyphicon glyphicon-eye-open"></span>
+            View (PDF)
+        </a>
+        <a class="btn btn-primary col-xs-offset-4 col-xs-4 col-sm-offset-1 col-sm-2 col-space"
+                target="_self" ng-href="/php/invoices/pdf/{{invoiceID}}"
+                download="invoice-{{invoiceID}}.pdf">
+            <span class="fa fa-download"></span>
+            Download</a>
+<h2></h2>
     </div>
 </div>

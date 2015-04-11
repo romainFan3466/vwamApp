@@ -1,10 +1,10 @@
-<div ng-controller="InvoiceViewController" ng-cloak class="ng-cloak pdffdp">
+<div ng-controller="InvoiceViewController" ng-cloak class="ng-cloak invoice">
 
     <div class="row">
-        <div class="col-xs-6">
-            <h1>
-
-            </h1>
+        <div class=" col-xs-offset-1 col-xs-5">
+            <h1 class="btn btn-primary btn-lg btn-print"
+                ng-click="print()">
+                <span class="fa fa-print"></span> Print</h1>
         </div>
         <div class="col-xs-6 text-right">
             <h1>INVOICE</h1>
@@ -34,13 +34,13 @@
         <div class="col-xs-5 col-xs-offset-2 text-right">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4><strong>From :</strong> {{invoice.user.company}}</h4>
+                    <h4><strong>From :</strong> {{invoice.from.company}}</h4>
                 </div>
                 <div class="panel-body">
                     <p>
-                        {{invoice.user.address}} <br>
-                        {{invoice.user.city}} <br>
-                        {{invoice.user.country}} <br>
+                        {{invoice.from.address}} <br>
+                        {{invoice.from.city}} <br>
+                        {{invoice.from.country}} <br>
                     </p>
                 </div>
             </div>
@@ -122,13 +122,12 @@
                     </div>
                     <div class="panel-body">
                         <p>
-                            Email : {{invoice.user.email}} <br><br>
-                            Mobile : {{invoice.user.phone}} <br> <br>
+                            Email : {{invoice.from.email}} <br><br>
+                            Mobile : {{invoice.from.phone}} <br> <br>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<button class="btn btn-success btn-print" ng-click="print()">Print</button>
 </div>

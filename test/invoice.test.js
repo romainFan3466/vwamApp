@@ -27,8 +27,6 @@ describe("$invoice service test", function () {
                     "status": "success",
                     "invoice": {
                         "ID": "57",
-                        "customerID": "85",
-                        "userID": "19446",
                         "totalPrice": "92.12",
                         "created": "2015-04-01 22:36:46",
                         "matriculation": {
@@ -37,20 +35,50 @@ describe("$invoice service test", function () {
                         },
                         "items": [
                             {
-                                "itemID": "17",
-                                "quantity": "2",
-                                "subTotal": "47.12"
+                                "item": {
+                                    "ID": "17",
+                                    "name": "Itemblabla",
+                                    "type": "inside",
+                                    "price": 54
+                                },
+                                "quantity": 2,
+                                "subTotal": 108
                             },
                             {
-                                "itemID": "1",
-                                "quantity": "1",
-                                "subTotal": "45"
+                                "item": {
+                                    "ID": "1",
+                                    "name": "item2",
+                                    "type": "outside",
+                                    "price": 34.56
+                                },
+                                "quantity": 1,
+                                "subTotal": 34.56
                             }
-                        ]
+                        ],
+                        "customer": {
+                            "ID": "85",
+                            "name": "DorchiffesRTG",
+                            "address": "2 rue du lila",
+                            "city": "Lille",
+                            "country": "FRANCE",
+                            "phone": "0466203467",
+                            "accountType": null
+                        },
+                        "from": {
+                            "email": "romain.fanara@sfr.fr",
+                            "company": "SARL FANARA",
+                            "address": "Burrin Street",
+                            "city": "CARLOW",
+                            "country": "IRELAND",
+                            "phone": "3544576756"
+                        }
                     }
                 };
 
-                var resultService = new InvoiceMapper(resultAPI.invoice);
+                var resultService ={
+                    invoice : new InvoiceMapper(resultAPI.invoice)
+                };
+
 
                 $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/invoices/57", {})
                     .respond(200,resultAPI);
@@ -58,7 +86,7 @@ describe("$invoice service test", function () {
                 $invoice.get(57).then(
                     function(res) {
                         expect(res).not.toBe(null);
-                        expect(angular.equals(res, resultService)).toEqual(true);
+                        expect(angular.equals(res.invoice, resultService.invoice)).toEqual(true);
                     }
                 );
                 $httpBackend.flush();
