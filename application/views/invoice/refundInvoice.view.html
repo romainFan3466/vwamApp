@@ -1,0 +1,139 @@
+<!--TODO : Washingapp , implement textbox for comment-->
+<div ng-controller="RefundInvoiceController">
+    <div class="row">
+        <h1 class="text-center">Refund Invoice</h1>
+    </div>
+
+    <form name="form" ng-submit="search(invoiceID)">
+        <div class="row row-lg-space">
+            <div class="form-group col-sm-6 col-sm-offset-3">
+                <label for="inputID">Invoice Number</label>
+                <input type="text" id="inputID" class="form-control" name="ID"
+                       ng-model="invoiceID" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <button class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 btn btn-primary"
+                        type="submit"
+                        ng-disabled="form.ID.$invalid">
+                    <span class="fa fa-search"></span> Search</button>
+            </div>
+        </div>
+        </form>
+
+        <div class="row row-lg-space">
+            <div class=" col-sm-offset-1 col-sm-10">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Invoice Number</th>
+                            <th>To</th>
+                            <th>Created</th>
+                            <th>Amount</th>
+                            <th class="text-center">View</th>
+                            <th class="text-center">Download</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-show="found">
+                            <td>{{invoice.ID}}</td>
+                            <td>{{invoice.customer.name}}</td>
+                            <td class="text-center">{{invoice.created | date:'dd-MMMM-yyyy'}}</td>
+                            <td>{{invoice.totalPrice}} &euro;</td>
+                            <td class="text-center"><a class=" btn btn-primary fa fa-eye"
+                                                       ng-href="#/invoice/list/{{invoice.ID}}"
+                                                       target="_blank"></a></td>
+                            <td class="text-center"><a class=" btn btn-danger fa fa-file-pdf-o"
+                                                       target="_self" ng-href="/php/invoices/pdf/{{invoice.ID}}"
+                                                       download="invoice-{{invoice.ID}}.pdf"></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    <div class="row row-lg-space">
+        <div class=" col-sm-offset-3 col-sm-6">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th class="text-info"><input type="checkbox" ng-model="itemsAll"></th>
+                        <th class="text-info">Qty to refund</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Sub Total</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="itemRow in items">
+                        <td class="info text-center"><input type="checkbox" ng-model="itemRow.refund.checked"></td>
+                        <td class="info text-center">
+                            <input ng-disabled="!itemRow.refund.checked" style="width: 40px;" type="number" min="1" max="{{itemRow.quantity}}"
+                                    ng-model="itemRow.refund.quantity"/>
+                        </td>
+                        <td ng-class="{success : itemRow.refund.checked}">{{itemRow.item.name}}</td>
+                        <td ng-class="{success : itemRow.refund.checked}">{{itemRow.item.type}}</td>
+                        <td ng-class="{success : itemRow.refund.checked}">{{itemRow.item.price}}&euro;</td>
+                        <td ng-class="{success : itemRow.refund.checked}">{{itemRow.quantity}}</td>
+                        <td ng-class="{success : itemRow.refund.checked}">{{itemRow.subTotal}}&euro;</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <button class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 btn btn-warning"
+                ng-click="refund()"
+                ng-show="found"
+                ng-disabled="addedSuccess && form.ID.$invalid">
+            <span class="fa fa-refund-card"></span> Refund</button>
+    </div>
+
+    <div class="row" ng-show="addedSuccess && form.ID.$invalid" ng-cloak>
+        <a class="btn btn-success col-xs-offset-4 col-xs-4 col-sm-offset-2 col-sm-2 col-space"
+           ng-href="#/invoice/list/{{refundID}}"
+           target="_blank">
+            <span class="glyphicon glyphicon-eye-open"></span>
+            View (HTML)
+        </a>
+        <a class="btn btn-success col-xs-offset-4 col-xs-4 col-sm-offset-1 col-sm-2 col-space"
+           ng-href="/php/invoices/pdf/{{refundID}}"
+           target="_blank">
+            <span class="glyphicon glyphicon-eye-open"></span>
+            View (PDF)
+        </a>
+        <a class="btn btn-primary col-xs-offset-4 col-xs-4 col-sm-offset-1 col-sm-2 col-space"
+           target="_self" ng-href="/php/invoices/pdf/{{refundID}}"
+           download="invoice-{{refundID}}.pdf">
+            <span class="fa fa-download"></span>
+            Download</a>
+    </div>
+
+    <div class="row row-space text-center">
+        <div class="col-xs-offset-3 col-xs-6">
+            <div ng-show="addedSuccess && form.ID.$invalid" class="alert alert-success">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                Refund has been created successfully
+            </div>
+
+            <div ng-show="error.flag" class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                Error : {{error.message}}
+            </div>
+
+            <spinner loading="loading"></spinner>
+        </div>
+    </div>
+    <spinner loading="loading"></spinner>
+
+
+</div>
+

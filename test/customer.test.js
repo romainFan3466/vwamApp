@@ -153,7 +153,7 @@ describe("$customer service test", function () {
                     function(res) {
                         expect(res).not.toBe(null);
                         expect(res.customer).not.toBe(null);
-                        expect(angular.equals(res, result.customer)).toEqual(true);
+                        expect(angular.equals(res.customer, result.customer)).toEqual(true);
                     }
                 );
                 $httpBackend.flush();
@@ -239,7 +239,7 @@ describe("$customer service test", function () {
                     ]
                 };
 
-                $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/customers/all",{})
+                $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/customers/all/names",{})
                     .respond(200,resultAPI);
 
                 $customer.getAllName().then(
@@ -260,7 +260,7 @@ describe("$customer service test", function () {
                     "message": "Unauthorized access, need to login in"
                 };
 
-                $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/customers/all", {})
+                $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/customers/all/names", {})
                     .respond(401,result);
 
 

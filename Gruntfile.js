@@ -96,10 +96,8 @@ module.exports = function (grunt) {
     grunt.registerTask("deploy", ["clean:post-deploy","minify", "copy","patternReplace","clean:pre-deploy", "ftpush"]);
 
     // Doc Task.
-    grunt.registerTask("doc", ["clean:doc","ngdocs", "ftpsync:doc"]);
+    grunt.registerTask("doc", ["clean:doc","ngdocs", "ftpush"]);
 
-    // Doc Task.
-    grunt.registerTask("doc", ["clean:doc","ngdocs", "ftpsync:doc"]);
 
     // Default task.
     grunt.registerTask("default", ["bower", "deploy"]);

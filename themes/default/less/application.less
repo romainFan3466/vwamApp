@@ -1,6 +1,6 @@
 // Hacks
 
-::-moz-selection {
+/*::-moz-selection {
   background-color: transparent;
 }
 
@@ -40,7 +40,7 @@ input::selection {
 
 input::-moz-focus-inner {
   border: 0;
-}
+}*/
 
 [disabled]::-webkit-input-placeholder,
 .disabled::-webkit-input-placeholder {
@@ -83,7 +83,7 @@ input.disabled:-moz-placeholder {
   background-color: red;
 }
 
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .translate-cloak {
   display: none !important;
 }
 
@@ -92,8 +92,9 @@ input.disabled:-moz-placeholder {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -75px;
+  margin-top: -60px;
   color: rgb(51, 122, 183);
+  margin-left: -30px;
 }
 
 .spinner-global{
@@ -121,10 +122,6 @@ input.disabled:-moz-placeholder {
   margin-bottom : 15px;
 }
 
-.row-space{
-  margin-top: 15px;
-  margin-bottom : 15px;
-}
 .row-lg-space{
   margin-top: 30px;
   margin-bottom : 30px;
@@ -153,4 +150,8 @@ input.disabled:-moz-placeholder {
 
 .custom-bold{
   font-weight: bolder;
+}
+
+.table-sortable{
+  cursor: pointer;
 }

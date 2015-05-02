@@ -12,7 +12,7 @@
         [[include(<%= appPath %>/templates/bodyHeader.template.html)]]
 
 		<!-- Main Content -->
-		<div id="main-container" class = "container-fluid"  ng-view ></div>
+		<div id="main-container" class="container-fluid"  ng-view ></div>
 
 		<!-- Footer -->
             [[include(<%= appPath %>/templates/footer.template.html)]]

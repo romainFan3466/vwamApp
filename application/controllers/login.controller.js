@@ -4,9 +4,11 @@
  * @require $scope
  * @require $authentication
  * @require $location
+ * @require $modal
  *
  * @description
  *
+ * Interacts with template : "login.view.html"
  *
  */
 AppModule.controller("LoginController",[

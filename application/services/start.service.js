@@ -10,11 +10,16 @@
  *
  */
 AppModule.factory("$start", [
-    "$q", "$authentication","$log",
+    "$q", "$authentication","$log","$translate","tmhDynamicLocale",
 
-    function ($q, $authentication, $log) {
+    function ($q, $authentication, log, $translate, tmhDynamicLocale) {
 
         var deferred = $q.defer();
+
+        //set internationalization
+        var local = angular.copy($translate.use());
+        $log.log("pd " + local);
+        tmhDynamicLocale.set(local);
 
         $authentication.getSession().then(function(result){
             deferred.resolve("ok");

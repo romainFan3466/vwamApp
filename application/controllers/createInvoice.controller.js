@@ -2,21 +2,28 @@
  * @ngdoc controller
  * @name appModule.controller:CreateInvoiceController
  * @require $scope
- * @require $authentication
- * @require $location
+ * @require $customer
+ * @require $item
+ * @require InvoiceMapper
+ * @require $invoice
+ *
  *
  * @description
  *
+ * Interacts with template : "createInvoice.view.html"
  *
  */
 AppModule.controller("CreateInvoiceController", [
-    "$scope", "$log", "$customer", "$item","InvoiceMapper","$invoice",
-    function ($scope, $log, $customer, $item_app, InvoiceMapper, $invoice) {
+    "$scope", "$log", "$customer", "$item","InvoiceMapper","$invoice","$filter",
+    function ($scope, $log, $customer, $item_app, InvoiceMapper, $invoice, $filter) {
 
 
         $scope.customer = "";
         $scope.customers =[];
         $scope.items = [];
+        $scope.camera = false;
+        $scope.scanned = {
+        };
 
 
         $scope.error ={
@@ -47,7 +54,10 @@ AppModule.controller("CreateInvoiceController", [
                     first : "",
                     second : ""
                 },
-                items : []
+                items : [],
+                comment : "",
+                paymentMode : "Cash",
+                created : ""
             };
         };
 
@@ -134,6 +144,44 @@ AppModule.controller("CreateInvoiceController", [
 
         };
 
+        $scope.$watch('scanned', function(value){
+            $log.log(value);
+            if(angular.isDefined(value) && angular.isDefined(value.ID)){
+                _getCustomer(value);
+                $scope.found.customer=true;
+            }
+        });
+
+        $scope.getScan = function(){
+            $scope.camera = true;
+
+            $('#reader').html5_qrcode(function(data){
+                    //$scope.scanned = JSON.parse(data);
+                    $scope.$apply(function(){
+                        $scope.scanned = JSON.parse(data);
+                    });
+                },
+                function(error){
+                    //show read errors
+                }, function(videoError){
+                    //the video stream could be opened
+                }
+            );
+        };
+
+
+        $scope.closeCam = function(){
+            $scope.camera=false;
+            $('#reader').html5_qrcode_stop();
+           /* $scope.$apply(function(){
+
+            });*/
+
+            $("video").remove();
+            $("canvas").remove()
+        };
+
+
 
         $scope.onSelectCustomer = function ($item, $model, $label) {
             _getCustomer($item);
@@ -152,6 +200,7 @@ AppModule.controller("CreateInvoiceController", [
                 function (result) {
                     $scope.loading=false;
                     $scope.invoice.customer = result.customer;
+                    $scope.retrieved.customer = result.customer.name;
                 },
                 function (result) {
                     $scope.error.flag = true;
@@ -185,6 +234,11 @@ AppModule.controller("CreateInvoiceController", [
         _initScope();
         _getAllCustomerName();
         _getAllItems();
+
+
+
+
+
 
 
 

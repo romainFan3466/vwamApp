@@ -1,7 +1,7 @@
 @ngdoc overview
-@id 3
-@name Item
+@id 5
+@name Authentication
 @description
 
-Item Module
+Authentication Module
 ===========================================

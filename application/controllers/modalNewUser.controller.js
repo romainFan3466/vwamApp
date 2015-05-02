@@ -3,10 +3,11 @@
  * @name appModule.controller:NewUserModalController
  * @require $scope
  * @require $authentication
- * @require $location
+ * @require $modalInstance
  *
  * @description
  *
+ * Interacts with template : "newUser.modal.html"
  *
  */
 AppModule.controller('NewUserModalController',[

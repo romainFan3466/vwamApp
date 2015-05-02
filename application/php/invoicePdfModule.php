@@ -1,5 +1,4 @@
 <?php
-include "ChromePhp.php";
 if($result["code"]!=200) {
     echoResponse($result["code"], $result["result"]);
 }
@@ -39,8 +38,8 @@ else {
                             <?php echo $invoice->customer["phone"];?> <br>
                         </p>
                         <hr>
-                        <p>Vehicle matriculation #1 : <?php echo $invoice->matriculation["first"];?></p>
-                        <p>Vehicle matriculation #2 : <?php echo $invoice->matriculation["second"];?></p>
+                        <p>Vehicle registration #1 : <?php echo $invoice->matriculation["first"];?></p>
+                        <p>Vehicle registration #2 : <?php echo $invoice->matriculation["second"];?></p>
                     </div>
                 </div>
             </div>
@@ -61,7 +60,7 @@ else {
         </div>
         <!-- / end client details section -->
 
-        <table class="table table-bordered">
+        <table class="table table-bordered table-condensed">
             <thead>
             <tr class="active">
                 <th>
@@ -112,15 +111,15 @@ else {
             </div>
             <div class="col-xs-2">
                 <strong class="ng-binding">
-                    <?php echo $invoice->totalPrice;?>&euro;<br>
+                    <?php echo number_format($invoice->totalPrice,2);?>&euro;<br>
                     N/A <br>
-                    <?php echo $invoice->totalPrice;?>&euro;<br>
+                    <?php echo number_format($invoice->totalPrice,2);?>&euro;<br>
                 </strong>
             </div>
         </div>
 
-        <div class="row row-lg-space no-slice">
-            <div class="col-xs-5">
+        <div class="row no-slice row-space">
+            <div class="col-xs-6">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h4>Invoice details</h4>
@@ -130,13 +129,21 @@ else {
 
                         <p class="ng-binding">Created : <?php echo $invoice->created ;?></p>
 
-                        <p>Payment mode :CB/Cash/DKV</p>
+                        <?php if(isset($invoice->paymentMode)&& $invoice->paymentMode!==null){
+                            echo '<p>Payment mode : '. $invoice->paymentMode. '</p>';
+                        }
+                        ?>
 
                         <p class="text-success">Payment status : Paid</p>
+
+                        <?php if(isset($invoice->comment)&& strlen($invoice->comment)!==0){
+                                echo '<p>Comment : '. $invoice->comment. '</p>';
+                            }
+                        ?>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-offset-1 col-xs-5">
+            <div class="col-xs-offset-1 col-xs-4">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h4>Contact Details</h4>
@@ -162,7 +169,7 @@ else {
 
     include("mpdf/mpdf.php");
 
-    $mpdf = new mPDF('BLANK', 'A4', '', '', 9, 9, 25, 10, 10, 10);
+    $mpdf = new mPDF('BLANK', 'A4', '', '', 9, 9, 20, 10, 10, 10);
 //$mpdf = new mPDF('BLANK','A4','','',0,0,25,10,10,10);
 
     $mpdf->SetDisplayMode('fullpage');

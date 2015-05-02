@@ -3,5 +3,42 @@
 @name Introduction
 @description
 
-Welcome to the Washing App API Documentation !
+Welcome to the VWAMA API Documentation !
 ===========================================
+The VWAMA API was built to provide data and allow client side app interacting with Data Base.
+
+This  RestFul API offers different services for all entities such as item customers, session, required for clients, using {@link http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol Hypertext Transfer Protocol} and HTTP method (GET, POST, DELETE, ...) to send and retrieve data.
+But this API must check each request, and perform a data validation. So common structures and responses are return depending of the request.
+
+Common response structures
+----------------------
+
+- **Success result** : 
+ 
+ *HTTP Code : 200*
+ 
+ If the request is well formatted, any error occurred during process, the API sends with the code 200, an object  such the next one. The "obj" propriety will be the object waited, for example if we are in an invoice context, the propriety would be `invoice` returning the invoice object. 
+For more explanations, please refer to right context to see what exactly the API returns.
+<pre>
+{ 
+	"status" : success,
+	"obj" : "data_Query"
+}
+</pre>
+
+
+- **Error result** : 
+ 
+ *HTTP Code : 40\**
+
+ If the sent request is considered as a bad request, or even an unauthorized access, the API sends with a code  40*, an object with a `message` propriety indicating the current error. For example : 
+<pre>
+{
+    "message": "Unauthorized access, need to login in"
+}
+</pre> 
+
+
+Vehicle Washing Automated Management App.
+
+

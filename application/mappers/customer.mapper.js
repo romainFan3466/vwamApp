@@ -19,7 +19,7 @@ AppModule.factory('CustomerMapper',
              * @propertyOf appModule.object:CustomerMapper
              * @description
              * CustomerMapper identifier
-             * @returns {Integer} identifier
+             * @returns {number} identifier
              */
             this.ID="";
 
@@ -73,6 +73,16 @@ AppModule.factory('CustomerMapper',
              * @returns {String} phone
              */
             this.phone="";
+
+            /**
+             * @ngdoc property
+             * @name accountType
+             * @propertyOf appModule.object:CustomerMapper
+             * @description
+             * Customer's accountType
+             * @returns {String} accountType
+             */
+            this.accountType="";
 
             if (angular.isDefined(data)) {
                 this.parse(data);

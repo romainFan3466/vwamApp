@@ -2,16 +2,15 @@
  * @ngdoc controller
  * @name appModule.controller:CreateCustomerController
  * @require $scope
- * @require $authentication
- * @require $location
+ * @require $customer
  *
  * @description
  *
- *
+ ** Interacts with template : "createCustomer.view.html"
  */
 AppModule.controller("CreateCustomerController", [
-    "$scope", "$log", "$customer", "$timeout",
-    function ($scope, $log, $customer, $timeout) {
+    "$scope", "$log", "$customer",
+    function ($scope, $log, $customer) {
 
 
 
@@ -46,11 +45,9 @@ AppModule.controller("CreateCustomerController", [
         };
 
 
-
         var _affectListCustomerName = function(customerList){
             $scope.customers =customerList ;
         };
-
 
 
         var _getAllCustomerName = function () {
@@ -63,6 +60,7 @@ AppModule.controller("CreateCustomerController", [
                 });
         };
 
+
         var _makeRequest = function(customer){
             $customer.add(customer).then(
                 function(res){
@@ -72,13 +70,7 @@ AppModule.controller("CreateCustomerController", [
                 function(res){
                     $scope.error= true;
                 });
-
-
         };
-
-
-
-
 
 
         $scope.addCustomer = function (customer){

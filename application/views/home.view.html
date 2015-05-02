@@ -3,25 +3,24 @@
 
 <div class="container-fluid" ng-controller="HomeController">
     <div class="row">
-        <accordion class="col-xs-offset-1 col-xs-10 col-md-offset-2 col-md-8 text-center" close-others="false">
-            <accordion-group heading="Invoice" is-open="true">
-                <p><a href="#/invoice/create">Create Invoice</a></p>
-                <p><a href="#/invoice/edit">Edit Invoice</a></p>
-                <p><a href="#/invoice/list">List Invoices</a></p>
+        <accordion class="col-md-offset-2 col-md-8 text-center" close-others="false">
+            <accordion-group heading="{{'invoice.invoice' | translate}}" is-open="true">
+                <p><a href="#/invoice/create">{{'part.create_invoice' | translate}}</a></p>
+                <p><a href="#/invoice/refund">{{'part.make_refund' | translate}}</a></p>
+                <p><a href="#/invoice/list">{{'part.list_invoices' | translate}}</a></p>
             </accordion-group>
 
-            <accordion-group heading="Customer" is-open="true">
-                <p><a href="#/customer/create">Create Customer</a></p>
-                <p><a href="#/customer/edit">Edit Customer information</a></p>
-                <p><a href="#/customer/list">List Customer description</a></p>
+            <accordion-group heading="{{'customer.customer' | translate}}" is-open="true">
+                <p><a href="#/customer/create">{{'part.create_customer' | translate}}</a></p>
+                <p><a href="#/customer/edit">{{'part.edit_customer' | translate}}</a></p>
+                <p><a href="#/customer/list">{{'part.list_customers' | translate}}</a></p>
             </accordion-group>
 
-            <accordion-group heading="Item" is-open="true">
-                <p><a href="#/item/create">Create Item</a></p>
-                <p><a href="#/item/edit">Edit Item</a></p>
-                <p><a href="#">List Items</a></p>
+            <accordion-group heading="{{'item.item' | translate}}" is-open="true">
+                <p><a href="#/item/create">{{'part.create_item' | translate}}</a></p>
+                <p><a href="#/item/edit">{{'part.edit_item' | translate}}</a></p>
+                <p><a href="#/item/list">{{'part.list_items' | translate}}</a></p>
             </accordion-group>
         </accordion>
     </div>
-
 </div>

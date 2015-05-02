@@ -2,16 +2,21 @@
  * @ngdoc controller
  * @name appModule.controller:ListInvoiceController
  * @require $scope
- * @require $authentication
- * @require $location
+ * @require $customer
+ * @require $filter
+ * @require $invoice
  *
  * @description
  *
+ * Interacts with template : "listInvoice.view.html"
  *
  */
 AppModule.controller("ListInvoiceController", [
-    "$scope", "$log", "$customer",
-    function ($scope, $log, $customer) {
+    "$scope", "$log", "$customer","$filter", "$invoice",
+    function ($scope, $log, $customer, $filter, $invoice) {
+
+        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        $scope.format = $scope.formats[0];
 
         $scope.now = new Date();
         $scope.invoiceIDInput = {
@@ -20,11 +25,26 @@ AppModule.controller("ListInvoiceController", [
         $scope.invoice = {
             ID : ""
         };
+        $scope.retrieved= {
+            customer : ""
+            };
+
+        $scope.bigTotalItems = 0;
+
+        $scope.offsetReq = 0;
+        $scope.limitReq = 15;
 
         $scope.invoices = [];
 
         $scope.customers = [];
         $scope.customer = {};
+        $scope.loading=false;
+        $scope.active = {
+            ID : false,
+            customerName : false,
+            created : false,
+            totalPrice : false
+        };
 
         var _getCustomer = function (customer) {
             $scope.loading=true;
@@ -51,18 +71,27 @@ AppModule.controller("ListInvoiceController", [
             );
         };
 
+        var  _setActive = function(predicate){
+          angular.forEach($scope.active,function(value,key){
+              $scope.active[key]=(key==predicate);
+          });
+        };
+
 
 
         $scope.today = function() {
-            var today = new Date();
-            today = today.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
-            $scope.limit = Date.parse("March 21, 2012");
+            var d = new Date();
+             var today = new Date(d.getFullYear(), d.getMonth(), d.getDate(),0,0,0,0);
+                //today = $filter('date')(today, "dd-MMMM-yyyy");
+
+            $scope.limit = Date.parse("March 21, 2015");
             $scope.dt = {
                 from :today,
                 to : today
             };
+            $scope.format = $scope.formats[0];
         };
-        $scope.today();
+
 
         $scope.clear = function () {
             $scope.dt = null;
@@ -97,11 +126,6 @@ AppModule.controller("ListInvoiceController", [
             startingDay: 1
         };
 
-        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-        $scope.format = $scope.formats[0];
-
-
-
 
 
 
@@ -111,34 +135,64 @@ AppModule.controller("ListInvoiceController", [
         };
 
         $scope.search = function(){
+            $scope.loading = true;
             if($scope.invoiceIDInput.checked &&
             !angular.equals($scope.invoice.ID,"")){
-                $scope.loading = true;
+
                 $invoice.get($scope.invoice.ID).then(
                     function(res){
-                        $scope.invoices.clear();
+                        $scope.invoices= [];
                         $scope.invoices.push(res.invoice);
                         $scope.loading = false;
                     },
                     function(res){
                         $log.log(res);
+                        $scope.loading = false;
                     }
                 );
 
             }
             else{
                 //TODO washingapp check date available
-                $invoice.getAll($scope.dt.from, $scope.dt.to, $scope.customer.ID).then(
+                var clause = {
+                    from : $scope.dt.from,
+                    to : $scope.dt.to
+                };
+
+                if(angular.isDefined($scope.customer.ID) &&
+                    angular.isDefined($scope.retrieved.customer.ID)){
+                    clause.customerID = $scope.customer.ID;
+                }
+
+                $invoice.getAll(clause).then(
                     function(res){
-                        $scope.invoices.clear();
+                        $scope.bigTotalItems = res.nbTotalInvoices;
+                        $scope.invoices=[];
                         $scope.invoices = res.list;
+                        $scope.loading = false;
                     }
                 );
             }
         };
 
 
+        $scope.order = function(predicate, reverse) {
+            $scope.invoices = $filter('orderBy')($scope.invoices, predicate, reverse);
+            (predicate=='customer.name')? _setActive('customerName') : _setActive(predicate);
+        };
+
+        $scope.order('created',true);
+
+
+        $scope.pageChanged = function(pageNo) {
+            $scope.limitReq =  pageNo*15;
+            $scope.offsetReq = (pageNo*15)-15;
+        };
+
+
+
         _getAllCustomerName();
 
+        $scope.today();
     }
 ]);

@@ -1,3 +1,5 @@
+<!--TODO : Washingapp : fix design for all screens
+                        change matriculation to irish word-->
 <div ng-controller="InvoiceViewController" ng-cloak class="ng-cloak invoice">
 
     <div class="row">
@@ -26,8 +28,8 @@
                         {{invoice.customer.phone}} <br>
                     </p>
                     <hr/>
-                    <p>Vehicle matriculation #1 : {{invoice.matriculation.first}}</p>
-                    <p>Vehicle matriculation #2 : {{invoice.matriculation.second}}</p>
+                    <p>Vehicle registration #1 : {{invoice.matriculation.first}}</p>
+                    <p>Vehicle registration #2 : {{invoice.matriculation.second}}</p>
                 </div>
             </div>
         </div>
@@ -109,8 +111,9 @@
                 <div class="panel-body">
                     <p>Invoice number : {{invoice.ID}}</p>
                     <p>Created : {{invoice.created}}</p>
-                    <p>Payment mode :CB/Cash/DKV</p>
+                    <p>Payment mode : {{invoice.paymentMode}}</p>
                     <p class="text-success">Payment status : Paid</p>
+                    <p>Comment : {{invoice.comment}}</p>
                 </div>
             </div>
         </div>

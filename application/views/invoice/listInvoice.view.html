@@ -1,17 +1,16 @@
-<div class="" ng-controller="ListInvoiceController">
+<div class="ng-cloak" ng-cloak ng-controller="ListInvoiceController">
     <div class="row">
-        <h1 class="text-center">Invoices List</h1>
+        <h1 class="text-center">{{ 'part.list_invoices' | translate }}</h1>
     </div>
     <div class="row row-lg-space">
-        <div class="ng-cloak col-xs-offset-1 col-xs-10 col-md-offset-3 col-md-6"
-             ng-cloak>
+        <div class="col-md-offset-3 col-md-6">
 
-            <form class="form-horizontal">
+            <form class="form-horizontal" ng-submit="search()">
                 <div class="form-group">
-                    <label for="inputName" class="col-sm-offset-2 col-sm-2 control-label">From :</label>
+                    <label for="inputName" class="col-sm-offset-2 col-sm-2 control-label">{{ 'common.from' | translate }}</label>
                     <div class="col-sm-6">
                         <p class="input-group">
-                            <input type="text" class="form-control" datepicker-popup="dd-MMMM-yyyy"
+                            <input type="text" class="form-control" datepicker-popup="{{format}}"
                                    ng-model="dt.from"
                                    is-open="openedFrom"
                                    datepicker-options="dateOptions"
@@ -34,10 +33,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputAddress" class="col-sm-offset-2 col-sm-2 control-label">To :</label>
+                    <label for="inputAddress" class="col-sm-offset-2 col-sm-2 control-label">{{ 'common.to' | translate }}</label>
                     <div class="col-sm-6">
                         <p class="input-group">
-                            <input type="text" class="form-control" datepicker-popup="dd-MMMM-yyyy"
+                            <input type="text" class="form-control" datepicker-popup="{{format}}"
                                    ng-model="dt.to"
                                    is-open="openedTo"
                                    datepicker-options="dateOptions"
@@ -60,21 +59,20 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="InputCustomerName" class="col-sm-4 control-label">Customer's name :
-                        <small class="text-muted">(optional)</small>
+                    <label for="InputCustomerName" class="col-sm-4 control-label">{{ 'customer.customer_name' | translate }}
+                        <small class="text-muted">({{ 'common.optional' | translate }})</small>
                     </label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-6">
                         <input type="text"
                                name="company"
                                ng-model="retrieved.customer"
                                id="InputCompany"
-                               placeholder="Enter customer name"
+                               placeholder="{{ 'common.enter_customer_name' | translate }}"
                                typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue} "
                                typeahead-loading="loadingCompanies"
                                typeahead-on-select='onSelectCustomer($item, $model, $label)'
                                class="form-control"
-                               ng-disabled="invoiceIDInput.checked"
-                               required>
+                               ng-disabled="invoiceIDInput.checked">
                     </div>
                 </div>
 
@@ -86,7 +84,7 @@
                     </div>
 
                     <label for="inputInvoiceID" class="col-xs-4 col-sm-3 col-lg-3 col-md-4 control-label">
-                        invoiceIDInput Number :</label>
+                        {{ 'invoice.invoice_number' | translate }}</label>
 
 
                     <div class="col-sm-3">
@@ -96,50 +94,97 @@
                     </div>
                 </div>
 
-
+                <div class="row">
+                    <div class="form-group">
+                        <button class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 btn btn-primary"
+                                type="submit">
+                            <span class="fa fa-search"></span>{{ 'common.search' | translate }}</button>
+                    </div>
+                </div>
             </form>
             </div>
         </div>
 
-    <div class="row">
-        <button class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 btn btn-primary"
-                ng-submit="search()">
-            <span class="fa fa-search"></span> Search</button>
-    </div>
-
 
     <div class="row row-lg-space">
-        <div class=" col-xs-offset-1 col-xs-10">
+        <div class=" col-sm-offset-1 col-sm-10">
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>
-                        <th>Invoice Number</th>
-                        <th>To</th>
-                        <th>Created</th>
-                        <th>Amount</th>
-                        <th>View</th>
-                        <th>Edit</th>
+                        <th class="table-sortable"
+                            ng-click="reverse=!reverse ;order('ID', reverse)">
+                                {{ 'invoice.invoice_number' | translate }}
+                                <span class="fa"
+                                      ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
+                                      ng-show="active.ID">
+                                </span>
+                        </th>
+                        <th class="table-sortable"
+                            ng-click="reverse=!reverse ;order('customer.name', reverse)">
+                                {{ 'customer.customer' | translate }}
+                            <span class="fa"
+                                  ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
+                                  ng-show="active.customerName">
+                            </span>
+                        </th>
+                        <th class="table-sortable text-center"
+                            ng-click="reverse=!reverse ;order('created', reverse)">
+                                {{ 'common.created' | translate }}
+                            <span class="fa"
+                                  ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
+                                  ng-show="active.created">
+                            </span>
+                        </th>
+                        <th class="table-sortable"
+                            ng-click="reverse=!reverse ;order('totalPrice', reverse)">
+                                {{ 'invoice.amount' | translate }}
+                            <span class="fa"
+                                  ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
+                                  ng-show="active.totalPrice">
+                            </span>
+                        </th>
+                        <th class="text-center">{{ 'common.view' | translate }}</th>
+                        <th class="text-center">{{ 'common.download' | translate }}</th>
+                        <th class="text-center">{{ 'common.refund' | translate }}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>45</td>
-                        <td>Doe Transport</td>
-                        <td>24/03/2015</td>
-                        <td>56.67 &euro;</td>
-                        <td><span class=" btn btn-primary fa fa-eye"
-                                  ng-go="#/customers/edit/"></span></td>
-                        <td><span class=" btn btn-primary fa fa-pencil-square-o"
-                                  ng-go="#/customers/edit/"></span></td>
+                    <tr ng-repeat="invoice in invoices |slice:limitReq:offsetReq">
+                        <td>{{invoice.ID}}</td>
+                        <td>{{invoice.customer.name}}</td>
+                        <td class="text-center">{{invoice.created | date:'dd-MMMM-yyyy'}}</td>
+                        <td>{{invoice.totalPrice}} &euro;</td>
+                        <td class="text-center"><a class=" btn btn-primary fa fa-eye"
+                               ng-href="#/invoice/list/{{invoice.ID}}"
+                               target="_blank"></a></td>
+                        <td class="text-center"><a class=" btn btn-danger fa fa-file-pdf-o"
+                               target="_self" ng-href="/php/invoices/pdf/{{invoice.ID}}"
+                               download="invoice-{{invoice.ID}}.pdf"></a></td>
+                        <td class="text-center"><a class=" btn btn-warning fa fa-credit-card"
+                                  ng-go="/invoice/refund/{{invoice.ID}}"></a></td>
                     </tr>
                     </tbody>
                     </table>
                 </div>
             </div>
      </div>
+    <div class="row">
+        <div class="block-center text-center">
+            <pagination total-items="bigTotalItems"
+                        ng-model="currentPage"
+                        max-size="4"
+                        items-per-page="15"
+                        ng-change="pageChanged(currentPage)"
+                        class="pagination-sm"
+                        boundary-links="true"
+                        rotate="false"
+                        num-pages="numPages">
+            </pagination>
+        </div>
+    </div>
 
 
 
-
+<spinner loading="loading"></spinner>
 </div>

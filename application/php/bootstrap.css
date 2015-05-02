@@ -5554,6 +5554,10 @@ button.close {
     display: none !important;
   }
 }
+.row-space{
+    margin-top: 15px;
+    margin-bottom : 15px;
+}
 
 .row-lg-space{
     margin-top: 30px;

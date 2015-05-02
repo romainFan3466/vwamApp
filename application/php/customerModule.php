@@ -64,15 +64,39 @@ $app->post('/customers/id/:ID', function($ID) use ($app) {
     else{
        //retrieve customer by ID
         $result = getCustomerByID($db, $session, $ID);
-        $content = (isset($result["customer"])) ? $result["customer"] : $result["message"];
+        $content= array();
+        if(isset($result["customer"])){
+            $content["customer"] = $result["customer"];
+        }
+        else{
+            $content["message"] = $result["message"];
+        }
         echoResponse($result["code"], $content);
+    }
+});
+
+$app->post('/customers/all', function() {
+
+    $db = new DbHandler();
+    $session = $db->getSession();
+
+    if(!$session["authenticated"]){
+        $response = array();
+        $response["message"] = "Unauthorized access, need to login in";
+        echoResponse(401, $response);
+    }
+    else {
+        $userID = $session["uid"];
+        $query ="select ID, name, address, city, country, phone, accountType from customers where userID='$userID'";
+        $customer = $db->getSeveralRecords($query);
+        echoResponse(200,$customer);
     }
 });
 
 
 
 
-$app->post('/customers/all', function() {
+$app->post('/customers/all/names', function() {
 
     $db = new DbHandler();
     $session = $db->getSession();

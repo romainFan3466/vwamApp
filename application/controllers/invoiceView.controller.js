@@ -2,18 +2,16 @@
  * @ngdoc controller
  * @name appModule.controller:InvoiceViewController
  * @require $scope
- * @require $authentication
- * @require $location
- * @require $item
- * @require $customer
  * @require $invoice
+ * @require $routeParams
  *
  * @description
  *
+ * Interacts with template : "invoice.view.html"
  */
 AppModule.controller("InvoiceViewController", [
-    "$scope", "$log", "$customer", "$item","$authentication", "$invoice", "$routeParams","$window",
-    function ($scope, $log, $customer, $item, $authentication, $invoice, $routeParams, $window) {
+    "$scope", "$log", "$invoice", "$routeParams",
+    function ($scope, $log, $invoice, $routeParams) {
 
         if (angular.isDefined($routeParams.invoiceID)) {
            var invoiceID = $routeParams.invoiceID;

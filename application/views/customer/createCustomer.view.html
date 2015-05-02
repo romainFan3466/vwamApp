@@ -1,9 +1,10 @@
+<!-- TODO : Washingapp : implement account type, change matriculation to irish word -->
 <div class="container-fluid" ng-controller="CreateCustomerController">
     <div class="row">
         <h1 class="text-center">Create Customer</h1>
     </div>
     <div class="row row-lg-space">
-        <div class="col-xs-offset-1 col-xs-10 col-md-offset-3 col-md-6">
+        <div class="col-md-offset-3 col-md-6">
             <form role="form"
                   ng-submit="addCustomer(customer)"
                   name="form">
@@ -54,22 +55,22 @@
 
     </div>
 
-    <div class="row text-center">
-        <div class="col-xs-offset-3 col-xs-6">
-            <div ng-show="success && form.name.$invalid" class="alert alert-success">
+    <div class="row">
+        <div class="center-block text-center">
+            <span ng-show="success && form.name.$invalid" class="alert alert-success">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 Customer has been created
-            </div>
+            </span>
 
-            <div ng-show="error && !success" class="alert alert-danger">
+            <span ng-show="error && !success" class="alert alert-danger">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 Error, customer hasn't been created, server doesn't respond
-            </div>
+            </span>
 
-            <div ng-show="invalidName" class="alert alert-danger">
+            <span ng-show="invalidName" class="alert alert-danger">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 Name is already used for another customer, change it
-            </div>
+            </span>
 
             <spinner loading="loading"></spinner>
         </div>

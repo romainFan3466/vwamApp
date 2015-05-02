@@ -80,7 +80,7 @@ describe("$invoice service test", function () {
                 };
 
 
-                $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/invoices/57", {})
+                $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/invoices/id/57", {})
                     .respond(200,resultAPI);
 
                 $invoice.get(57).then(
@@ -99,7 +99,7 @@ describe("$invoice service test", function () {
                     "message": "Unauthorized access, need to login in"
                 };
 
-                $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/invoices/57", {})
+                $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/invoices/id/57", {})
                     .respond(401,resultAPI);
 
 
@@ -123,7 +123,7 @@ describe("$invoice service test", function () {
                     "message": "no invoice with a such ID exist for the user logged "
                 };
 
-                $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/invoices/57", {})
+                $httpBackend.expectPOST("http://washing-app.romainfanara.com/php/invoices/id/57", {})
                     .respond(400,resultAPI);
 
 

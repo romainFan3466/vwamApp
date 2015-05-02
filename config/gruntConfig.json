@@ -33,6 +33,7 @@
                 "<%= appPath %>/application.js",
                 "<%= appPath %>/run.js",
                 "<%= appPath %>/directives/**/*.js",
+                "<%= appPath %>/filters/**/*.js",
                 "<%= appPath %>/mappers/**/*.js",
                 "<%= appPath %>/services/**/*.js",
                 "<%= appPath %>/controllers/**/*.js"
@@ -46,10 +47,20 @@
                 "<%= vendorPath %>/angular-route/angular-route.min.js",
                 "<%= vendorPath %>/angular-animate/angular-animate.min.js",
                 "<%= vendorPath %>/angular-resource/angular-resource.min.js",
+                "<%= vendorPath %>/angular-filter/dist/angular-filter.min.js",
+              "<%= vendorPath %>/angular-cookies/angular-cookies.js",
+                "<%= vendorPath %>/angular-dynamic-locale/dist/tmhDynamicLocale.js",
+                "<%= vendorPath %>/angular-translate/angular-translate.min.js",
+                "<%= vendorPath %>/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js",
+                "<%= vendorPath %>/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js",
+                "<%= vendorPath %>/angular-translate-storage-local/angular-translate-storage-local.min.js",
 	            "<%= vendorPath %>/jquery/dist/jquery.js",
+                "<%= vendorPath %>/langSwitcher/js/angular/angular-polyglot.language.switcher.js",
                 "<%= vendorPath %>/bootstrap/dist/js/bootstrap.min.js",
                 "<%= vendorPath %>/angular-bootstrap/ui-bootstrap.min.js",
-                "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.js"
+                "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.js",
+                "<%= vendorPath %>/html5-qrcode/lib/jsqrcode-combined.min.js",
+                "<%= vendorPath %>/html5-qrcode/lib/html5-qrcode.min.js"
             ],
             "dest": "<%= buildPath %>/<%= pkg.appName %>-lib.min.js"
         }
@@ -78,7 +89,7 @@
                 {
                     "expand": true,
                     "cwd": "<%= vendorPath %>",
-                    "src": "{slim,mpdf}/**/*",
+                    "src": "{slim,mpdf,phpqrcode}/**/*",
                     "dest": "<%= buildPath %>/php/"
                 },
                 {
@@ -98,6 +109,12 @@
                     "cwd": "<%= vendorPath %>/jquery/dist/",
                     "src": "jquery.min.map",
                     "dest": "<%= buildPath %>/js/"
+                },
+                {
+                  "expand": true,
+                  "cwd": "./themes/default/localizable/",
+                  "src": "**/*",
+                  "dest": "<%= buildPath %>/js/local/"
                 },
                 {
                     "expand": true,
@@ -194,8 +211,8 @@
       },
       "src":  "<%= target.local %>",
       "dest": "<%= target.targetServer %>",
-      "exclusions": ["/php/mpdf/ttfontdata"],
-      "keep": ["/php/.htaccess"],
+      "exclusions": ["php/mpdf/**/*", "php/phpqrcode/**/*", "php/slim/**/*"],
+      "keep": ["/php/.htaccess", "/php/mpdf/**/*", "/php/phpqrcode/**/*", "/php/slim/**/*"],
       "simple": false,
       "useList": false
     }
@@ -243,6 +260,7 @@
                         "!downloaded/**",
                         "!Documents/**",
                         "!build/**",
+                        "!.ftppass",
                         "!node_modules/**/*",
                         "!bower_components/**/*",
                         "!config/appConfig.json",
@@ -269,7 +287,10 @@
             "dest": "docular_generated",
             "scripts": [
                 "build/js/Washing-App-lib.min.js",
-                "build/js/Washing-App-app.min.js"
+                "build/js/Washing-App-app.min.js",
+                "build/js/angular-resource.min.js.map",
+                "build/js/angular-route.min.js.map",
+                "build/js/jquery.min.map"
             ],
             "startPage": "/api",
             "html5Mode": false,
@@ -286,6 +307,7 @@
                 "application/services/**/*.js",
                 "application/mappers/**/*.js",
                 "application/directives/**/*.js",
+                "application/filters/**/*.js",
                 "application/controllers/**/*.js"
             ],
             "title": "Washing App",
@@ -306,6 +328,7 @@
                 "<%= vendorPath %>/angular-bootstrap/ui-bootstrap.min.js",
                 "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.min.js",
                 "<%= vendorPath %>/angular-mocks/angular-mocks.js",
+                "<%= vendorPath %>/angular-filter/dist/angular-filter.min.js",
                 "<%= appPath %>/**/*.js",
                 "./test/**/*.js"
 

@@ -2,16 +2,15 @@
  * @ngdoc controller
  * @name appModule.controller:CreateItemController
  * @require $scope
- * @require $authentication
- * @require $location
+ * @require $item
  *
  * @description
- *
+ * Interacts with template : "createItem.view.html"
  *
  */
 AppModule.controller("CreateItemController", [
-    "$scope", "$log", "$item", "$timeout",
-    function ($scope, $log, $item, $timeout) {
+    "$scope", "$log", "$item",
+    function ($scope, $log, $item) {
 
 
 

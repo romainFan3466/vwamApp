@@ -7,6 +7,8 @@ require_once 'passwordHash.php';
 require 'slim/Slim/Slim.php';
 
 
+date_default_timezone_set('UTC');
+
 /**
  * App initialisation
  */
@@ -53,10 +55,14 @@ function sendMail($email, $password){
 
 }
 
-require_once 'authentication.php';
+$app->options('/:some', function($some){
+});
+
+require_once 'authenticationModule.php';
 require_once 'customerModule.php';
 require_once 'itemModule.php';
 require_once 'invoiceModule.php';
+require_once 'qrCodeModule.php';
 
 
 

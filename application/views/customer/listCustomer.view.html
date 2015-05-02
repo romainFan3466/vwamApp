@@ -3,20 +3,24 @@
         <h1 class="text-center">Customers List</h1>
     </div>
 
-    <div class="row" style="margin-top: 30px;">
-        <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
+    <div class="row row-lg-space">
+        <div class="col-sm-6 col-sm-offset-3">
             <div class="input-group">
                 <span class="input-group-addon">
                    <i class="fa fa-search"></i>
                 </span>
-                <input type="text" class="form-control" placeholder="Search for...">
+                <input type="text" class="form-control" placeholder="Search for..."
+                        ng-model="inputSearch">
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="  col-xs-offset-1 col-xs-10">
+        <div class="center-block text-center">
             <ul class="pagination">
-                <li ng-repeat="letter in alphabet"><a href="#">{{letter}}</a></li>
+                <li ng-repeat="letter in alphabet"
+                    ng-class="{active : selected()===letter && inputSearch===''}">
+                    <a ng-click="sortArray(letter)" href=""
+                        >{{letter}}</a></li>
             </ul>
         </div>
     </div>
@@ -28,86 +32,54 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
+                        <th class="table-sortable"
+                            ng-click="reverse=!reverse ;order('name', reverse)">
+                            Name
+                                <span class="fa"
+                                      ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
+                                      ng-show="active.name">
+                                </span>
+                        </th>
                         <th>Address</th>
-                        <th>City</th>
-                        <th>Country</th>
+                        <th class="table-sortable"
+                            ng-click="reverse=!reverse ;order('city', reverse)">
+                            City
+                                <span class="fa"
+                                      ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
+                                      ng-show="active.city">
+                                </span>
+                        </th>
+                        <th class="table-sortable"
+                            ng-click="reverse=!reverse ;order('country', reverse)">
+                            Country
+                                <span class="fa"
+                                      ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
+                                      ng-show="active.country">
+                                </span>
+                        </th>
                         <th>Phone</th>
-                        <th>Account Type</th>
+                        <th class="table-sortable"
+                            ng-click="reverse=!reverse ;order('accountType', reverse)">
+                            Account Type
+                                <span class="fa"
+                                      ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
+                                      ng-show="active.accountType">
+                                </span>
+                        </th>
                         <th>Edit</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                        <td>Perpignan</td>
-                        <td>France</td>
-                        <td>98798898</td>
-                        <td>in account</td>
+                    <tr ng-repeat="customer in customers">
+                        <td>{{customer.ID}}</td>
+                        <td>{{customer.name}}</td>
+                        <td>{{customer.address}}</td>
+                        <td>{{customer.city}}</td>
+                        <td>{{customer.country}}</td>
+                        <td>{{customer.phone}}</td>
+                        <td>{{customer.accountType}}</td>
                         <td><span class=" btn btn-primary fa fa-pencil-square-o"
-                                ng-go="#/customers/edit/"></span></td>
-                    </tr>
-                    <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                        <td>Perpignan</td>
-                        <td>France</td>
-                        <td>98798898</td>
-                        <td>in account</td>
-                        <td><span class=" btn btn-primary fa fa-pencil-square-o"></span></td>
-                    </tr>
-                    <tr class="success">
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                        <td>Perpignan</td>
-                        <td>France</td>
-                        <td>98798898</td>
-                        <td>in account</td>
-                        <td><span class=" btn btn-primary fa fa-pencil-square-o"></span></td>
-                    </tr>
-                    <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                        <td>Perpignan</td>
-                        <td>France</td>
-                        <td>98798898</td>
-                        <td>in account</td>
-                        <td><span class=" btn btn-primary fa fa-pencil-square-o"></span></td>
-                    </tr>
-                    <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                        <td>Perpignan</td>
-                        <td>France</td>
-                        <td>98798898</td>
-                        <td>in account</td>
-                        <td><span class=" btn btn-primary fa fa-pencil-square-o"></span></td>
-                    </tr>
-                    <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                        <td>Perpignan</td>
-                        <td>France</td>
-                        <td>98798898</td>
-                        <td>in account</td>
-                        <td><span class=" btn btn-primary fa fa-pencil-square-o"></span></td>
-                    </tr>
-                    <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                        <td>Perpignan</td>
-                        <td>France</td>
-                        <td>98798898</td>
-                        <td>in account</td>
-                        <td><span class=" btn btn-primary fa fa-pencil-square-o"></span></td>
+                                ng-go="/customer/edit/{{customer.ID}}"></span></td>
                     </tr>
                     </tbody>
                 </table>
@@ -116,9 +88,12 @@
     </div>
 
     <div class="row">
-        <div class=" col-xs-offset-1 col-xs-10">
+        <div class="center-block text-center">
             <ul class="pagination">
-                <li ng-repeat="letter in alphabet"><a href="#">{{letter}}</a></li>
+                <li ng-repeat="letter in alphabet"
+                    ng-class="{active : selected()===letter && inputSearch===''}">
+                    <a ng-click="sortArray(letter)" href=""
+                            >{{letter}}</a></li>
             </ul>
         </div>
     </div>

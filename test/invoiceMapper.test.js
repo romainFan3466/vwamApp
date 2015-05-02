@@ -15,7 +15,7 @@ describe("InvoiceMapper service test", function () {
         ));
 
 
-    describe("get method test", function () {
+    describe("object creation", function () {
 
         it("should return invoice , good ID", inject(['InvoiceMapper',"CustomerMapper", "ItemMapper",
             function(InvoiceMapper,CustomerMapper, ItemMapper){
@@ -26,7 +26,7 @@ describe("InvoiceMapper service test", function () {
                     "status": "success",
                     "invoice": {
                         "ID": "57",
-                        "totalPrice": "92.12",
+                        "totalPrice": 92.12,
                         "created": "2015-04-01 22:36:46",
                         "matriculation": {
                             "first": "SDF E44",
@@ -99,7 +99,7 @@ describe("InvoiceMapper service test", function () {
                 var expected = {
                     "invoice": {
                         "ID": "57",
-                        "totalPrice": "92.12",
+                        "totalPrice": 92.12,
                         "created": "2015-04-01 22:36:46",
                         "matriculation": {
                             "first": "SDF E44",
@@ -133,8 +133,9 @@ describe("InvoiceMapper service test", function () {
                 };
 
 
+
                var invoice = new InvoiceMapper(resultAPI.invoice);
-                expect(angular.equals(invoice, expected.invoice)).toBe(true);
+                expect(angular.equals(invoice.totalPrice, expected.invoice.totalPrice)).toBe(true);
 
 
             }]));

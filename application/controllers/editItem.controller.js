@@ -1,40 +1,40 @@
+//TODO : Washingapp , confirm remove ,and edit
 /**
  * @ngdoc controller
  * @name appModule.controller:EditItemController
  * @require $scope
- * @require $authentication
- * @require $location
+ * @require $item
+ * @require $routeParams
  *
  * @description
  *
- *
+ * Interacts with template : "editItem.view.html"
  */
 AppModule.controller("EditItemController", [
-    "$scope", "$log", "$item",
-    function ($scope, $log, $item_app) {
+    "$scope", "$log", "$item","$routeParams",
+    function ($scope, $log, $item_app, $routeParams) {
 
         $scope.item = {};
         $scope.items =[];
-        $scope.loading=false;
-        $scope.found = false;
-        $scope.editor=false;
-        $scope.edited=false;
-        $scope.deleted=false;
-        $scope.errorDelete = false;
-        $scope.doublon = false;
         $scope.itemPrev ={};
         var _itemTemp;
 
-
-        $scope.onSelect = function ($item, $model, $label) {
-            $scope.item = angular.copy($item);
-            _itemTemp = angular.copy($scope.item);
-            $scope.found=true;
+        var _init = function(){
+            $scope.found=false;
             $scope.loading= false;
             $scope.edited=false;
             $scope.deleted=false;
             $scope.errorDelete = false;
             $scope.doublon = false;
+            $scope.editor = false;
+        };
+
+
+        $scope.onSelect = function ($item, $model, $label) {
+            $scope.item = angular.copy($item);
+            _itemTemp = angular.copy($scope.item);
+            _init();
+            $scope.found= true;
         };
 
 
@@ -49,9 +49,8 @@ AppModule.controller("EditItemController", [
 
                 $item_app.update(item).then(
                     function(res){
-                        $scope.loading=false;
+                        _init();
                         $scope.edited=true;
-                        $scope.editor = false;
                         $scope.retrieved ="";
                         $scope.itemPrev.name = angular.copy($scope.item.name);
                         $scope.item={};
@@ -76,7 +75,7 @@ AppModule.controller("EditItemController", [
             $item_app.delete(item.ID).then(
                 function(res){
                     $log.log(res);
-                    $scope.loading=false;
+                    _init();
                     $scope.deleted=true;
                     _getAllItems();
                     $scope.retrieved ="";
@@ -97,13 +96,9 @@ AppModule.controller("EditItemController", [
             // unchanged name
             var exp = "^" + name + "$";
             var regex = new RegExp(exp,"i");
-
-
             if(regex.test(_itemTemp.name)){
                 return false;
             }
-
-            //look if the name doesn't match with an other item
             else{
                 var found = false;
                 regex = new RegExp(exp);
@@ -117,24 +112,37 @@ AppModule.controller("EditItemController", [
         };
 
 
-        var _affectListItemName = function(itemList){
-            $scope.items=[];
-            $scope.items =itemList
+        var _getParamsAndLoadItem = function(){
+            if (angular.isDefined($routeParams.itemID)) {
+                var itemID = $routeParams.itemID;
+                angular.forEach($scope.items, function(value){
+                   if(value.ID == itemID){
+                       $scope.item = angular.copy(value);
+                       _itemTemp = angular.copy(value);
+                       $scope.editor = false;
+                       $scope.found=true;
+                   }
+                });
+            }
+            $scope.loading = false;
         };
 
 
         var _getAllItems = function () {
+            $scope.loading = true;
             $item_app.getAll().then(
                 function (result) {
                     $log.log(result.list);
-                    _affectListItemName(result.list);
+                    $scope.items=[];
+                    $scope.items =result.list;
+                    _getParamsAndLoadItem();
                 },
                 function (result) {
                     $log.log("error getAllname");
                 });
         };
 
-
+        _init();
         _getAllItems();
 
 

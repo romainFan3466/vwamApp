@@ -1,6 +1,6 @@
-<section id="bodyheader">
+<section id="bodyheader" ng-controller="BodyHeaderController">
 
-    <nav class="navbar navbar-default" role="navigation" >
+    <nav class="navbar navbar-default ng-cloak" ng-cloak role="navigation">
         <div class="container-fluid" >
 
             <div class="navbar-header">
@@ -11,45 +11,53 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Washing App</a>
+                <a class="navbar-brand" href="#">VWAM App</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" ng-cloak>
 
 
-                    <li><a href="#/home">Home</a></li>
+                    <li><a href="#/home">{{'common.home' | translate}}</a></li>
                     <li class="dropdown">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Invoice <span class="caret"></span></a>
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            {{'invoice.invoice' | translate}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#/invoice/create">Create</a></li>
-                            <li><a href="#/invoice/edit">Edit</a></li>
-                            <li><a href="#/invoice/list">List</a></li>
+                            <li><a href="#/invoice/create">{{'common.create' | translate}}</a></li>
+                            <li><a href="#/invoice/refund">{{'common.refund' | translate}}</a></li>
+                            <li><a href="#/invoice/list">{{'common.list' | translate}}</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Customer <span class="caret"></span></a>
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            {{'customer.customer' | translate}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#/customer/create">Create</a></li>
-                            <li><a href="#/customer/edit">Edit</a></li>
-                            <li><a href="#/customer/list">List</a></li>
+                            <li><a href="#/customer/create">{{'common.create' | translate}}</a></li>
+                            <li><a href="#/customer/edit">{{'common.edit' | translate}}</a></li>
+                            <li><a href="#/customer/list">{{'common.list' | translate}}</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Item <span class="caret"></span></a>
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            {{'item.item' | translate}}<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#/item/create">Create</a></li>
-                            <li><a href="#/item/edit">Edit</a></li>
-                            <li><a href="#/item/list">List</a></li>
+                            <li><a href="#/item/create">{{'common.create' | translate}}</a></li>
+                            <li><a href="#/item/edit">{{'common.edit' | translate}}</a></li>
+                            <li><a href="#/item/list">{{'common.list' | translate}}</a></li>
                         </ul>
                     </li>
                 </ul>
 
-                <ul class="nav navbar-nav navbar-right" ng-controller="BodyHeaderController">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="navbar-text" style="width: 200px"><pls id="pls1" items="languages" open-mode="click" show-flag="true" selected-lang="{{langSelected}}"
+                                                                      language-changed-callback="onLanguageChanged(lang)"></pls></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
                     <li class="ng-cloak navbar-text" ng-show="authenticated != undefined && authenticated" ng-cloak>{{user}}</li>
                     <li class="ng-cloak  navbar-text"
                         ng-show="authenticated != undefined && !authenticated"
                         ng-cloak>
-                        <button type="button" class="btn btn-primary" ng-click="goLogin()">Login</button></li>
+                        <button type="button" class="btn btn-primary" ng-click="goLogin()" translate="common.login"></button></li>
 
                     <spinner loading="loading"></spinner>
 
@@ -57,7 +65,7 @@
                         ng-show="authenticated != undefined && authenticated"
                         ng-cloak
                         ng-click="logout()">
-                        <button type="button" class="btn btn-primary" ng-click="goLogin()">Logout</button>
+                        <button type="button" class="btn btn-primary" ng-cloak ng-click="goLogin()" translate="common.logout"></button>
                         </li>
                 </ul>
 
