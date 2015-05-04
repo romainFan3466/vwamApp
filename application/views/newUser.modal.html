@@ -1,18 +1,18 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title" id="myModalLabel">Create account </h4>
+    <h4 class="modal-title" id="myModalLabel">{{ 'part.create_account' | translate }} </h4>
 </div>
 
 <form role="form" name="form" ng-submit="signUp(credentials)">
     <div class="modal-body modal-block">
 
-        <div class="form-group" ng-class="{invalid : error,
-        valid : form.email.$valid && !error}">
-            <label for="inputEmail" class="control-label">Email address :</label>
+        <div class="form-group has-feedback" ng-class="{'has-error' : error,
+        'has-success' : form.email.$valid && !error}">
+            <label for="inputEmail" class="control-label">Email :</label>
             <input type="email"
                    class="form-control"
                    id="inputEmail"
-                   placeholder="Entrer email"
+                   placeholder="{{ 'common.enter_email' | translate }}"
                    ng-model="credentials.email"
                    name="email"
                    required>
@@ -23,14 +23,13 @@
         </div>
 
 
-        <div class="form-group"
-             ng-class="{invalid : form.password1.$dirty && form.password1.$invalid ,
-             valid : form.password1.$valid }">
-            <label for="inputPassword1" class="control-label" >Password :</label>
+        <div class="form-group has-feedback"
+             ng-class="{'has-error' : form.password1.$dirty && form.password1.$invalid ,
+             'has-success' : form.password1.$valid }">
+            <label for="inputPassword1" class="control-label" >{{ 'common.password' | translate }} :</label>
             <input type="password"
                    class="form-control"
                    id="inputPassword1"
-                   placeholder="Entrer password"
                    ng-model="credentials.password"
                    name="password1"
                     required>
@@ -40,14 +39,13 @@
                   class="glyphicon glyphicon-ok form-control-feedback"></span>
         </div>
 
-        <div class="form-group"
-             ng-class="{invalid : (form.password2.$dirty && differentPassword)
-             , valid : form.password2.$valid && !differentPassword }">
-            <label for="inputPassword" class="control-label">Confirm Password :</label>
+        <div class="form-group has-feedback"
+             ng-class="{'has-error' : (form.password2.$dirty && differentPassword)
+             , 'has-success' : form.password2.$valid && !differentPassword }">
+            <label for="inputPassword" class="control-label">{{ 'common.confirm_password' | translate }} :</label>
             <input type="password"
                    class="form-control"
                    id="inputPassword"
-                   placeholder="Retype password"
                    ng-model="credentials.confirmedPassword"
                    name="password2"
                    required>
@@ -57,27 +55,27 @@
                   class="glyphicon glyphicon-ok form-control-feedback"></span>
         </div>
         <hr/>
-        <p class="text-info text-center"><strong>Optional part, but required for invoice creation</strong></p>
+        <p class="text-info text-center"><strong>{{ 'message.create_account_optional' | translate }}</strong></p>
         <div class="form-group">
-            <label for="InputCompany">Company :</label>
-            <input type="text" class="form-control" id="InputCompany" placeholder="Enter your comapny name" ng-model="credentials.company">
+            <label for="InputCompany">{{ 'customer.company' | translate }} :</label>
+            <input type="text" class="form-control" id="InputCompany" placeholder="{{ 'customer.enter_company' | translate }}" ng-model="credentials.company">
         </div>
 
         <div class="form-group">
-            <label for="InputAddress" class="control-label">Address :</label>
-            <textarea type="text" rows="3" class="form-control" id="InputAddress" placeholder="Enter address"
+            <label for="InputAddress" class="control-label">{{ 'customer.address' | translate }} :</label>
+            <textarea type="text" rows="3" class="form-control" id="InputAddress" placeholder="{{ 'customer.enter_address' | translate }}"
                       ng-model="credentials.address"></textarea>
         </div>
         <div class="form-group">
             <div class="form-inline">
                 <div class="form-group">
-                    <label for="InputCity">City :</label>
-                    <input type="text" class="form-control" id="InputCity" placeholder="Enter city" ng-model="credentials.city">
+                    <label for="InputCity">{{ 'customer.city' | translate }} :</label>
+                    <input type="text" class="form-control" id="InputCity" placeholder="{{ 'customer.enter_city' | translate }}" ng-model="credentials.city">
                 </div>
 
                 <div class="form-group">
-                    <label for="InputCountry">Country :</label>
-                    <input type="text" class="form-control" id="InputCountry" placeholder="Enter country" value="Ireland"
+                    <label for="InputCountry">{{ 'customer.country' | translate }} :</label>
+                    <input type="text" class="form-control" id="InputCountry" placeholder="{{ 'customer.enter_country' | translate }}" value="{{ 'defaultCountry' | translate }}"
                            ng-model="credentials.country">
                 </div>
             </div>
@@ -86,31 +84,28 @@
 
 
         <div class="form-group">
-            <label for="InputCity">Phone :</label>
-            <input type="text" class="form-control" id="InputCity" placeholder="Enter city" ng-model="credentials.phone">
+            <label for="InputPhone">{{ 'customer.phone' | translate }} :</label>
+            <input type="text" class="form-control" id="InputPhone" placeholder="{{ 'customer.enter_phone' | translate }}" ng-model="credentials.phone">
         </div>
 
 
         <div ng-show="success" class="alert alert-success">
-            User account created successfully,<br/>An email has been sent to your mailbox
+            {{ 'message.user_account_created' | translate }},<br/>{{ 'message.email_sent' | translate }}
         </div>
         <div ng-show="error" class="alert alert-danger">
-            Email provided is already used for an existing account
+            {{ 'message.email_duplicated' | translate }}
         </div>
 
-        <!--<div ng-show="differentPassword" class="alert alert-danger">
-            Confirmed password is different from the first one
-        </div>-->
 
         <div ng-show="(form.password1.$dirty && form.password1.$invalid) ||
                         (form.password2.$dirty && form.password2.$invalid)"
              class="alert alert-danger">
-            Please provide password and its confirmation
+            {{ 'message.provide_confirmation_password' | translate }}
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default"  ng-click="cancel()">Cancel</button>
-        <input type="submit" class="btn btn-primary" value="Create" ng-show="!success"
+        <button type="button" class="btn btn-default"  ng-click="cancel()">{{ 'common.cancel' | translate }}</button>
+        <input type="submit" class="btn btn-primary" value="{{ 'common.create' | translate }}" ng-show="!success"
                ng-disabled="form.$error.required|| form.$invalid || differentPassword">
     </div>
     <spinner loading="loading"></spinner>

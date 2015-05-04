@@ -1,6 +1,6 @@
-<div ng-controller="ListCustomerController">
+<div ng-controller="ListCustomerController" class="ng-cloak" ng-cloak>
     <div class="row">
-        <h1 class="text-center">Customers List</h1>
+        <h1 class="text-center">{{ 'part.list_customers' | translate }}</h1>
     </div>
 
     <div class="row row-lg-space">
@@ -9,7 +9,7 @@
                 <span class="input-group-addon">
                    <i class="fa fa-search"></i>
                 </span>
-                <input type="text" class="form-control" placeholder="Search for..."
+                <input type="text" class="form-control" placeholder="{{ 'common.search' | translate }}..."
                         ng-model="inputSearch">
             </div>
         </div>
@@ -34,16 +34,16 @@
                         <th>ID</th>
                         <th class="table-sortable"
                             ng-click="reverse=!reverse ;order('name', reverse)">
-                            Name
+                            {{ 'customer.name' | translate }}
                                 <span class="fa"
                                       ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
                                       ng-show="active.name">
                                 </span>
                         </th>
-                        <th>Address</th>
+                        <th>{{ 'customer.address' | translate }}</th>
                         <th class="table-sortable"
                             ng-click="reverse=!reverse ;order('city', reverse)">
-                            City
+                            {{ 'customer.city' | translate }}
                                 <span class="fa"
                                       ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
                                       ng-show="active.city">
@@ -51,22 +51,22 @@
                         </th>
                         <th class="table-sortable"
                             ng-click="reverse=!reverse ;order('country', reverse)">
-                            Country
+                            {{ 'customer.country' | translate }}
                                 <span class="fa"
                                       ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
                                       ng-show="active.country">
                                 </span>
                         </th>
-                        <th>Phone</th>
+                        <th>{{ 'customer.phone' | translate }}</th>
                         <th class="table-sortable"
                             ng-click="reverse=!reverse ;order('accountType', reverse)">
-                            Account Type
+                            {{ 'customer.account_type' | translate }}
                                 <span class="fa"
                                       ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
                                       ng-show="active.accountType">
                                 </span>
                         </th>
-                        <th>Edit</th>
+                        <th>{{ 'common.edit' | translate }}</th>
                     </tr>
                     </thead>
                     <tbody>

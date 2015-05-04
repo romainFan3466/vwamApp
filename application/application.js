@@ -65,11 +65,12 @@ AppModule.config(["$translateProvider", "tmhDynamicLocaleProvider",function($tra
     });
     $translateProvider.determinePreferredLanguage(function(){
         var language =  window.navigator.userLanguage || window.navigator.language;
+        console.log("language detected: " + language);
         var local = (angular.isDefined(language) && angular.equals(language,"fr"))? language : "en";
         tmhDynamicLocaleProvider.defaultLocale(local);
         return local;
     });
-    $translateProvider.useLocalStorage();
+    $translateProvider.useCookieStorage();
 }]);
 
 

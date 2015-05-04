@@ -48,7 +48,7 @@
                 "<%= vendorPath %>/angular-animate/angular-animate.min.js",
                 "<%= vendorPath %>/angular-resource/angular-resource.min.js",
                 "<%= vendorPath %>/angular-filter/dist/angular-filter.min.js",
-              "<%= vendorPath %>/angular-cookies/angular-cookies.js",
+                "<%= vendorPath %>/angular-cookies/angular-cookies.js",
                 "<%= vendorPath %>/angular-dynamic-locale/dist/tmhDynamicLocale.js",
                 "<%= vendorPath %>/angular-translate/angular-translate.min.js",
                 "<%= vendorPath %>/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js",
@@ -89,7 +89,7 @@
                 {
                     "expand": true,
                     "cwd": "<%= vendorPath %>",
-                    "src": "{slim,mpdf,phpqrcode}/**/*",
+                    "src": "{slim,mpdf,phpqrcode,phpseclib}/**/*",
                     "dest": "<%= buildPath %>/php/"
                 },
                 {
@@ -211,9 +211,9 @@
       },
       "src":  "<%= target.local %>",
       "dest": "<%= target.targetServer %>",
-      "exclusions": ["php/mpdf/**/*", "php/phpqrcode/**/*", "php/slim/**/*"],
-      "keep": ["/php/.htaccess", "/php/mpdf/**/*", "/php/phpqrcode/**/*", "/php/slim/**/*"],
-      "simple": false,
+      "exclusions": ["php/mpdf/**/*", "php/phpqrcode/**/*", "php/slim/**/*", "php/slim/**/*", "php/phpseclib/*/**"],
+      "keep": ["/php/.htaccess", "/php/mpdf/**/*", "/php/phpqrcode/**/*", "/php/slim/**/*", "/php/phpseclib/*/**"],
+      "simple": true,
       "useList": false
     }
   },
@@ -265,6 +265,7 @@
                         "!bower_components/**/*",
                         "!config/appConfig.json",
                         "!application/php/configDB.php",
+                        "!application/php/RSAkey/**/*",
                         "!themes/default/localizable/**/*"
                     ],
                     "dest": "./gitReposit"
@@ -319,19 +320,25 @@
             "basePath" : "..",
             "configFile":"<%= configPath %>/config.karma.js",
             "files" : [
-                "<%= vendorPath %>/angular/angular.min.js",
-                "<%= vendorPath %>/angular-route/angular-route.min.js",
-                "<%= vendorPath %>/angular-animate/angular-animate.min.js",
-                "<%= vendorPath %>/angular-resource/angular-resource.min.js",
-                "<%= vendorPath %>/jquery/dist/jquery.js",
-                "<%= vendorPath %>/bootstrap/dist/js/bootstrap.min.js",
-                "<%= vendorPath %>/angular-bootstrap/ui-bootstrap.min.js",
-                "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.min.js",
-                "<%= vendorPath %>/angular-mocks/angular-mocks.js",
-                "<%= vendorPath %>/angular-filter/dist/angular-filter.min.js",
-                "<%= appPath %>/**/*.js",
-                "./test/**/*.js"
-
+              "<%= vendorPath %>/angular/angular.js",
+              "<%= vendorPath %>/angular-route/angular-route.js",
+              "<%= vendorPath %>/angular-animate/angular-animate.js",
+              "<%= vendorPath %>/angular-resource/angular-resource.js",
+              "<%= vendorPath %>/angular-mocks/angular-mocks.js",
+              "<%= vendorPath %>/angular-filter/dist/angular-filter.js",
+              "<%= vendorPath %>/angular-cookies/angular-cookies.js",
+              "<%= vendorPath %>/angular-dynamic-locale/dist/tmhDynamicLocale.js",
+              "<%= vendorPath %>/angular-translate/angular-translate.min.js",
+              "<%= vendorPath %>/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js",
+              "<%= vendorPath %>/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js",
+              "<%= vendorPath %>/angular-translate-storage-local/angular-translate-storage-local.min.js",
+              "<%= vendorPath %>/jquery/dist/jquery.js",
+              "<%= vendorPath %>/langSwitcher/js/angular/angular-polyglot.language.switcher.js",
+              "<%= vendorPath %>/bootstrap/dist/js/bootstrap.min.js",
+              "<%= vendorPath %>/angular-bootstrap/ui-bootstrap.min.js",
+              "<%= vendorPath %>/angular-bootstrap/ui-bootstrap-tpls.js",
+              "<%= appPath %>/**/*.js",
+              "./test/**/*.js"
             ]
         },
         "unit": {

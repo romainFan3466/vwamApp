@@ -75,6 +75,35 @@ $app->post('/customers/id/:ID', function($ID) use ($app) {
     }
 });
 
+$app->post('/customers/aes', function() use ($app) {
+
+    $db = new DbHandler();
+    $session = $db->getSession();
+    $response = array();
+
+    if(!$session["authenticated"]){
+        $response["message"] = "Unauthorized access, need to login in";
+        echoResponse(401, $response);
+    }
+    else{
+        $request = json_decode($app->request->getBody());
+        $cipher = $request->cipher;
+
+        $cipherDecode64 = base64_decode($cipher);
+        $aes = new AESgenerator();
+        $ID = $aes->decrypt($cipherDecode64);
+        $result = getCustomerByID($db, $session, $ID);
+        $content= array();
+        if(isset($result["customer"])){
+            $content["customer"] = $result["customer"];
+        }
+        else{
+            $content["message"] = $result["message"];
+        }
+        echoResponse($result["code"], $content);
+    }
+});
+
 $app->post('/customers/all', function() {
 
     $db = new DbHandler();

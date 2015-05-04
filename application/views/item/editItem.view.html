@@ -1,17 +1,17 @@
 <!-- TODO : Washingapp : ask for deletion -->
-<div class="container-fluid" ng-controller="EditItemController">
+<div class="container-fluid ng-cloak" ng-cloak ng-controller="EditItemController">
     <div class="row">
-        <h1 class="text-center">Edit Item</h1>
+        <h1 class="text-center">{{ 'part.edit_item' | translate }}</h1>
     </div>
 
     <div class="row row-lg-space">
         <div class="col-md-offset-3 col-md-6">
-            <label for="InputName">Item name</label>
+            <label for="InputName">{{ 'item.name' | translate }}</label>
             <input type="text"
                    ng-model="retrieved"
                    id="InputName"
                    class="form-control"
-                   placeholder="Enter item name"
+                   placeholder="{{ 'item.enter_item_name' | translate }}"
                    typeahead="item as item.description for item in items | filter:{description:$viewValue} "
                    typeahead-on-select='onSelect($item, $model, $label)'>
             <spinner loading="loading"></spinner>
@@ -21,7 +21,7 @@
             <form>
                 <div class="row">
                     <div class="form-group col-md-offset-3 col-md-6">
-                        <label for="inputNameNew" class="control-label">Name</label>
+                        <label for="inputNameNew" class="control-label">{{ 'item.name' | translate }}</label>
                         <input type="text" class="form-control" id="inputNameNew"
                                ng-model="item.name"
                                ng-disabled="!editor">
@@ -30,14 +30,14 @@
 
                 <div class="row">
                     <div class="form-group col-md-offset-3 col-md-6">
-                        <label> Washing type :</label>
+                        <label> {{ 'item.washing_type' | translate }} :</label>
                         <div class="radio">
                             <label>
                                 <input type="radio"
                                        ng-model="item.type"
                                        value="Outside"
                                        ng-disabled="!editor">
-                                Outside
+                                {{ 'Outside' | translate }}
                             </label>
                         </div>
                         <div class="radio">
@@ -46,7 +46,7 @@
                                        ng-model="item.type"
                                        value="Inside"
                                        ng-disabled="!editor">
-                                Inside
+                                {{ 'Inside' | translate }}
                             </label>
                         </div>
                         <div class="radio">
@@ -55,7 +55,7 @@
                                        ng-model="item.type"
                                        value="Other"
                                        ng-disabled="!editor">
-                                Other
+                                {{ 'Other' | translate }}
                             </label>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
 
                 <div class="row">
                     <div class="form-group col-xs-4 col-md-offset-3 col-md-2">
-                        <label for="inputCity" class="control-label">Price</label>
+                        <label for="inputCity" class="control-label">{{ 'item.price' | translate }}</label>
                         <input type="text" class="form-control" id="inputCity"
                                ng-disabled="!editor"
                                ng-model="item.price">
@@ -75,23 +75,23 @@
         <button class="btn btn-danger col-xs-offset-5 col-xs-2 col-sm-offset-2 col-sm-2 col-space"
                 ng-click="remove(item)"
                 ng-disabled="!found">
-            Delete
+            {{ 'common.delete' | translate }}
         </button>
         <button class="btn btn-primary col-xs-offset-5 col-xs-2 col-space col-sm-offset-1 col-sm-2"
                 ng-click="editor=true"
                 ng-disabled="!found"
                 ng-show="!editor">
-            Edit
+            {{ 'common.edit' | translate }}
         </button>
         <button class="btn btn-success col-xs-offset-5 col-xs-2 col-sm-offset-1 col-sm-2 col-space"
                 ng-click="update(item)"
                 ng-show="editor">
-            Update
+            {{ 'common.update' | translate }}
         </button>
         <button class="btn btn-default col-xs-offset-5 col-xs-2 col-sm-offset-1 col-sm-2 col-space"
                 ng-click="resetChange()"
                 ng-show="editor">
-            Reset change
+            {{ 'common.reset' | translate }}
         </button>
     </div>
 
@@ -99,21 +99,21 @@
     <div class="row" ng-show="edited">
         <div class="center-block text-center"><span class="alert alert-success">
             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-            Item <strong>{{itemPrev.name}}</strong> edited successfully
+            {{ 'item.item_the' | translate }} <strong>{{itemPrev.name}}</strong> {{ 'message.edited_successfully' | translate }}
         </span></div>
     </div>
 
     <div class="row row-lg-space" ng-show="deleted">
         <div class="center-block text-center"><span class="alert alert-success">
             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-            Item <strong>{{itemPrev.name}}</strong> deleted successfully
+            {{ 'item.item_the' | translate }} <strong>{{itemPrev.name}}</strong> {{ 'message.deleted_successfully' | translate }}
         </span></div>
     </div>
 
     <div class="row row-lg-space" ng-show="doublon">
        <div class="center-block text-center"> <span class="alert alert-danger">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            Item <strong>{{item.name}}</strong> can't be edited, an existing item has the same name
+            {{ 'item.item' | translate }} <strong>{{item.name}}</strong> : {{ 'message.error_item_name_type_duplicated' | translate }}
         </span></div>
     </div>
 </div>

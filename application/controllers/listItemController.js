@@ -75,10 +75,18 @@ AppModule.controller("ListItemController", [
             }
         });
 
+        var sortPrice = function(item){
+            return parseFloat(item.price);
+        };
+
 
         $scope.order = function(predicate, reverse) {
-            $scope.items = $filter('orderBy')($scope.items, predicate, reverse);
-             _setActive(predicate);
+            if(predicate==='price'){
+                $scope.items = $filter('orderBy')($scope.items, sortPrice, reverse);
+            }else {
+                $scope.items = $filter('orderBy')($scope.items, predicate, reverse);
+            }
+            _setActive(predicate);
         };
 
 

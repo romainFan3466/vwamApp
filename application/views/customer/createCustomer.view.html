@@ -1,7 +1,7 @@
-<!-- TODO : Washingapp : implement account type, change matriculation to irish word -->
-<div class="container-fluid" ng-controller="CreateCustomerController">
+<!-- TODO : Washingapp : implement account type -->
+<div class="container-fluid ng-cloak" ng-controller="CreateCustomerController" ng-cloak>
     <div class="row">
-        <h1 class="text-center">Create Customer</h1>
+        <h1 class="text-center">{{ 'part.create_customer' | translate }}</h1>
     </div>
     <div class="row row-lg-space">
         <div class="col-md-offset-3 col-md-6">
@@ -10,45 +10,45 @@
                   name="form">
 
                 <div class="form-group">
-                    <label for="InputName">Customer name</label>
+                    <label for="InputName">{{ 'customer.customer_name' | translate }}</label>
                     <input type="text"
                            ng-model="customer.name"
                            id="InputName"
                            name="name"
-                           placeholder="Enter customer name"
+                           placeholder="{{ 'common.enter_customer_name' | translate }}"
                            class="form-control" required>
                 </div>
 
 
                 <div class="form-group">
-                    <label for="InputAddress">Address</label>
-                    <textarea type="text" rows="3" class="form-control" id="InputAddress" placeholder="Enter address"
+                    <label for="InputAddress">{{ 'customer.address' | translate }}</label>
+                    <textarea type="text" rows="3" class="form-control" id="InputAddress" placeholder="{{ 'customer.enter_address' | translate }}"
                               ng-model="customer.address"></textarea>
                 </div>
 
 
                 <div class="form-inline">
                     <div class="form-group">
-                        <label for="InputCity">City</label>
-                        <input type="text" class="form-control" id="InputCity" placeholder="Enter city" ng-model="customer.city">
+                        <label for="InputCity">{{ 'customer.city' | translate }}</label>
+                        <input type="text" class="form-control" id="InputCity" placeholder="{{ 'customer.enter_city' | translate }}" ng-model="customer.city">
                     </div>
 
                     <div class="form-group">
-                        <label for="InputCountry">Country</label>
-                        <input type="text" class="form-control" id="InputCountry" placeholder="Enter country" value="Ireland"
+                        <label for="InputCountry">{{ 'customer.country' | translate }}</label>
+                        <input type="text" class="form-control" id="InputCountry" placeholder="{{ 'customer.enter_country' | translate }}" value="Ireland"
                                ng-model="customer.country">
                     </div>
                 </div>
 
 
                 <div class="form-group">
-                    <label for="InputPhone">Phone</label>
-                    <input type="text" class="form-control" id="InputPhone" placeholder="Enter phone number" ng-model="customer.phone">
+                    <label for="InputPhone">{{ 'customer.phone' | translate }}</label>
+                    <input type="text" class="form-control" id="InputPhone" placeholder="{{ 'customer.enter_phone' | translate }}" ng-model="customer.phone">
                 </div>
 
 
                 <button type="submit" class="btn btn-success"
-                        ng-disabled="form.name.$invalid">Create</button>
+                        ng-disabled="form.name.$invalid">{{ 'common.create' | translate }}</button>
 
             </form>
         </div>
@@ -59,17 +59,17 @@
         <div class="center-block text-center">
             <span ng-show="success && form.name.$invalid" class="alert alert-success">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                Customer has been created
+                {{ 'message.customer_created_success' | translate }}
             </span>
 
             <span ng-show="error && !success" class="alert alert-danger">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                Error, customer hasn't been created, server doesn't respond
+                {{ 'message.error_customer_not_created' | translate }}
             </span>
 
             <span ng-show="invalidName" class="alert alert-danger">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                Name is already used for another customer, change it
+                {{ 'message.error_customer_name_duplicated' | translate }}
             </span>
 
             <spinner loading="loading"></spinner>

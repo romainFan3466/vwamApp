@@ -1,17 +1,18 @@
-<!-- TODO : Washingapp : implement account type, ask for deletion -->
-<div class="container-fluid" ng-controller="EditCustomerController">
+<!-- TODO : Washingapp : implement account type, doublon pb static name io dynamic binded
+ interlace between error and success message-->
+<div class="container-fluid ng-cloak" ng-controller="EditCustomerController" ng-cloak>
     <div class="row">
-        <h1 class="text-center">Edit Customer</h1>
+        <h1 class="text-center">{{ 'part.edit_customer' | translate }}</h1>
     </div>
 
     <div class="row row-lg-space">
         <div class="col-md-offset-3 col-md-6">
-            <label for="InputCompany">Customer name</label>
+            <label for="InputCompany">{{ 'customer.customer_name' | translate }}</label>
             <input type="text"
                    ng-model="retrieved"
                    id="InputCompany"
                    class="form-control"
-                   placeholder="Enter customer name"
+                   placeholder="{{ 'common.enter_customer_name' | translate }}"
                    typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue} "
                    typeahead-on-select='onSelect($item, $model, $label)'>
             <spinner loading="loading"></spinner>
@@ -24,7 +25,7 @@
 
             <form class="form-horizontal">
                 <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                    <label for="inputName" class="col-sm-2 control-label">{{ 'customer.name' | translate }}</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="inputName"
                                ng-model="customer.name"
@@ -32,7 +33,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputAddress" class="col-sm-2 control-label">Address</label>
+                    <label for="inputAddress" class="col-sm-2 control-label">{{ 'customer.address' | translate }}</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="inputAddress"
                                ng-disabled="!editor"
@@ -40,7 +41,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCity" class="col-sm-2 control-label">City</label>
+                    <label for="inputCity" class="col-sm-2 control-label">{{ 'customer.city' | translate }}</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="inputCity"
                                ng-disabled="!editor"
@@ -48,7 +49,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCountry" class="col-sm-2 control-label">Country</label>
+                    <label for="inputCountry" class="col-sm-2 control-label">{{ 'customer.country' | translate }}</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="inputCountry"
                                ng-disabled="!editor"
@@ -56,7 +57,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputPhone" class="col-sm-2 control-label" >Phone</label>
+                    <label for="inputPhone" class="col-sm-2 control-label" >{{ 'customer.phone' | translate }}</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="inputPhone"
                                ng-disabled="!editor"
@@ -71,41 +72,40 @@
         <button class="btn btn-danger col-xs-offset-5 col-xs-2 col-sm-offset-2 col-sm-2 col-space"
                 ng-click="remove(customer)"
                 ng-disabled="!found">
-            Delete
+            {{ 'common.delete' | translate }}
         </button>
         <button class="btn btn-primary col-xs-offset-5 col-xs-2 col-space col-sm-offset-1 col-sm-2"
                 ng-click="editor=true"
                 ng-disabled="!found"
                 ng-show="!editor">
-            Edit
+            {{ 'common.edit' | translate }}
         </button>
         <button class="btn btn-success col-xs-offset-5 col-xs-2 col-sm-offset-1 col-sm-2 col-space"
                 ng-click="update(customer)"
                 ng-show="editor">
-            Update
+            {{ 'common.update' | translate }}
         </button>
         <button class="btn primary col-xs-offset-5 col-xs-2 col-sm-offset-1 col-sm-2 col-space"
                 ng-click="resetChange()"
                 ng-show="editor">
-            Reset change
+            {{ 'common.reset' | translate }}
         </button>
-
     </div>
 
 
-    <div class="row" ng-show="edited">
+    <div class="row" ng-show="edited && retrieved===''">
         <div class="center-block text-center">
            <span class="alert alert-success">
            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-           Customer <strong>{{tempName}}</strong> edited successfully
+           {{ 'customer.the_customer' | translate }} <strong>{{tempName}}</strong> {{ 'message.edited_successfully' | translate }}
             </span>
         </div>
     </div>
 
-    <div class=" row" ng-show="deleted">
+    <div class=" row" ng-show="deleted && retrieved===''">
         <div class="center-block text-center"><span class="alert alert-success">
             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-            Customer <strong>{{tempName}}</strong> deleted successfully
+            {{ 'customer.the_customer' | translate }} <strong>{{tempName}}</strong> {{ 'message.deleted_successfully' | translate }}
         </span></div>
     </div>
 
@@ -113,7 +113,7 @@
         <div class="center-block text-center">
             <span class="alert alert-danger ">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            Customer <strong>{{tempName}}</strong> can't be edited, an existing customer has the same name
+            {{ 'customer.the_customer' | translate }} <strong>{{tempName}}</strong> {{ 'message.error_edited' | translate }}
         </span></div>
     </div>
 </div>

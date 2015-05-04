@@ -10,8 +10,8 @@
  *
  */
 AppModule.controller("EditCustomerController", [
-    "$scope", "$log", "$customer","$routeParams","$modal",
-    function ($scope, $log, $customer, $routeParams, $modal) {
+    "$scope", "$log", "$customer","$routeParams","$modal", "$filter",
+    function ($scope, $log, $customer, $routeParams, $modal, $filter) {
 
         $scope.customer = {};
         $scope.customers =[];
@@ -65,7 +65,7 @@ AppModule.controller("EditCustomerController", [
         };
 
 
-        $scope.update = function(customer){
+        var _update = function(customer){
             $scope.loading=true;
             if(!_isPresent(customer.name)){
                 $customer.update(customer).then(
@@ -74,6 +74,7 @@ AppModule.controller("EditCustomerController", [
                         $scope.edited=true;
                         $scope.tempName = $scope.customer.name;
                         $scope.customer={};
+                        $scope.retrieved = "";
                         _getAllCustomerName();
                     },
                     function(res){
@@ -99,6 +100,7 @@ AppModule.controller("EditCustomerController", [
                     _getAllCustomerName();
                     $scope.tempName = $scope.customer.name;
                     $scope.customer={};
+                    $scope.retrieved = "";
                 },
                 function(res){
                     $scope.loading=false;
@@ -174,13 +176,32 @@ AppModule.controller("EditCustomerController", [
                 size : 'sm',
                 resolve: {
                     message: function () {
-                        return "Are you sure to delete this customer ?";
+                        return $filter('translate')('customer.confirmation_deletion');
                     }
                 }
             });
 
             modalInstance.result.then(function (val) {
                 _remove(customer);
+            }, function () {
+            });
+        };
+
+        $scope.update = function (customer) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'html/templates/modalConfirmation.template.html',
+                controller: 'ModalConfirmationController',
+                size : 'sm',
+                resolve: {
+                    message: function () {
+                        return $filter('translate')('customer.confirmation_update');
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (val) {
+                _update(customer);
             }, function () {
             });
         };

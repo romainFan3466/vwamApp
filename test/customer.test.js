@@ -1,4 +1,3 @@
-
 describe("$customer service test", function () {
     var $customer, httpBackend;
 
@@ -377,6 +376,8 @@ describe("$customer service test", function () {
     });
 
 
+
+
     describe("$customer delete method test", function () {
 
         it(" should delete a customer, good ID ", inject(['$customer','$httpBackend',
@@ -446,7 +447,7 @@ describe("$customer service test", function () {
     });
 
 
-    describe("$customer update method test", function () {
+   describe("$customer update method test", function () {
 
         it(" should update a customer data, good object ", inject(['$customer','$httpBackend', "CustomerMapper",
             function($customer, $httpBackend, CustomerMapper){
@@ -519,6 +520,7 @@ describe("$customer service test", function () {
                         expect(angular.equals(res.message, result.message)).toEqual(true);
                     }
                 );
+
                 $httpBackend.flush();
             }]));
 
@@ -560,7 +562,7 @@ describe("$customer service test", function () {
                     $httpBackend.flush();
                 }]));
 
-        xit("should return error, customer name matches with an other name", inject(['$customer','$httpBackend', "CustomerMapper",
+        it("should return error, customer name matches with an other name", inject(['$customer','$httpBackend', "CustomerMapper",
             function($customer, $httpBackend, CustomerMapper){
 
                 var customer = {

@@ -11,9 +11,11 @@
  * Interacts with template : "listInvoice.view.html"
  *
  */
+
+//TODO washingapp disable button refund for amount <=0 , idem for refund template
 AppModule.controller("ListInvoiceController", [
-    "$scope", "$log", "$customer","$filter", "$invoice",
-    function ($scope, $log, $customer, $filter, $invoice) {
+    "$scope", "$log", "$customer","$filter", "$invoice","$translate",
+    function ($scope, $log, $customer, $filter, $invoice, $translate) {
 
         $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
         $scope.format = $scope.formats[0];
@@ -126,6 +128,11 @@ AppModule.controller("ListInvoiceController", [
             startingDay: 1
         };
 
+        $scope.generateLink = function(invoiceID){
+          var language = $translate.use();
+            return "/php/invoices/pdf/" + invoiceID + "/" + language;
+        };
+
 
 
 
@@ -175,9 +182,17 @@ AppModule.controller("ListInvoiceController", [
             }
         };
 
+        var sortTotalPrice = function(invoice){
+          return parseFloat(invoice.totalPrice);
+        };
+
 
         $scope.order = function(predicate, reverse) {
-            $scope.invoices = $filter('orderBy')($scope.invoices, predicate, reverse);
+            if(predicate==='totalPrice'){
+                $scope.invoices = $filter('orderBy')($scope.invoices, sortTotalPrice, reverse);
+            }else {
+                $scope.invoices = $filter('orderBy')($scope.invoices, predicate, reverse);
+            }
             (predicate=='customer.name')? _setActive('customerName') : _setActive(predicate);
         };
 

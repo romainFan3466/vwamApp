@@ -189,6 +189,22 @@ AppModule.factory('$customer',[
         };
 
 
+        var _getCustomerByCipher = function(cipher){
+            var deferred = $q.defer();
+            $http
+                .post(Config.baseUrl + '/php/customers/aes',{cipher : cipher})
+                .success(function (res) {
+                    var customer = new CustomerMapper(res.customer);
+                    deferred.resolve({customer : customer});
+                })
+                .error(function(res){
+                    deferred.reject({message : res.message});
+                });
+
+            return deferred.promise;
+        };
+
+
         /**
          * @ngdoc method
          * @name getAllName
@@ -568,6 +584,7 @@ AppModule.factory('$customer',[
         return {
             get : _get,
             getByID : _getByID,
+            getCustomerByCipher : _getCustomerByCipher,
             getAllName : _getAllName,
             getAll : _getAll,
             add : _add,

@@ -256,7 +256,7 @@ $app->post('/invoices/id/:ID', function ($ID) use ($app) {
     }
 });
 
-$app->get('/invoices/pdf/:ID', function ($ID) use ($app) {
+$app->get('/invoices/pdf/:ID(/:language)', function ($ID, $language="en") use ($app) {
 
     $db = new DbHandler();
     $session = $db->getSession();
@@ -268,7 +268,14 @@ $app->get('/invoices/pdf/:ID', function ($ID) use ($app) {
     } else {
 
         $result = getInvoiceByID($db, $session, $ID);
-        include("invoicePdfModule.php");
+
+        if($result["code"]!=200) {
+            echoResponse($result["code"], $result["result"]);
+        }
+        else {
+            $invoice = (object)$result["result"]["invoice"];
+            (isset($language) && $language === "fr") ? include("invoicePdfModuleFR.php") : include("invoicePdfModuleEN.php");
+        }
 
     }
 });

@@ -1,6 +1,6 @@
-<div class="container-fluid" ng-controller="CreateItemController">
+<div class="container-fluid ng-cloak" ng-cloak ng-controller="CreateItemController">
     <div class="row">
-        <h1 class="text-center">Create Item</h1>
+        <h1 class="text-center">{{ 'part.create_item' | translate }}</h1>
     </div>
 
             <form role="form"
@@ -9,12 +9,12 @@
 
                 <div class="row">
                     <div class="form-group col-md-offset-3 col-md-6">
-                        <label for="InputName">Item type </label>
+                        <label for="InputName">{{ 'item.name' | translate }} </label>
                         <input type="text"
                                ng-model="item.name"
                                id="InputName"
                                name="name"
-                               placeholder="Enter item name"
+                               placeholder="{{ 'item.enter_item_name' | translate }}"
                                class="form-control" required>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
 
                 <div class="row">
                     <div class="form-group col-md-offset-3 col-md-6">
-                        <label> Washing type </label>
+                        <label> {{ 'item.washing_type' | translate }} </label>
 
                         <div class="radio">
                             <label>
@@ -30,7 +30,7 @@
                                        ng-model="item.type"
                                        value="Outside"
                                        checked>
-                                Outside
+                                {{ 'Outside' | translate }}
                             </label>
                         </div>
                         <div class="radio">
@@ -38,7 +38,7 @@
                                 <input type="radio"
                                        ng-model="item.type"
                                        value="Inside">
-                                Inside
+                                {{ 'Inside' | translate }}
                             </label>
                         </div>
                         <div class="radio">
@@ -46,7 +46,7 @@
                                 <input type="radio"
                                        ng-model="item.type"
                                        value="Other">
-                                Other
+                                {{ 'Other' | translate }}
                             </label>
                         </div>
                     </div>
@@ -55,9 +55,9 @@
 
                 <div class="row">
                     <div class="form-group col-xs-4 col-md-offset-3 col-md-2">
-                        <label for="InputPrice">Price (&euro;) </label>
+                        <label for="InputPrice">{{ 'item.price' | translate }} (&euro;) </label>
                         <input type="text" class="form-control" id="InputPrice" placeholder="XXX.XX"
-                               ng-model="item.price">
+                               ng-model="item.price" required>
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@
                 <div class="row">
                     <div class="form-group col-xs-2 col-md-offset-3 col-md-2">
                         <button type="submit" class="btn btn-success"
-                                ng-disabled="form.name.$invalid">Create
+                                ng-disabled="form.$invalid">{{ 'common.create' | translate }}
                         </button>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
         <div class="center-block text-center">
             <span ng-show="success && form.name.$invalid" class="alert alert-success">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                Item has been created
+                {{ 'message.item_created_success' | translate }}
             </span>
         </div>
     </div>
@@ -87,7 +87,7 @@
         <div class="center-block text-center">
             <span ng-show="error && !success" class="alert alert-danger">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                Error, item hasn't been created, server doesn't respond
+                {{ 'message.error_item_not_created' | translate }}
             </span>
         </div>
     </div>
@@ -96,7 +96,7 @@
         <div class="center-block text-center">
             <span ng-show="invalidName" class="alert alert-danger">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                Name and type are already used for another item, change name or type
+                {{ 'message.error_item_name_type_duplicated' | translate }}
             </span>
         </div>
     </div>

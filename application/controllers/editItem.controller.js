@@ -11,8 +11,8 @@
  * Interacts with template : "editItem.view.html"
  */
 AppModule.controller("EditItemController", [
-    "$scope", "$log", "$item","$routeParams",
-    function ($scope, $log, $item_app, $routeParams) {
+    "$scope", "$log", "$item","$routeParams","$modal","$filter",
+    function ($scope, $log, $item_app, $routeParams, $modal, $filter) {
 
         $scope.item = {};
         $scope.items =[];
@@ -43,7 +43,7 @@ AppModule.controller("EditItemController", [
         };
 
 
-        $scope.update = function(item){
+        var _update = function(item){
             $scope.loading=true;
             if(!_isPresent(item.name)){
 
@@ -69,8 +69,27 @@ AppModule.controller("EditItemController", [
 
         };
 
+        $scope.update = function (item) {
 
-        $scope.remove = function(item){
+            var modalInstance = $modal.open({
+                templateUrl: 'html/templates/modalConfirmation.template.html',
+                controller: 'ModalConfirmationController',
+                size : 'sm',
+                resolve: {
+                    message: function () {
+                        return $filter('translate')('item.confirmation_update');
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (val) {
+                _update(item);
+            }, function () {
+            });
+        };
+
+
+        var _remove = function(item){
             $scope.loading=true;
             $item_app.delete(item.ID).then(
                 function(res){
@@ -89,6 +108,24 @@ AppModule.controller("EditItemController", [
 
                 }
             );
+        };
+
+        $scope.remove = function (item) {
+            var modalInstance = $modal.open({
+                templateUrl: 'html/templates/modalConfirmation.template.html',
+                controller: 'ModalConfirmationController',
+                size : 'sm',
+                resolve: {
+                    message: function () {
+                        return $filter('translate')('item.confirmation_deletion');
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (val) {
+                _remove(item);
+            }, function () {
+            });
         };
 
 

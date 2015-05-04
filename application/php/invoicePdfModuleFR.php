@@ -1,13 +1,4 @@
 <?php
-if($result["code"]!=200) {
-    echoResponse($result["code"], $result["result"]);
-}
-else {
-    ChromePhp::log("Hello console!");
-
-    $invoice = (object)$result["result"]["invoice"];
-    ChromePhp::log($invoice);
-    ChromePhp::log($invoice->customer["name"]);
     ob_start();
     ?>
 
@@ -16,10 +7,10 @@ else {
         <div class="row row-lg-space">
 
             <div class=" col-xs-offset-6 col-xs-6 text-right">
-                <h1>INVOICE</h1>
+                <h1>FACTURE</h1>
 
                 <h1>
-                    <small class="ng-binding">Invoice #<?php echo $invoice->ID ;?></small>
+                    <small class="ng-binding">Facture #<?php echo $invoice->ID ;?></small>
                 </h1>
             </div>
         </div>
@@ -28,7 +19,7 @@ else {
             <div class="col-xs-5">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 ><strong>To : </strong><?php echo $invoice->customer["name"];?></h4>
+                        <h4 ><strong>À : </strong><?php echo $invoice->customer["name"];?></h4>
                     </div>
                     <div class="panel-body">
                         <p>
@@ -38,15 +29,15 @@ else {
                             <?php echo $invoice->customer["phone"];?> <br>
                         </p>
                         <hr>
-                        <p>Vehicle registration #1 : <?php echo $invoice->matriculation["first"];?></p>
-                        <p>Vehicle registration #2 : <?php echo $invoice->matriculation["second"];?></p>
+                        <p>Immatriculation véhicule #1 : <?php echo $invoice->matriculation["first"];?></p>
+                        <p>Immatriculation véhicule #2 : <?php echo $invoice->matriculation["second"];?></p>
                     </div>
                 </div>
             </div>
             <div class="col-xs-5 col-xs-offset-2 text-right">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4><strong>From :</strong> <?php echo $invoice->from["company"];?></h4>
+                        <h4><strong>De :</strong> <?php echo $invoice->from["company"];?></h4>
                     </div>
                     <div class="panel-body">
                         <p>
@@ -73,13 +64,13 @@ else {
                     <h4>Description</h4>
                 </th>
                 <th>
-                    <h4>Qty</h4>
+                    <h4>Qté</h4>
                 </th>
                 <th>
-                    <h4>Rate/Price</h4>
+                    <h4>Prix Unit.</h4>
                 </th>
                 <th>
-                    <h4>Sub Total</h4>
+                    <h4>Sous Total</h4>
                 </th>
             </tr>
             </thead>
@@ -103,7 +94,7 @@ else {
             <div class="col-xs-2 col-xs-offset-7">
                 <p>
                     <strong>
-                        Sub Total : <br>
+                        Sous Total : <br>
                         TAX : <br>
                         Total : <br>
                     </strong>
@@ -122,22 +113,22 @@ else {
             <div class="col-xs-6">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h4>Invoice details</h4>
+                        <h4>Details</h4>
                     </div>
                     <div class="panel-body">
-                        <p class="ng-binding">Invoice number : <?php echo $invoice->ID ;?></p>
+                        <p class="ng-binding">Numéro de facture : <?php echo $invoice->ID ;?></p>
 
-                        <p class="ng-binding">Created : <?php echo $invoice->created ;?></p>
+                        <p class="ng-binding">Créée le : <?php echo $invoice->created ;?></p>
 
                         <?php if(isset($invoice->paymentMode)&& $invoice->paymentMode!==null){
-                            echo '<p>Payment mode : '. $invoice->paymentMode. '</p>';
+                            echo '<p>Mode de paiement : '. $invoice->paymentMode. '</p>';
                         }
                         ?>
 
-                        <p class="text-success">Payment status : Paid</p>
+                        <p class="text-success">Statut du paiment : Payé</p>
 
                         <?php if(isset($invoice->comment)&& strlen($invoice->comment)!==0){
-                                echo '<p>Comment : '. $invoice->comment. '</p>';
+                                echo '<p>Commentaire : '. $invoice->comment. '</p>';
                             }
                         ?>
                     </div>
@@ -146,12 +137,12 @@ else {
             <div class="col-xs-offset-1 col-xs-4">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h4>Contact Details</h4>
+                        <h4>Contact</h4>
                     </div>
                     <div class="panel-body">
                         <p class="ng-binding">
                             Email :  <?php echo $invoice->from["email"];?> <br><br>
-                            Phone :  <?php echo $invoice->from["phone"];?> <br> <br>
+                            Téléphone:  <?php echo $invoice->from["phone"];?> <br> <br>
                         </p>
                     </div>
                 </div>
@@ -186,6 +177,4 @@ else {
     $mpdf->Output($title, 'I');
 
     exit;
-
-}
 ?>

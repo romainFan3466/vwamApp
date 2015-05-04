@@ -96,9 +96,9 @@
 
                 <div class="row">
                     <div class="form-group">
-                        <button class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 btn btn-primary"
+                        <button class="col-xs-4 col-xs-offset-4 col-sm-3 col-sm-offset-5 btn btn-primary"
                                 type="submit">
-                            <span class="fa fa-search"></span>{{ 'common.search' | translate }}</button>
+                            <span class="fa fa-search"></span> {{ 'common.search' | translate }}</button>
                     </div>
                 </div>
             </form>
@@ -159,7 +159,7 @@
                                ng-href="#/invoice/list/{{invoice.ID}}"
                                target="_blank"></a></td>
                         <td class="text-center"><a class=" btn btn-danger fa fa-file-pdf-o"
-                               target="_self" ng-href="/php/invoices/pdf/{{invoice.ID}}"
+                               target="_self" ng-href="{{generateLink(invoice.ID)}}"
                                download="invoice-{{invoice.ID}}.pdf"></a></td>
                         <td class="text-center"><a class=" btn btn-warning fa fa-credit-card"
                                   ng-go="/invoice/refund/{{invoice.ID}}"></a></td>

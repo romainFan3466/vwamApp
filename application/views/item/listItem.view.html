@@ -1,6 +1,6 @@
-<div ng-controller="ListItemController">
+<div ng-controller="ListItemController" class="ng-cloak" ng-cloak>
     <div class="row">
-        <h1 class="text-center">Items List</h1>
+        <h1 class="text-center">{{ 'part.list_items' | translate }}</h1>
     </div>
 
     <div class="row row-lg-space">
@@ -9,8 +9,8 @@
 
 
                 <div class="form-group col-md-offset-2 col-md-8">
-                    <label for="InputCustomerName">Fuzzy Search
-                        <small class="text-muted">(optional)</small>
+                    <label for="InputCustomerName">{{ 'common.search' | translate }}
+                        <small class="text-muted">({{ 'common.optional' | translate }})</small>
                     </label>
                     <input type="text" class="form-control" id="InputCustomerName"
                            ng-model="itemName">
@@ -18,27 +18,27 @@
 
 
                 <div class="form-group col-md-offset-2 col-md-8">
-                    <label> Type :</label>
+                    <label> {{ 'item.washing_type' | translate }} :</label>
 
                     <div class="checkbox">
                         <label>
                             <input type="checkbox"
                                    ng-model="typeItem.Outside">
-                            Outside
+                            {{ 'Outside' | translate }}
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox"
                                    ng-model="typeItem.Inside">
-                            Inside
+                            {{ 'Inside' | translate }}
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox"
                                    ng-model="typeItem.Other">
-                            Other
+                            {{ 'Other' | translate }}
                         </label>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                     <tr>
                         <th class="table-sortable"
                             ng-click="reverse=!reverse ;order('name', reverse)">
-                            Name
+                            {{ 'item.name' | translate }}
                                 <span class="fa"
                                       ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
                                       ng-show="active.name">
@@ -63,7 +63,7 @@
                         </th>
                         <th class="table-sortable"
                             ng-click="reverse=!reverse ;order('type', reverse)">
-                            Type
+                            {{ 'item.washing_type' | translate }}
                             <span class="fa"
                                   ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
                                   ng-show="active.type">
@@ -71,20 +71,20 @@
                         </th>
                         <th class="table-sortable text-center"
                             ng-click="reverse=!reverse ;order('price', reverse)">
-                            Price
+                            {{ 'item.price' | translate }}
                             <span class="fa"
                                   ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
                                   ng-show="active.price">
                             </span>
                         </th>
-                        <th class="text-center">Edit</th>
+                        <th class="text-center">{{ 'common.edit' | translate }}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in items | slice:limitEnd:limitBegin">
                         <td>{{item.name}}</td>
                         <td>{{item.type}}</td>
-                        <td>{{item.price}}</td>
+                        <td>{{item.price}} &euro;</td>
                         <td class="text-center"><a class=" btn btn-primary fa fa-pencil-square-o"
                                                    ng-go="/item/edit/{{item.ID}}"></a></td>
                     </tr>
@@ -108,8 +108,6 @@
             </pagination>
         </div>
     </div>
-
-
 
     <spinner loading="loading"></spinner>
 </div>

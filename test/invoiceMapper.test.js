@@ -28,6 +28,8 @@ describe("InvoiceMapper service test", function () {
                         "ID": "57",
                         "totalPrice": 92.12,
                         "created": "2015-04-01 22:36:46",
+                        "paymentMode": null,
+                        "comment": "",
                         "matriculation": {
                             "first": "SDF E44",
                             "second": "SD34 56"
@@ -99,8 +101,10 @@ describe("InvoiceMapper service test", function () {
                 var expected = {
                     "invoice": {
                         "ID": "57",
-                        "totalPrice": 92.12,
+                        "totalPrice": "92.12",
                         "created": "2015-04-01 22:36:46",
+                        "paymentMode": null,
+                        "comment": "",
                         "matriculation": {
                             "first": "SDF E44",
                             "second": "SD34 56"

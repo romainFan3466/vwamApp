@@ -22,8 +22,7 @@ AppModule.controller("CreateInvoiceController", [
         $scope.customers =[];
         $scope.items = [];
         $scope.camera = false;
-        $scope.scanned = {
-        };
+        $scope.scanned = "";
 
 
         $scope.error ={
@@ -146,8 +145,9 @@ AppModule.controller("CreateInvoiceController", [
 
         $scope.$watch('scanned', function(value){
             $log.log(value);
-            if(angular.isDefined(value) && angular.isDefined(value.ID)){
-                _getCustomer(value);
+            if(angular.isDefined(value) && !angular.equals(value, "")){
+                $log.log(value);
+                _getCustomerByCipher(value);
                 $scope.found.customer=true;
             }
         });
@@ -156,9 +156,9 @@ AppModule.controller("CreateInvoiceController", [
             $scope.camera = true;
 
             $('#reader').html5_qrcode(function(data){
-                    //$scope.scanned = JSON.parse(data);
+                    $log.log(data);
                     $scope.$apply(function(){
-                        $scope.scanned = JSON.parse(data);
+                        $scope.scanned = data;
                     });
                 },
                 function(error){
@@ -173,10 +173,6 @@ AppModule.controller("CreateInvoiceController", [
         $scope.closeCam = function(){
             $scope.camera=false;
             $('#reader').html5_qrcode_stop();
-           /* $scope.$apply(function(){
-
-            });*/
-
             $("video").remove();
             $("canvas").remove()
         };
@@ -191,6 +187,22 @@ AppModule.controller("CreateInvoiceController", [
         $scope.onSelectItem = function ($item, $model, $label) {
             $scope.item = $item;
             $scope.found.item=true;
+        };
+
+        var _getCustomerByCipher = function(data){
+            $scope.loading=true;
+            $customer.getCustomerByCipher(data).then(
+                function(result) {
+                    $scope.loading = false;
+                    $scope.invoice.customer = result.customer;
+                    $scope.retrieved.customer = result.customer.name;
+                },
+                    function (result) {
+                        $scope.loading = false;
+                        $scope.error.flag = true;
+                        $scope.error.message = result.message;
+                    }
+                );
         };
 
 

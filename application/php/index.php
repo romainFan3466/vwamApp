@@ -2,6 +2,8 @@
 
 require_once 'dbHandler.php';
 require_once 'passwordHash.php';
+require_once 'AESgenerator.php';
+
 
 
 require 'slim/Slim/Slim.php';
