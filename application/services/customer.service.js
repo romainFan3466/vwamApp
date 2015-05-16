@@ -290,6 +290,28 @@ AppModule.factory('$customer',[
         };
 
 
+
+        var _getAllNameInAccount = function(){
+            var deferred = $q.defer();
+            $http
+                .post(Config.baseUrl + '/php/customers/account/all/names',{})
+                .success(function (res) {
+                    var list =[];
+                    angular.forEach(res, function(value){
+                        var customer = new CustomerMapper(value);
+                        list.push(customer);
+                    });
+                    deferred.resolve({list : list});
+                })
+                .error(function(res){
+                    deferred.reject({message : res.message});
+                });
+
+            return deferred.promise;
+        };
+
+
+
         var _getAll = function(){
             var deferred = $q.defer();
             $http
@@ -586,6 +608,7 @@ AppModule.factory('$customer',[
             getByID : _getByID,
             getCustomerByCipher : _getCustomerByCipher,
             getAllName : _getAllName,
+            getAllNameInAccount : _getAllNameInAccount,
             getAll : _getAll,
             add : _add,
             delete : _delete,

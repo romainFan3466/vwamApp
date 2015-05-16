@@ -33,19 +33,61 @@
                         <input type="text" class="form-control" id="InputCity" placeholder="{{ 'customer.enter_city' | translate }}" ng-model="customer.city">
                     </div>
 
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label for="InputCountry">{{ 'customer.country' | translate }}</label>
                         <input type="text" class="form-control" id="InputCountry" placeholder="{{ 'customer.enter_country' | translate }}" value="Ireland"
                                ng-model="customer.country">
+                    </div>-->
+                    <div class="form-group">
+                        <label for="InputCountry">{{ 'customer.country' | translate }}</label>
+                        <input type="text"
+                               ng-model="customer.country"
+                               typeahead="address.country for address in getLocation($viewValue) |  limitTo:10"
+                               class="form-control"
+                               placeholder="{{ 'customer.enter_country' | translate }}"
+                               typeahead-on-select='onSelect($item, $model, $label)'
+                               typeahead-loading="loadingLocations">
+
+                        <span ng-show="loadingLocations" class="fa fa-spinner fa-spin"></span>
                     </div>
+
                 </div>
 
 
                 <div class="form-group">
                     <label for="InputPhone">{{ 'customer.phone' | translate }}</label>
-                    <input type="text" class="form-control" id="InputPhone" placeholder="{{ 'customer.enter_phone' | translate }}" ng-model="customer.phone">
+
+                    <div class="input-group">
+                        <div class="input-group-addon">{{phoneCode}}</div>
+                        <input type="text" class="form-control" id="InputPhone" placeholder="{{ 'customer.enter_phone' | translate }}" ng-model="customer.phone">
+                    </div>
+
+
                 </div>
 
+                    <div class="form-group">
+                        <hr/>
+                        <label>{{'customer.account_type' | translate }}</label>
+
+                        <div class="radio">
+                            <label>
+                                <input type="radio"
+                                       ng-model="customer.accountType"
+                                       value="Cash"
+                                       checked>
+                                {{'Cash' | translate }}
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio"
+                                       ng-model="customer.accountType"
+                                       value="Account">
+                                {{'Account' | translate }}
+                            </label>
+                        </div>
+
+                    </div>
 
                 <button type="submit" class="btn btn-success"
                         ng-disabled="form.name.$invalid">{{ 'common.create' | translate }}</button>

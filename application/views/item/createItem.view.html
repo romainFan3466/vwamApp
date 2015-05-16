@@ -54,18 +54,20 @@
 
 
                 <div class="row">
-                    <div class="form-group col-xs-4 col-md-offset-3 col-md-2">
-                        <label for="InputPrice">{{ 'item.price' | translate }} (&euro;) </label>
+                    <div class="form-group has-feedback col-xs-4 col-md-offset-3 col-md-2" ng-class="{'has-error' : wrongPrice}">
+                        <label class="control-label" for="InputPrice">{{ 'item.price' | translate }} (&euro;) </label>
                         <input type="text" class="form-control" id="InputPrice" placeholder="XXX.XX"
                                ng-model="item.price" required>
+                        <span ng-show="wrongPrice" style="text-align: left;" class="glyphicon glyphicon-remove form-control-feedback"></span>
                     </div>
                 </div>
+
 
 
                 <div class="row">
                     <div class="form-group col-xs-2 col-md-offset-3 col-md-2">
                         <button type="submit" class="btn btn-success"
-                                ng-disabled="form.$invalid">{{ 'common.create' | translate }}
+                                ng-disabled="form.$invalid || wrongPrice">{{ 'common.create' | translate }}
                         </button>
                     </div>
                 </div>
@@ -88,6 +90,15 @@
             <span ng-show="error && !success" class="alert alert-danger">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 {{ 'message.error_item_not_created' | translate }}
+            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="center-block text-center">
+            <span ng-show="error && !success" class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                {{ 'message.error_wrong_price' | translate }}
             </span>
         </div>
     </div>

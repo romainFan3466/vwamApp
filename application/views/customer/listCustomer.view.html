@@ -66,7 +66,8 @@
                                       ng-show="active.accountType">
                                 </span>
                         </th>
-                        <th>{{ 'common.edit' | translate }}</th>
+                        <th  class="text-center">{{ 'common.edit' | translate }}</th>
+                        <th  class="text-center">QR Code</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -77,9 +78,11 @@
                         <td>{{customer.city}}</td>
                         <td>{{customer.country}}</td>
                         <td>{{customer.phone}}</td>
-                        <td>{{customer.accountType}}</td>
-                        <td><span class=" btn btn-primary fa fa-pencil-square-o"
+                        <td>{{customer.accountType | translate}}</td>
+                        <td class="text-center"><span class=" btn btn-primary fa fa-pencil-square-o"
                                 ng-go="/customer/edit/{{customer.ID}}"></span></td>
+                        <td class="text-center"><a class=" btn btn-danger fa fa-file-pdf-o"
+                                                   target="_blank" ng-href="/php/qrCode/customers/{{customer.ID}}"></a></td>
                     </tr>
                     </tbody>
                 </table>

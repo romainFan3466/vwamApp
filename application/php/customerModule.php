@@ -143,6 +143,25 @@ $app->post('/customers/all/names', function() {
     }
 });
 
+$app->post('/customers/account/all/names', function() {
+
+    $db = new DbHandler();
+    $session = $db->getSession();
+
+    if(!$session["authenticated"]){
+        $response = array();
+        $response["message"] = "Unauthorized access, need to login in";
+        echoResponse(401, $response);
+    }
+    else {
+        $userID = $session["uid"];
+        $query ="select name from customers where userID='$userID' AND accountType='Account'";
+        $customer = $db->getSeveralRecords($query);
+        echoResponse(200,$customer);
+    }
+});
+
+
 
 
 $app->post('/customers/add', function() use($app){
@@ -165,7 +184,7 @@ $app->post('/customers/add', function() use($app){
         if(!$isCustomerExists){
             $table_name = "customers";
             $request->customer->userID = $userID;
-            $column_names = array('name', 'address', 'city', 'country', 'phone', 'userID');
+            $column_names = array('name', 'address', 'city', 'country', 'phone',"accountType", 'userID');
             $result = $db->insertIntoTable($request->customer, $column_names, $table_name);
             $response = array();
 
@@ -255,16 +274,17 @@ $app->put('/customers', function() use($app){
                 $ID=(int)$isCustomerExists["ID"];
 
                 $query="UPDATE customers
-                SET name=?, address=?, city=?, country=?, phone=?
+                SET name=?, address=?, city=?, country=?, phone=?, accountType=?
                 WHERE ID=? AND userID=?;";
                 $conn = $db->getConnection();
                 $stmt = $conn->prepare($query);
-                $stmt->bind_param('sssssii',
+                $stmt->bind_param('ssssssii',
                     $request->customer->name,
                     $request->customer->address,
                     $request->customer->city,
                     $request->customer->country,
                     $request->customer->phone,
+                    $request->customer->accountType,
                     $ID,
                     $userID);
                 $stmt->execute();

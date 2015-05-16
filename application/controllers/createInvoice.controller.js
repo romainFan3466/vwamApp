@@ -14,8 +14,8 @@
  *
  */
 AppModule.controller("CreateInvoiceController", [
-    "$scope", "$log", "$customer", "$item","InvoiceMapper","$invoice","$filter",
-    function ($scope, $log, $customer, $item_app, InvoiceMapper, $invoice, $filter) {
+    "$scope", "$log", "$customer", "$item","InvoiceMapper","$invoice","$translate",
+    function ($scope, $log, $customer, $item_app, InvoiceMapper, $invoice, $translate) {
 
 
         $scope.customer = "";
@@ -23,6 +23,8 @@ AppModule.controller("CreateInvoiceController", [
         $scope.items = [];
         $scope.camera = false;
         $scope.scanned = "";
+
+
 
 
         $scope.error ={
@@ -41,6 +43,11 @@ AppModule.controller("CreateInvoiceController", [
             item : false
         };
 
+        $scope.$on('$locationChangeStart', function(event, next, current) {
+            ($scope.camera==true)?$scope.closeCam(): null;
+        });
+
+
         var _initScope = function(){
             $scope.retrieved = {
                 customer : "",
@@ -48,7 +55,10 @@ AppModule.controller("CreateInvoiceController", [
             };
             $scope.item = {};
             $scope.invoice = {
-                customer : {},
+                type : "Invoice",
+                customer : {
+                    accountType : "Cash"
+                },
                 matriculation : {
                     first : "",
                     second : ""
@@ -107,6 +117,11 @@ AppModule.controller("CreateInvoiceController", [
             ]
         };
 
+        $scope.generateLink = function(invoiceID){
+            var language = $translate.use();
+            return "/php/invoices/pdf/" + invoiceID + "/" + language;
+        };
+
 
         $scope.createInvoice = function(){
 
@@ -122,17 +137,24 @@ AppModule.controller("CreateInvoiceController", [
             } else {
                 $scope.invoice.matriculation.second = "";
             }
+
+            if(angular.isDefined($scope.invoice.customer.accountType)
+                && angular.equals($scope.invoice.customer.accountType,"Account")
+                && angular.equals($scope.invoice.type,"Receipt")){
+                $scope.invoice.paymentMode = "";
+            }
             var item ={
               ID : $scope.item.ID
             };
             $scope.invoice.items.push({item : item, quantity : 1});
             $log.debug($scope.invoice);
-
+            if($scope.camera==true){$scope.closeCam();}
              $invoice.add($scope.invoice).then(
                function(res){
                    $scope.loading=false;
                    $scope.addedSuccess = true;
                    $scope.invoiceID=res.ID;
+                   $scope.chosenType  = angular.copy($scope.invoice.type);
                    _initScope();
                },
                  function(res){
@@ -196,6 +218,7 @@ AppModule.controller("CreateInvoiceController", [
                     $scope.loading = false;
                     $scope.invoice.customer = result.customer;
                     $scope.retrieved.customer = result.customer.name;
+                    $scope.invoice.type = (result.customer.accountType="Account")? "Receipt" : "Invoice";
                 },
                     function (result) {
                         $scope.loading = false;
@@ -213,6 +236,7 @@ AppModule.controller("CreateInvoiceController", [
                     $scope.loading=false;
                     $scope.invoice.customer = result.customer;
                     $scope.retrieved.customer = result.customer.name;
+                    $scope.invoice.type = (result.customer.accountType=="Account")? "Receipt" : "Invoice";
                 },
                 function (result) {
                     $scope.error.flag = true;
@@ -246,14 +270,6 @@ AppModule.controller("CreateInvoiceController", [
         _initScope();
         _getAllCustomerName();
         _getAllItems();
-
-
-
-
-
-
-
-
 
 
     }]);

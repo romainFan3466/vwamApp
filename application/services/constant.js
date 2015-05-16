@@ -18,5 +18,5 @@ AppModule.constant('Config', {
      * The rest of the URL is completed by services, depends of the methods.
      * @returns {String} baseUrl
      */
-    baseUrl : "http://washing-app.romainfanara.com"
+    baseUrl : "http://vwama.romainfanara.com"
 });

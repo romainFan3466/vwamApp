@@ -26,6 +26,17 @@ AppModule.factory('InvoiceMapper',[
 
             /**
              * @ngdoc property
+             * @name type
+             * @propertyOf appModule.object:InvoiceMapper
+             * @description
+             * InvoiceMapper type (invoice/receipt)
+             * @returns {string} identifier
+             */
+            this.type="";
+
+
+            /**
+             * @ngdoc property
              * @name customer
              * @propertyOf appModule.object:InvoiceMapper
              * @description
@@ -155,7 +166,7 @@ AppModule.factory('InvoiceMapper',[
                            self[key] = new CustomerMapper(value);
                     }
                     else if(angular.equals(key, "totalPrice")){
-                        self[key]=parseFloat(value).toFixed(2);
+                        self[key]=(angular.isDefined(value) && !angular.equals(value,null))? parseFloat(value).toFixed(2) : "";
                     }
                     else if(angular.equals(key, "created")){
                         self[key]=$filter('date')(value, "yyyy-MM-dd HH:mm:ss");

@@ -5,8 +5,7 @@
             
     <div class=" row-space">
         <form  role="form" name="form"
-              class=""
-              ng-submit="createInvoice()">
+              class="" novalidate>
 
             <div class="row">
                 <div class="form-group col-md-offset-3 col-md-6">
@@ -16,10 +15,10 @@
                            ng-model="retrieved.customer"
                            id="InputCompany"
                            placeholder="{{'common.enter_customer_name' | translate}}"
-                           typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue} "
+                           typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue} | limitTo:8"
                            typeahead-loading="loadingCompanies"
                            typeahead-on-select='onSelectCustomer($item, $model, $label)'
-                           class="form-control" required>
+                           class="form-control" required >
                 </div>
             </div>
 
@@ -46,7 +45,10 @@
                     <p><strong>{{'customer.phone' | translate}} : </strong>{{invoice.customer.phone}}</p>
                     <p><strong>{{'customer.city' | translate}} : </strong>{{invoice.customer.city}}</p>
                     <p><strong>{{'customer.country' | translate}} : </strong>{{invoice.customer.country}}</p>
-
+                    <p><strong class="text-success">{{'customer.account_type' | translate}} : </strong>{{invoice.customer.accountType | translate}}</p>
+                    <p ng-show="invoice.customer.accountType=='Account'" class="text-danger">
+                        <strong>Important : </strong>{{'message.account_type_account_message' | translate}}
+                    </p>
                 </div>
             </div>
 
@@ -85,7 +87,30 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-md-offset-3 col-md-6">
+                <div class="form-group col-md-2 col-md-offset-3" ng-show="invoice.customer.accountType=='Account'">
+                    <label>{{'invoice.invoice_type' | translate }}</label>
+
+                    <div class="radio">
+                        <label>
+                            <input type="radio"
+                                   ng-model="invoice.type"
+                                   value="Invoice">
+                            {{'invoice.invoice' | translate }}
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio"
+                                   ng-model="invoice.type"
+                                   value="Receipt">
+                            {{'invoice.receipt' | translate }}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-2"
+                     ng-class="{'col-md-offset-3' : invoice.customer.accountType=='Cash'}"
+                     ng-show="invoice.customer.accountType=='Cash' || invoice.type=='Invoice'">
                     <label>{{'invoice.payment_mode.this' | translate }}</label>
 
                     <div class="radio">
@@ -121,15 +146,16 @@
                             DKV
                         </label>
                     </div>
-                    <hr/>
                 </div>
-
-
             </div>
+
+
+
 
 
             <div class="row">
                 <div class="form-group col-md-offset-3 col-md-6">
+                    <hr/>
                     <label for="InputItem">{{'item.item' | translate}}</label>
                     <input type="text"
                            id="InputItem"
@@ -137,7 +163,7 @@
                            ng-model="retrieved.item"
                            typeahead-loading="loadingCompanies"
                            placeholder="{{ 'item.enter_item_name' | translate }}"
-                           typeahead="item as item.description for item in items | filter:{description:$viewValue} "
+                           typeahead="item as item.description for item in items | filter:{description:$viewValue}| limitTo:8 "
                            typeahead-on-select='onSelectItem($item, $model, $label)'
                            class="form-control" required>
                 </div>
@@ -152,8 +178,9 @@
             </div>
 
             <div class="row">
-                <div class="col-md-offset-3">
+                <div class="center-block text-center">
                     <button type="submit" class="btn btn-success"
+                            ng-click="createInvoice()"
                             ng-disabled="form.$invalid || error.flag">{{ 'common.create' | translate }}</button>
                 </div>
             </div>
@@ -163,9 +190,10 @@
 
     <div class="row row-space text-center">
         <div class="col-xs-offset-3 col-xs-6">
-            <div ng-show="addedSuccess && form.$invalid" class="alert alert-success">
+            <div ng-show="addedSuccess && form.itemName.$invalid && form.company.$invalid" class="alert alert-success">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                {{ 'message.invoice_created_success' | translate }}
+                <span ng-show="chosenType=='Invoice'">{{ 'message.invoice_created_success' | translate }}</span>
+                <span ng-show="chosenType=='Receipt'">{{ 'message.receipt_created_success' | translate }}</span>
             </div>
 
             <div ng-show="error.flag" class="alert alert-danger">
@@ -176,7 +204,7 @@
         </div>
     </div>
 
-    <div class="row" ng-show="addedSuccess && form.$invalid">
+    <div class="row" ng-show="addedSuccess && form.itemName.$invalid && form.company.$invalid">
         <a class="btn btn-success col-xs-offset-4 col-xs-4 col-sm-offset-2 col-sm-2 col-space"
                 ng-href="#/invoice/list/{{invoiceID}}"
                 target="_blank">
@@ -184,13 +212,13 @@
             {{ 'common.view' | translate }} (HTML)
         </a>
         <a class="btn btn-success col-xs-offset-4 col-xs-4 col-sm-offset-1 col-sm-2 col-space"
-                ng-href="/php/invoices/pdf/{{invoiceID}}"
+                ng-href="{{generateLink(invoiceID)}}"
                 target="_blank">
             <span class="glyphicon glyphicon-eye-open"></span>
             {{ 'common.view' | translate }} (PDF)
         </a>
         <a class="btn btn-primary col-xs-offset-4 col-xs-4 col-sm-offset-1 col-sm-2 col-space"
-                target="_self" ng-href="/php/invoices/pdf/{{invoiceID}}"
+                target="_self" ng-href="{{generateLink(invoiceID)}}"
                 download="invoice-{{invoiceID}}.pdf">
             <span class="fa fa-download"></span>
             {{ 'common.download' | translate }}</a>

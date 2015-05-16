@@ -10,8 +10,8 @@
  *
  */
 AppModule.controller("EditCustomerController", [
-    "$scope", "$log", "$customer","$routeParams","$modal", "$filter",
-    function ($scope, $log, $customer, $routeParams, $modal, $filter) {
+    "$scope", "$log", "$customer","$routeParams","$modal", "$filter","$country",
+    function ($scope, $log, $customer, $routeParams, $modal, $filter,$country) {
 
         $scope.customer = {};
         $scope.customers =[];
@@ -26,10 +26,17 @@ AppModule.controller("EditCustomerController", [
             $scope.errorDelete = false;
             $scope.doublon = false;
             $scope.editor = false;
+            $scope.loadingLocations = false;
+            $scope.phoneCode = "";
         };
 
         var affectCustomer = function(res){
             $scope.customer = res;
+            var str = res.phone.split(/\)/);
+            console.log(str);
+            console.log(res.phone);
+            $scope.customer.phone = (str.length>1)?str[1]:"";
+            $scope.phoneCode= (str.length>1)?str[0]+")":"";
             _customerTemp = angular.copy($scope.customer);
         };
 
@@ -56,6 +63,7 @@ AppModule.controller("EditCustomerController", [
         $scope.onSelect = function ($item, $model, $label) {
             $scope.loading= true;
             _getCustomer($item);
+            $scope.editor = false;
             $scope.found=true;
         };
 
@@ -68,6 +76,7 @@ AppModule.controller("EditCustomerController", [
         var _update = function(customer){
             $scope.loading=true;
             if(!_isPresent(customer.name)){
+                customer.phone = $scope.phoneCode + customer.phone;
                 $customer.update(customer).then(
                     function(res){
                         _init();
@@ -131,6 +140,21 @@ AppModule.controller("EditCustomerController", [
                return found;
             }
         };
+
+
+        $scope.onSelectCountry = function ($item, $model, $label) {
+            $scope.phoneCode = "+" + angular.copy($item.phoneCode) + "(0)";
+        };
+
+
+        $scope.getLocation = function(val){
+            return $country.getLocation(val).then(
+                function(res){
+                    return res;
+                }
+            );
+        };
+
 
 
 

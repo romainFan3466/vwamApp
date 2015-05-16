@@ -20,7 +20,7 @@ $app->get('/qrCode/customers/:ID', function ($ID) use ($app) {
 
             if(isset($customer) && isset($customer["code"])){
                 if($customer["code"]===200){
-                    include("qrCodePdfSheet.php");
+                    include("qrCodeInc/qrCodePdfSheet.php");
                 }
                 else {
                     echo "I passe in else";

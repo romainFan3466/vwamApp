@@ -2,15 +2,20 @@
 
 include "ChromePhp.php";
 
-function addInvoice($invoice, $db)
+function addInvoice($invoice, $db, $invoiceType)
 {
+    if(is_array($invoice)) {
+        $invoice = arrayToObject($invoice);
+    }
+
+
     $table_name = 'invoices';
-    $column_names = array('customerID', 'userID', 'matriculation1', 'matriculation2','created','paymentMode','comment');
+    $column_names = array('customerID', 'userID', 'matriculation1', 'matriculation2','created','paymentMode','comment', 'type');
     $userID = $_SESSION["uid"];
     $obj["customerID"] = (int)$invoice->customer->ID;
     $ID = $invoice->customer->ID;
 
-    $isCustomerExists = $db->getOneRecord("select 1 from customers where (ID='$ID' AND userID='$userID')");
+    $isCustomerExists = $db->getOneRecord("select accountType from customers where (ID='$ID' AND userID='$userID')");
     if ($isCustomerExists) {
         $obj["userID"] = $_SESSION["uid"];
         $obj["matriculation1"] = strval($invoice->matriculation->first);
@@ -25,7 +30,17 @@ function addInvoice($invoice, $db)
 
         //$obj["created"] = $created->format('Y-m-d H:i:s');
         $obj["comment"] = (isset($invoice->comment) && strlen($invoice->comment)!==0)? $invoice->comment : "";
-        $obj["paymentMode"] = (isset($invoice->paymentMode) && strlen($invoice->paymentMode)!==0)? $invoice->paymentMode : null;
+
+
+        if($isCustomerExists["accountType"]=="Account" && $invoiceType=="Receipt"){
+            $obj["paymentMode"] ="";
+            $obj["type"] ="Receipt";
+        }
+        else {
+            $obj["paymentMode"] = (isset($invoice->paymentMode))? $invoice->paymentMode :"";
+            $obj["type"] ="Invoice";
+        }
+
 
         $result["ID"] = $db->insertIntoTable($obj, $column_names, $table_name);
         if ($result["ID"] != NULL) {
@@ -41,25 +56,48 @@ function addInvoice($invoice, $db)
     }
 
     return $result;
-}
-
-;
+};
 
 
-function addItemsRows($invoice, $invoiceID, $db)
+function addItemsRows($invoice, $invoiceID, $db, $fromGeneration)
 {
+
     $table_name = 'itemsSets';
     $column_names = array('itemID', 'name', 'type', 'unitPrice', 'quantity', 'subTotal', 'invoiceID');
     $totalPrice = 0.0;
+    if(!isset($result)){$result=array();}
     $result["success"] = true;
+    $invoice = (object)$invoice;
+
+
 
     foreach ($invoice->items as $itemRow) {
+        if(is_array($itemRow)) {
+            $itemRow = arrayToObject($itemRow);
+        }
+
+
+
         $obj["itemID"] = (int)$itemRow->item->ID;
         $ID = $itemRow->item->ID;
         $isItemExists = $db->getOneRecord("select * from items where ID='$ID'");
 
         if ($isItemExists) {
             $obj["name"] = $isItemExists["name"];
+
+            if($fromGeneration){
+
+                $name = array(
+                    "name" => $isItemExists["name"],
+                    "created" => $itemRow->item->created,
+                    "receiptID" =>$itemRow->item->receiptID,
+                    "matriculation" =>$itemRow->item->matriculation,
+                    "comment" =>$itemRow->item->comment
+                );
+                $obj["name"] =json_encode($name);
+            }
+
+
             $obj["type"] = $isItemExists["type"];
             $price = (double)$isItemExists["price"];
             $obj["unitPrice"] = $price;
@@ -70,6 +108,7 @@ function addItemsRows($invoice, $invoiceID, $db)
 
             $totalPrice = $totalPrice + $obj["subTotal"];
             $obj["invoiceID"] = $invoiceID;
+
             $insert = $db->insertIntoTable($obj, $column_names, $table_name);
 
             if ($insert === NULL) {
@@ -104,9 +143,7 @@ function addItemsRows($invoice, $invoiceID, $db)
         $stmt->execute();
     }
     return $result;
-}
-
-;
+};
 
 
 $app->post('/invoices/add', function () use ($app) {
@@ -122,11 +159,12 @@ $app->post('/invoices/add', function () use ($app) {
         //retrieve POST params
         $request = json_decode($app->request->getBody());
         $invoice = $request->invoice;
-        $result = addInvoice($invoice, $db);
+
+        $result = addInvoice($invoice, $db, $invoice->type);
 
         //INVOICE PART
         if ($result["success"] == true) {
-            $resultRow = addItemsRows($invoice, $result["ID"], $db);
+            $resultRow = addItemsRows($invoice, $result["ID"], $db, false);
 
             //ROW PART
             if ($resultRow["success"] == true) {
@@ -274,7 +312,7 @@ $app->get('/invoices/pdf/:ID(/:language)', function ($ID, $language="en") use ($
         }
         else {
             $invoice = (object)$result["result"]["invoice"];
-            (isset($language) && $language === "fr") ? include("invoicePdfModuleFR.php") : include("invoicePdfModuleEN.php");
+            (isset($language) && $language === "fr") ? getPdfInvoiceFR($invoice,false) : getPdfInvoiceEN($invoice,false) ;
         }
 
     }
@@ -295,6 +333,16 @@ $app->post('/invoices/all', function () use ($app) {
 
         $offset = $request->clause->offset;
         $limit = $request->clause->limit;
+        $invoiceType = $request->clause->invoiceType;
+
+        $clauseInvoiceType ="";
+
+        if($invoiceType->invoice && !$invoiceType->receipt) {
+            $clauseInvoiceType = "AND invoices.type='Invoice'";
+        }
+        if(!$invoiceType->invoice && $invoiceType->receipt){
+            $clauseInvoiceType = "AND invoices.type='Receipt'";
+        }
 
         $from = DateTime::createFromFormat('Y-m-d H:i:s', $request->clause->from);
         $fromFormat = $from->format('Y-m-d H:i:s');
@@ -314,8 +362,8 @@ $app->post('/invoices/all', function () use ($app) {
                   WHERE (invoices.customerID, customers.name) IN (SELECT customers.ID, customers.name
                              					                  FROM customers)
                   AND (invoices.created BETWEEN '$fromFormat' AND '$toFormat')
-                  AND invoices.userID='$userID'
-                  ORDER BY invoices.ID ";
+                  AND invoices.userID='$userID'"." ".$clauseInvoiceType.
+                  " ORDER BY invoices.ID ";
 
             if (isset($customerID)) {
                 $queryCore =
@@ -324,10 +372,10 @@ $app->post('/invoices/all', function () use ($app) {
                              					                  FROM customers
                              					                  WHERE customers.ID='$customerID')
                   AND (invoices.created BETWEEN '$fromFormat' AND '$toFormat')
-                  AND invoices.userID='$userID'
-                  ORDER BY invoices.ID ";
+                  AND invoices.userID='$userID'"." ".$clauseInvoiceType.
+                  " ORDER BY invoices.ID ";
             }
-            $invoiceQuery = "SELECT invoices.ID, invoices.totalPrice, invoices.created, customers.name " . $queryCore;
+            $invoiceQuery = "SELECT invoices.ID, invoices.totalPrice, invoices.created, invoices.type, customers.name " . $queryCore;
 
             if(isset($offset) && isset($limit) && (int)$limit >= 0 &&
                 (int)$offset >= 0 &&
@@ -336,7 +384,10 @@ $app->post('/invoices/all', function () use ($app) {
             }
 
             $invoices = $db->getSeveralRecords($invoiceQuery);
+            //replace by length returned
             $nbInvoices = $db->getOneRecord("SELECT COUNT(invoices.ID) AS NumberOfInvoices ".$queryCore);
+
+
 
             foreach ($invoices as $key => $invoice) {
                 $invoices[$key]["customer"] = array(
@@ -380,11 +431,11 @@ $app->post('/invoices/refund', function () use ($app) {
         //retrieve POST params
         $request = json_decode($app->request->getBody());
         $invoice = $request->invoice;
-        $result = addInvoice($invoice, $db);
+        $result = addInvoice($invoice, $db, "Invoice");
 
         //INVOICE PART
         if ($result["success"] == true) {
-            $resultRow = addItemsRows($invoice, $result["ID"], $db);
+            $resultRow = addItemsRows($invoice, $result["ID"],$result["customerAccount"], $db);
 
             //ROW PART
             if ($resultRow["success"] == true) {

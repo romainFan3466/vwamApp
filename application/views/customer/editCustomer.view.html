@@ -13,7 +13,7 @@
                    id="InputCompany"
                    class="form-control"
                    placeholder="{{ 'common.enter_customer_name' | translate }}"
-                   typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue} "
+                   typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue}| limitTo:8 "
                    typeahead-on-select='onSelect($item, $model, $label)'>
             <spinner loading="loading"></spinner>
         </div>
@@ -23,13 +23,15 @@
         <div class="ng-cloak col-md-offset-3 col-md-6"
              ng-cloak>
 
-            <form class="form-horizontal">
+            <form class="form-horizontal" name="form">
                 <div class="form-group">
                     <label for="inputName" class="col-sm-2 control-label">{{ 'customer.name' | translate }}</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="inputName"
                                ng-model="customer.name"
-                               ng-disabled="!editor">
+                               name="nameCustomer"
+                               ng-disabled="!editor"
+                                required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -51,18 +53,58 @@
                 <div class="form-group">
                     <label for="inputCountry" class="col-sm-2 control-label">{{ 'customer.country' | translate }}</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputCountry"
+                        <input type="text"
+                               id="inputCountry"
                                ng-disabled="!editor"
-                               ng-model="customer.country">
+                               ng-model="customer.country"
+                               typeahead="address.country for address in getLocation($viewValue) |  limitTo:10"
+                               class="form-control"
+                               placeholder="{{ 'customer.enter_country' | translate }}"
+                               typeahead-on-select='onSelectCountry($item, $model, $label)'
+                               typeahead-loading="loadingLocations">
+
+                        <span ng-show="loadingLocations" class="fa fa-spinner fa-spin"></span>
+
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPhone" class="col-sm-2 control-label" >{{ 'customer.phone' | translate }}</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputPhone"
-                               ng-disabled="!editor"
-                               ng-model="customer.phone">
+
+                        <div class="input-group">
+                            <div class="input-group-addon">{{phoneCode}}</div>
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputPhone"
+                                   placeholder="{{ 'customer.enter_phone' | translate }}"
+                                   ng-model="customer.phone"
+                                   ng-disabled="!editor">
+                        </div>
+
                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{'customer.account_type' | translate }}</label>
+
+                    <div class="radio-inline">
+                        <label>
+                            <input type="radio"
+                                   ng-model="customer.accountType"
+                                   value="Cash"
+                                   ng-disabled="!editor">
+                            {{'Cash' | translate }}
+                        </label>
+                    </div>
+                    <div class="radio-inline">
+                        <label>
+                            <input type="radio"
+                                   ng-model="customer.accountType"
+                                   value="Account"
+                                   ng-disabled="!editor">
+                            {{'Account' | translate }}
+                        </label>
+                    </div>
+
                 </div>
             </form>
 
@@ -82,7 +124,8 @@
         </button>
         <button class="btn btn-success col-xs-offset-5 col-xs-2 col-sm-offset-1 col-sm-2 col-space"
                 ng-click="update(customer)"
-                ng-show="editor">
+                ng-show="editor"
+                ng-disabled="form.$invalid">
             {{ 'common.update' | translate }}
         </button>
         <button class="btn primary col-xs-offset-5 col-xs-2 col-sm-offset-1 col-sm-2 col-space"

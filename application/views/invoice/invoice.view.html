@@ -3,14 +3,16 @@
 <div ng-controller="InvoiceViewController" ng-cloak class="ng-cloak invoice">
 
     <div class="row">
-        <div class="col-xs-offset-6 col-xs-6 text-right">
-            <h1>{{ 'invoice.invoice_MAJ' | translate }}</h1>
-            <h1><small>{{ 'invoice.invoice' | translate }} #{{invoice.ID}}</small></h1>
+        <div class="col-xs-offset-6 col-xs-6 col-lg-offset-7 col-lg-3 text-right">
+            <h1 ng-show="invoice.type=='Invoice'">{{ 'invoice.invoice_MAJ' | translate }}</h1>
+            <h1 ng-show="invoice.type=='Receipt'">{{ 'invoice.receipt_MAJ' | translate }}</h1>
+            <h1 ng-show="invoice.type=='Invoice'"><small>{{ 'invoice.invoice' | translate }} #{{invoice.ID}}</small></h1>
+            <h1 ng-show="invoice.type=='Receipt'"><small>{{ 'invoice.receipt' | translate }} #{{invoice.ID}}</small></h1>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xs-5">
+        <div class="col-xs-5 col-lg-offset-2 col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4><strong>{{ 'common.to' | translate }} :</strong> {{invoice.customer.name}}</h4>
@@ -28,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-5 col-xs-offset-2 text-right">
+        <div class="col-xs-5 col-xs-offset-2 col-lg-offset-1 col-lg-3 text-right">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4><strong>{{ 'common.from' | translate }} :</strong> {{invoice.from.company}}</h4>
@@ -45,42 +47,62 @@
     </div>
     <!-- / end client details section -->
 
-    <table class="table table-bordered">
-        <thead>
-        <tr class="active">
-            <th>
-                <h4>Ref</h4>
-            </th>
-            <th>
-                <h4>Type</h4>
-            </th>
-            <th>
-                <h4>Description</h4>
-            </th>
-            <th>
-                <h4>{{ 'invoice.qty' | translate }}</h4>
-            </th>
-            <th>
-                <h4>{{ 'invoice.unit_price' | translate }}</h4>
-            </th>
-            <th>
-                <h4>{{ 'invoice.sub_total' | translate }}</h4>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="obj in invoice.items">
-            <td>{{obj.item.ID}}</td>
-            <td class="text-right">{{ obj.item.type | translate }}</td>
-            <td class="text-right">{{obj.item.name}}</td>
-            <td class="text-right">{{obj.quantity}}</td>
-            <td class="text-right">{{obj.item.price}} &euro;</td>
-            <td class="text-right">{{obj.subTotal}} &euro;</td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="row text-right">
-        <div class="col-xs-2 col-xs-offset-8">
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <table class="table table-bordered table-condensed">
+                <thead>
+                <tr class="active">
+                    <th>
+                        <h4>Ref</h4>
+                    </th>
+                    <th>
+                        <h4>Type</h4>
+                    </th>
+                    <th>
+                        <h4>Description</h4>
+                    </th>
+                    <th>
+                        <h4>{{ 'invoice.qty' | translate }}</h4>
+                    </th>
+                    <th>
+                        <h4>{{ 'invoice.unit_price' | translate }}</h4>
+                    </th>
+                    <th>
+                        <h4>{{ 'invoice.sub_total' | translate }}</h4>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="obj in invoice.items">
+                    <td>{{obj.item.ID}}</td>
+                    <td class="text-center">{{ obj.item.type | translate }}</td>
+                    <td ng-show="!generated" class="text-left">{{obj.item.name}}</td>
+
+
+                    <td ng-show="generated" class="text-left">
+                        <h6><strong>{{ 'item.item' | translate }} :</strong> {{obj.item.name.name}}</h6>
+                        <h6><strong>{{ 'invoice.receipt_number' | translate }} :</strong> {{obj.item.name.receiptID}}
+                        &nbsp;<strong>{{ 'common.created' | translate }} :</strong> {{obj.item.name.created}}</h6>
+
+                        <h6 ng-show="obj.item.name.matriculation!=null && obj.item.name.matriculation.first!=null ">
+                            <strong>{{ 'invoice.registration' | translate }} 1 :</strong> {{obj.item.name.matriculation.first}}
+                        </h6>
+                        <h6 ng-show="obj.item.name.matriculation!=null && obj.item.name.matriculation.second!=null ">
+                            <strong>{{ 'invoice.registration' | translate }} 2 :</strong> {{obj.item.name.matriculation.second}}
+                        </h6>
+                        <h6 ng-show="obj.item.name.comment!=''">
+                        <strong>{{ 'invoice.comment' | translate }} :</strong> {{obj.item.name.comment}}</h6>
+                    </td>
+                    <td class="text-right">{{obj.quantity}}</td>
+                    <td class="text-right">{{obj.item.price}} &euro;</td>
+                    <td class="text-right">{{obj.subTotal}} &euro;</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row text-right" ng-show="invoice.type=='Invoice'">
+        <div class="col-xs-2 col-xs-offset-8 col-lg-offset-6 col-lg-2">
             <p>
                 <strong>
                     {{ 'invoice.sub_total' | translate }} : <br>
@@ -98,21 +120,23 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-5">
+        <div class="col-xs-5 col-lg-offset-2 col-lg-4">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h4>Details</h4>
                 </div>
                 <div class="panel-body">
-                    <p>{{ 'invoice.invoice_number' | translate }} : {{invoice.ID}}</p>
+                    <p ng-show="invoice.type=='Invoice'">{{ 'invoice.invoice_number' | translate }} : {{invoice.ID}}</p>
+                    <p ng-show="invoice.type=='Receipt'">{{ 'invoice.receipt_number' | translate }} : {{invoice.ID}}</p>
                     <p>{{ 'common.created' | translate }} : {{invoice.created}}</p>
-                    <p>{{ 'invoice.payment_mode.this' | translate }} : {{invoice.paymentMode}}</p>
-                    <p class="text-success">{{ 'invoice.payment_status' | translate }} : Paid</p>
+                    <p ng-show="invoice.type=='Invoice'">{{ 'invoice.payment_mode.this' | translate }} : {{invoice.paymentMode}}</p>
+                    <p ng-show="invoice.type=='Invoice'" class="text-success">{{ 'invoice.payment_status' | translate }} : {{ 'invoice.paid' | translate }}</p>
+                    <p ng-show="invoice.type=='Receipt'" class="text-warning">{{ 'invoice.payment_status' | translate }} : {{ 'invoice.due_date' | translate }}</p>
                     <p>{{ 'invoice.comment' | translate }} : {{invoice.comment}}</p>
                 </div>
             </div>
         </div>
-        <div class="col-xs-7">
+        <div class="col-xs-7 col-lg-4">
             <div class="span7">
                 <div class="panel panel-info">
                     <div class="panel-heading">

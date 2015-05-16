@@ -19,14 +19,26 @@ AppModule.controller("InvoiceViewController", [
             $scope.customer = {};
             $scope.items=[];
             $scope.user = {};
+            $scope.generated = false;
 
 
+
+            var _parseDescription = function(){
+              angular.forEach($scope.invoice.items, function(row, key){
+                  if(row.item.name.charAt(0)=='{'){
+                   $scope.invoice.items[key].item.name = angular.fromJson(row.item.name);
+                      $scope.generated = true;
+                  }
+              });
+
+            };
 
 
             var _getInvoice = function (){
                 $invoice.get(invoiceID).then(
                     function(res){
                         $scope.invoice=res.invoice;
+                        _parseDescription();
                     },
                     function(res){
 
@@ -37,15 +49,6 @@ AppModule.controller("InvoiceViewController", [
 
 
             _getInvoice();
-
-
-            $scope.print = function(){
-
-                $scope.html = $('.invoice').html();
-
-
-                //$window.print();
-            };
 
 
 

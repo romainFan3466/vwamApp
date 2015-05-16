@@ -14,7 +14,7 @@ ob_start();
             <div style="text-align: center;">
                 <p>VWAMA Customer Card</p>
                 <p>
-                    <img src="<?php dirname(__FILE__)?>/php/qrCodeImage.php?customerID=<?php echo $ID ?>" style="width: 4.0cm;" alt="QR Code"/>
+                    <img src="qrCodeImage.php?customerID=<?php echo $ID ?>" style="width: 4.0cm;" alt="QR Code"/>
                 </p>
             </div>
         </td>
@@ -120,7 +120,9 @@ $mpdf->SetDisplayMode('fullpage');
 
 $mpdf->WriteHTML($html);
 
-$mpdf->Output("test.pdf", 'I');
+$title = "qrCodeCard-". $ID . ".pdf";
+
+$mpdf->Output("$title", 'I');
 
 echo $html;
 

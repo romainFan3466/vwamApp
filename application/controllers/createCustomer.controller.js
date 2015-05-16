@@ -9,8 +9,8 @@
  ** Interacts with template : "createCustomer.view.html"
  */
 AppModule.controller("CreateCustomerController", [
-    "$scope", "$log", "$customer",
-    function ($scope, $log, $customer) {
+    "$scope", "$log", "$customer","$country",
+    function ($scope, $log, $customer,$country) {
 
 
 
@@ -19,13 +19,16 @@ AppModule.controller("CreateCustomerController", [
                 name : "",
                 address : "",
                 country : "",
-                phone : ""
+                phone : "",
+                accountType : "Cash"
             };
             $scope.loading = false;
             $scope.invalidName = false;
             $scope.customers = {};
             $scope.error= false;
             $scope.success=false;
+            $scope.loadingLocations = false;
+            $scope.phoneCode = "";
             _getAllCustomerName();
 
         };
@@ -62,6 +65,7 @@ AppModule.controller("CreateCustomerController", [
 
 
         var _makeRequest = function(customer){
+            customer.phone = $scope.phoneCode + customer.phone;
             $customer.add(customer).then(
                 function(res){
                     _initialize();
@@ -84,6 +88,19 @@ AppModule.controller("CreateCustomerController", [
                 $scope.loading = false;
             }
 
+        };
+
+        $scope.onSelect = function ($item, $model, $label) {
+            $scope.phoneCode = "+" + angular.copy($item.phoneCode) + "(0)";
+        };
+
+
+        $scope.getLocation = function(val){
+            return $country.getLocation(val).then(
+                function(res){
+                    return res;
+                }
+            );
         };
 
         _initialize();

@@ -275,10 +275,9 @@ AppModule.factory('$invoice',[
         var _getAll = function(clause){
             var deferred = $q.defer();
             
-            dateFrom = new Date(clause.from);
-            dateTo = new Date(clause.to);
+            var dateFrom = new Date(clause.from);
+            var dateTo = new Date(clause.to);
 
-            $log.log(clause);
             $log.debug(clause);
 
             var objRequest = {
@@ -288,6 +287,8 @@ AppModule.factory('$invoice',[
 
             objRequest.from = $filter('date')(objRequest.from, "yyyy-MM-dd HH:mm:ss");
             objRequest.to = $filter('date')(objRequest.to, "yyyy-MM-dd HH:mm:ss");
+
+            objRequest.invoiceType = clause.invoiceType;
 
             if(angular.isDefined(clause.offset)){
                 objRequest.offset = parseInt(clause.offset);
@@ -320,10 +321,59 @@ AppModule.factory('$invoice',[
         };
 
 
+
+
+
+
+
+        var _generate = function(clause){
+            var deferred = $q.defer();
+
+            var dateFrom = new Date(clause.from);
+            var dateTo = new Date(clause.to);
+
+            $log.debug(clause);
+            var d = new Date();
+            var objRequest = {
+                from : new Date(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate(),0,0,0,0),
+                to : new Date(dateTo.getFullYear(), dateTo.getMonth(), dateTo.getDate(),23,59,59,0),
+                created : new Date()
+            };
+
+
+            objRequest.from = $filter('date')(objRequest.from, "yyyy-MM-dd HH:mm:ss");
+            objRequest.to = $filter('date')(objRequest.to, "yyyy-MM-dd HH:mm:ss");
+            objRequest.created = $filter('date')(objRequest.created, "yyyy-MM-dd HH:mm:ss");
+
+            if(angular.isDefined(clause.customerID)){
+                objRequest.customerID = clause.customerID;
+            }
+
+            $http
+                .post(Config.baseUrl + '/php/invoices/generate' , {clause : objRequest})
+                .success(function (res) {
+
+                    if(angular.isDefined(res.ID)){
+                        deferred.resolve({ID : res.ID});
+                    }
+                    else if(angular.isDefined(res.generationID)){
+                        deferred.resolve({generation : res.generationID});
+                    }
+
+                })
+                .error(function(res){
+                    deferred.reject({message : res.message});
+                });
+
+            return deferred.promise;
+        };
+
+
         return {
             add : _add,
             get : _get,
-            getAll : _getAll
+            getAll : _getAll,
+            generate : _generate
         };
 
 

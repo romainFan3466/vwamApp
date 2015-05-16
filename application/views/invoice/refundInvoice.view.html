@@ -1,3 +1,4 @@
+<!-- TODO: Washingapp disable item and invoice with neg/null amount -->
 <div ng-controller="RefundInvoiceController" class="ng-cloak" ng-cloak>
     <div class="row">
         <h1 class="text-center">{{'part.make_refund' | translate }}</h1>
@@ -93,7 +94,7 @@
                 ng-click="refund()"
                 ng-show="found"
                 ng-disabled="addedSuccess && form.ID.$invalid">
-            <span class="fa fa-refund-card"></span> {{ 'common.refund' | translate }}</button>
+            <span class="fa fa-credit-card"></span> {{ 'common.refund' | translate }}</button>
     </div>
 
     <div class="row" ng-show="addedSuccess && form.ID.$invalid" ng-cloak>

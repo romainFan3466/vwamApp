@@ -24,8 +24,18 @@ AppModule.controller("CreateItemController", [
             $scope.invalidName = false;
             $scope.items = [];
             $scope.error= false;
+            $scope.wrongPrice = false;
             $scope.success=false;
             getAllItem();
+
+
+            $scope.$watch("item.price", function(value){
+               if(angular.isDefined(value)){
+                   if(!angular.equals(value,"")){
+                       $scope.wrongPrice =isNaN(parseFloat(value));
+                   }
+               }
+            });
 
         };
 

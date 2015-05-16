@@ -31,6 +31,11 @@ AppModule.controller("ListInvoiceController", [
             customer : ""
             };
 
+        $scope.invoiceType = {
+            invoice : true,
+            receipt : true
+        };
+
         $scope.bigTotalItems = 0;
 
         $scope.offsetReq = 0;
@@ -45,7 +50,8 @@ AppModule.controller("ListInvoiceController", [
             ID : false,
             customerName : false,
             created : false,
-            totalPrice : false
+            totalPrice : false,
+            type : false
         };
 
         var _getCustomer = function (customer) {
@@ -133,13 +139,16 @@ AppModule.controller("ListInvoiceController", [
             return "/php/invoices/pdf/" + invoiceID + "/" + language;
         };
 
-
-
+        $scope.isRefundable = function(invoice){
+          return (angular.equals(invoice.type, "Invoice") && parseFloat(invoice.totalPrice)>0);
+        };
 
 
         $scope.onSelectCustomer = function ($item, $model, $label) {
             _getCustomer($item);
         };
+
+
 
         $scope.search = function(){
             $scope.loading = true;
@@ -160,10 +169,10 @@ AppModule.controller("ListInvoiceController", [
 
             }
             else{
-                //TODO washingapp check date available
                 var clause = {
                     from : $scope.dt.from,
-                    to : $scope.dt.to
+                    to : $scope.dt.to,
+                    invoiceType : $scope.invoiceType
                 };
 
                 if(angular.isDefined($scope.customer.ID) &&
@@ -182,14 +191,14 @@ AppModule.controller("ListInvoiceController", [
             }
         };
 
-        var sortTotalPrice = function(invoice){
+        $scope.sortTotalPrice = function(invoice){
           return parseFloat(invoice.totalPrice);
         };
 
 
         $scope.order = function(predicate, reverse) {
             if(predicate==='totalPrice'){
-                $scope.invoices = $filter('orderBy')($scope.invoices, sortTotalPrice, reverse);
+                $scope.invoices = $filter('orderBy')($scope.invoices, $scope.sortTotalPrice, reverse);
             }else {
                 $scope.invoices = $filter('orderBy')($scope.invoices, predicate, reverse);
             }

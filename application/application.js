@@ -16,6 +16,7 @@ AppModule.config(['$routeProvider', function ($routeProvider) {
 	var routes = [
 		{url: "/login", templateUrl: "html/views/login.view.html"},
         {url: "/home", templateUrl: "html/views/home.view.html"},
+        {url: "/settings", templateUrl: "html/views/settings.view.html"},
 
         {url: "/invoice", templateUrl: "html/views/invoice.view.html"},
         {url: "/invoice/create", templateUrl: "html/views/invoice/createInvoice.view.html"},
@@ -23,6 +24,7 @@ AppModule.config(['$routeProvider', function ($routeProvider) {
         {url: "/invoice/refund/:invoiceID", templateUrl: "html/views/invoice/refundInvoice.view.html"},
         {url: "/invoice/list/:invoiceID", templateUrl: "html/views/invoice/invoice.view.html"},
         {url: "/invoice/list", templateUrl: "html/views/invoice/listInvoice.view.html"},
+        {url: "/invoice/generate", templateUrl: "html/views/invoice/generateInvoice.view.html"},
 
         {url: "/item", templateUrl: "html/views/item.view.html"},
         {url: "/item/create", templateUrl: "html/views/item/createItem.view.html"},

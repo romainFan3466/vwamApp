@@ -1,12 +1,16 @@
 <?php
 
+
+require 'slim/Slim/Slim.php';
+require 'mpdf/mpdf.php';
+
 require_once 'dbHandler.php';
 require_once 'passwordHash.php';
 require_once 'AESgenerator.php';
 
 
 
-require 'slim/Slim/Slim.php';
+
 
 
 date_default_timezone_set('UTC');
@@ -16,6 +20,9 @@ date_default_timezone_set('UTC');
  */
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
+
+require_once 'invoicePdfModuleEN.php';
+require_once 'invoicePdfModuleFR.php';
 
 //auth client
 $auth = false;
@@ -57,6 +64,21 @@ function sendMail($email, $password){
 
 }
 
+ function arrayToObject($array) {
+$obj = new stdClass;
+  foreach($array as $k => $v) {
+      if(strlen($k) && $k!="items") {
+          if(is_array($v)) {
+              $obj->{$k} = arrayToObject($v); //RECURSION
+          } else {
+              $obj->{$k} = $v;
+          }
+      }
+  }
+  return $obj;
+};
+
+
 $app->options('/:some', function($some){
 });
 
@@ -65,6 +87,7 @@ require_once 'customerModule.php';
 require_once 'itemModule.php';
 require_once 'invoiceModule.php';
 require_once 'qrCodeModule.php';
+require_once 'receiptModule.php';
 
 
 

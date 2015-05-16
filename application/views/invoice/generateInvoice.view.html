@@ -1,0 +1,224 @@
+<div ng-controller="GenerateInvoiceController">
+    <div class="row">
+    <h1 class="text-center">{{ 'part.generate_invoices' | translate }}</h1>
+</div>
+
+    <form role="form"
+          ng-submit="generate()"
+          name="form">
+
+        <div class="row">
+            <div class="form-group col-sm-offset-1">
+
+                <div class="radio">
+                    <label>
+                        <input type="radio"
+                               ng-model="date.checked"
+                               value="oneMonth"
+                               checked>
+                        <strong>1 {{ 'common.month' | translate }}</strong> : {{ 'common.from' | translate }} <strong class="text-success">{{date.oneMonth | date : 'dd-MMMM-yyyy' }}</strong>
+                        {{ 'common.to_today' | translate }} (<strong class="text-success">{{date.today | date : 'dd-MMMM-yyyy'}}</strong>)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-offset-1">
+
+                <div class="radio">
+                    <label>
+                        <input type="radio"
+                               ng-model="date.checked"
+                               value="twoMonth">
+                        <strong>2 {{ 'common.months' | translate }}</strong> : {{ 'common.from' | translate }} <strong class="text-success">{{date.twoMonth | date : 'dd-MMMM-yyyy' }}</strong>
+                        {{ 'common.to_today' | translate }} (<strong class="text-success">{{date.today | date : 'dd-MMMM-yyyy'}}</strong>)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row row-space">
+            <div class="form-group">
+
+                <div class="radio col-sm-1 col-sm-offset-1" style="padding-left: 0px">
+                    <label>
+                        <input type="radio"
+                               ng-model="date.checked"
+                               value="custom">
+                        <strong>{{ 'common.from' | translate }}</strong>
+                    </label>
+                </div>
+
+                <div class="col-sm-3">
+                    <p class="input-group" style="margin-top: 5px;">
+                        <input type="text" class="form-control" datepicker-popup="{{format}}"
+                               ng-model="dt.from"
+                               is-open="openedFrom"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               min-date ="01-01-2015"
+                               max-date ="{{now}}"
+                               close-text="{{ 'common.close' | translate }}"/>
+              <span class="input-group-btn">
+                <button type="button"
+                        class="btn btn-default"
+                        ng-click="open($event,'from')"
+                        ng-disabled="invoiceIDInput.checked">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+              </span>
+                    </p>
+                </div>
+
+                <div class="col-sm-1">
+                    <label style="margin-top: 10px;">{{ 'common.to' | translate }}</label>
+                </div>
+                <div class="col-sm-3">
+                    <p class="input-group" style="margin-top: 5px;">
+                        <input type="text" class="form-control" datepicker-popup="{{format}}"
+                               ng-model="dt.to"
+                               is-open="openedTo"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               min-date ="dt.from"
+                               max-date ="{{now}}"
+                               close-text="{{ 'common.close' | translate }}"/>
+              <span class="input-group-btn">
+                <button type="button"
+                        class="btn btn-default"
+                        ng-click="open($event,'to')"
+                        ng-disabled="invoiceIDInput.checked">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+              </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-offset-1 col-sm-10">
+                <hr/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="radio col-sm-offset-1 col-sm-2" style="padding-left: 0px">
+                    <label>
+                        <input type="radio"
+                               ng-model="customerChoice"
+                               value="one"
+                                checked>
+                        <strong>{{ 'customer.customer_name' | translate }}</strong>
+                    </label>
+                </div>
+
+                <div class="col-sm-4" style="margin-top: 5px;">
+                        <input type="text"
+                               name="company"
+                               ng-model="retrieved.customer"
+                               id="InputCompany"
+                               placeholder="{{ 'common.enter_customer_name' | translate }}"
+                               typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue}| limitTo:8 "
+                               typeahead-loading="loadingCompanies"
+                               typeahead-on-select='onSelectCustomer($item, $model, $label)'
+                               class="form-control"
+                               ng-disabled="invoiceIDInput.checked">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-offset-1">
+
+                <div class="radio">
+                    <label>
+                        <input type="radio"
+                               ng-model="customerChoice"
+                               value="all">
+                        <strong>{{ 'common.all' | translate }}</strong>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="form-group center-block text-center">
+                <button class="btn btn-success"
+                        type="submit"
+                        ng-disabled="customerChoice=='one' && found==false && !addedSuccess">
+                    <span class="fa fa-cogs"></span> {{ 'common.generate' | translate }}</button>
+            </div>
+        </div>
+
+
+
+    </form>
+
+    <div class="row row-space text-center">
+        <div class="col-xs-offset-3 col-xs-6">
+            <div ng-show="addedSuccess" class="alert alert-success">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                <span>{{ 'message.generated_successfully' | translate }}</span>
+
+            </div>
+
+            <div ng-show="error.flag" class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+               <span>Error</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-show="addedSuccess && tempCustomer=='one'">
+        <a class="btn btn-success col-xs-offset-4 col-xs-4 col-sm-offset-2 col-sm-2 col-space"
+           ng-href="#/invoice/list/{{invoiceID}}"
+           target="_blank">
+            <span class="glyphicon glyphicon-eye-open"></span>
+            {{ 'common.view' | translate }} (HTML)
+        </a>
+        <a class="btn btn-success col-xs-offset-4 col-xs-4 col-sm-offset-1 col-sm-2 col-space"
+           ng-href="{{generateLink(invoiceID,'invoice')}}"
+           target="_blank">
+            <span class="glyphicon glyphicon-eye-open"></span>
+            {{ 'common.view' | translate }} (PDF)
+        </a>
+        <a class="btn btn-primary col-xs-offset-4 col-xs-4 col-sm-offset-1 col-sm-2 col-space"
+           target="_self" ng-href="{{generateLink(invoiceID, 'invoice')}}"
+           download="invoice-{{invoiceID}}.pdf">
+            <span class="fa fa-download"></span>
+            {{ 'common.download' | translate }}</a>
+    </div>
+
+
+    <div class="row" ng-show="addedSuccess && tempCustomer=='all'">
+        <div class="center-block text-center">
+            <a class="btn btn-primary"
+               target="_self" ng-href="{{generateLink(generationID,'generation')}}"
+               download="generation-{{generationID}}.pdf">
+                <span class="fa fa-download"></span>
+                {{ 'common.download' | translate }} (ZIP)</a>
+        </div>
+
+    </div>
+
+    <div class="row row-space" ng-show="addedSuccess">
+        <div class="center-block text-center">
+            <button class="btn btn-default" ng-click="generateAgain()">
+                <span class="fa fa-retweet"></span>
+                {{ 'invoice.new_generation' | translate }}
+            </button>
+        </div>
+    </div>
+
+
+
+    <spinner loading="loading"></spinner>
+</div>

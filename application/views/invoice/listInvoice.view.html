@@ -2,24 +2,25 @@
     <div class="row">
         <h1 class="text-center">{{ 'part.list_invoices' | translate }}</h1>
     </div>
-    <div class="row row-lg-space">
-        <div class="col-md-offset-3 col-md-6">
+    <div class="row-lg-space">
 
-            <form class="form-horizontal" ng-submit="search()">
-                <div class="form-group">
-                    <label for="inputName" class="col-sm-offset-2 col-sm-2 control-label">{{ 'common.from' | translate }}</label>
-                    <div class="col-sm-6">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datepicker-popup="{{format}}"
-                                   ng-model="dt.from"
-                                   is-open="openedFrom"
-                                   datepicker-options="dateOptions"
-                                   date-disabled="disabled(date, mode)"
-                                   ng-required="true"
-                                   min-date ="01-01-2015"
-                                   max-date ="{{now}}"
-                                   close-text="Close"
-                                   ng-disabled="invoiceIDInput.checked"/>
+            <form class="" ng-submit="search()">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="inputDateFrom" class="text-right col-sm-offset-3 col-sm-1 control-label">{{ 'common.from' | translate }}</label>
+                        <div class="col-sm-5">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datepicker-popup="{{format}}"
+                                       ng-model="dt.from"
+                                       id="inputDateFrom"
+                                       is-open="openedFrom"
+                                       datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)"
+                                       ng-required="true"
+                                       min-date ="01-01-2015"
+                                       max-date ="{{now}}"
+                                       close-text="Close"
+                                       ng-disabled="invoiceIDInput.checked"/>
               <span class="input-group-btn">
                 <button type="button"
                         class="btn btn-default"
@@ -28,24 +29,28 @@
                     <i class="glyphicon glyphicon-calendar"></i>
                 </button>
               </span>
-                        </p>
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="inputAddress" class="col-sm-offset-2 col-sm-2 control-label">{{ 'common.to' | translate }}</label>
-                    <div class="col-sm-6">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datepicker-popup="{{format}}"
-                                   ng-model="dt.to"
-                                   is-open="openedTo"
-                                   datepicker-options="dateOptions"
-                                   date-disabled="disabled(date, mode)"
-                                   ng-required="true"
-                                   min-date ="dt.from"
-                                   max-date ="{{now}}"
-                                   close-text="Close"
-                                    ng-disabled="invoiceIDInput.checked"/>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="inputDateTo" class="text-right col-sm-offset-3 col-sm-1 control-label">{{ 'common.to' | translate }}</label>
+                        <div class="col-sm-5">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datepicker-popup="{{format}}"
+                                       id="inputDateTo"
+                                       ng-model="dt.to"
+                                       is-open="openedTo"
+                                       datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)"
+                                       ng-required="true"
+                                       min-date ="dt.from"
+                                       max-date ="{{now}}"
+                                       close-text="Close"
+                                       ng-disabled="invoiceIDInput.checked"/>
               <span class="input-group-btn">
                 <button type="button"
                         class="btn btn-default"
@@ -54,55 +59,99 @@
                     <i class="glyphicon glyphicon-calendar"></i>
                 </button>
               </span>
-                        </p>
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="InputCustomerName" class="col-sm-4 control-label">{{ 'customer.customer_name' | translate }}
-                        <small class="text-muted">({{ 'common.optional' | translate }})</small>
-                    </label>
-                    <div class="col-sm-6">
-                        <input type="text"
-                               name="company"
-                               ng-model="retrieved.customer"
-                               id="InputCompany"
-                               placeholder="{{ 'common.enter_customer_name' | translate }}"
-                               typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue} "
-                               typeahead-loading="loadingCompanies"
-                               typeahead-on-select='onSelectCustomer($item, $model, $label)'
-                               class="form-control"
-                               ng-disabled="invoiceIDInput.checked">
-                    </div>
-                </div>
-
-                <hr/>
-
-                <div class="form-group">
-                    <div class="chekbox col-sm-offset-2 col-sm-1" style="margin-top:7px">
-                        <input type="checkbox" value="" ng-model="invoiceIDInput.checked">
-                    </div>
-
-                    <label for="inputInvoiceID" class="col-xs-4 col-sm-3 col-lg-3 col-md-4 control-label">
-                        {{ 'invoice.invoice_number' | translate }}</label>
-
-
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control"
-                               ng-disabled="!invoiceIDInput.checked"
-                               ng-model="invoice.ID">
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="form-group">
-                        <button class="col-xs-4 col-xs-offset-4 col-sm-3 col-sm-offset-5 btn btn-primary"
-                                type="submit">
+                        <label for="InputCustomerName" class="text-right col-sm-offset-2 col-sm-2 control-label">{{ 'customer.customer_name' | translate }}
+                            <small class="text-muted">({{ 'common.optional' | translate }})</small>
+                        </label>
+                        <div class="col-sm-5">
+                            <input type="text"
+                                   name="company"
+                                   ng-model="retrieved.customer"
+                                   id="InputCustomerName"
+                                   placeholder="{{ 'common.enter_customer_name' | translate }}"
+                                   typeahead="customer as customer.name for customer in customers | filter:{name:$viewValue}| limitTo:8 "
+                                   typeahead-loading="loadingCompanies"
+                                   typeahead-on-select='onSelectCustomer($item, $model, $label)'
+                                   class="form-control"
+                                   ng-disabled="invoiceIDInput.checked">
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <hr/>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="chekbox col-sm-offset-3 col-sm-2">
+                            <label>
+                            <input type="checkbox" value="" ng-model="invoiceIDInput.checked">
+                                {{ 'invoice.invoice_receipt_number' | translate }}
+                            </label>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control"
+                                   ng-disabled="!invoiceIDInput.checked"
+                                   ng-model="invoice.ID">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <hr/>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group col-sm-offset-4 col-sm-3">
+                        <label> {{ 'common.filters' | translate }}</label>
+                        <div class="checkbox ">
+                            <label>
+                                <input type="checkbox"
+                                       ng-model="invoiceType.invoice">
+                                {{ 'invoice.invoice' | translate }}
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       ng-model="invoiceType.receipt">
+                                {{ 'invoice.receipt' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group center-block text-center">
+                        <button class="btn btn-primary"
+                                type="submit"
+                                ng-disabled="!invoiceType.invoice && !invoiceType.receipt">
                             <span class="fa fa-search"></span> {{ 'common.search' | translate }}</button>
                     </div>
                 </div>
+
             </form>
-            </div>
         </div>
 
 
@@ -118,6 +167,14 @@
                                 <span class="fa"
                                       ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
                                       ng-show="active.ID">
+                                </span>
+                        </th>
+                        <th class="table-sortable"
+                            ng-click="reverse=!reverse ;order('type', reverse)">
+                            {{ 'item.type' | translate }}
+                                <span class="fa"
+                                      ng-class="{ 'fa-caret-down' :reverse , 'fa-caret-up':!reverse}"
+                                      ng-show="active.type">
                                 </span>
                         </th>
                         <th class="table-sortable"
@@ -150,19 +207,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="invoice in invoices |slice:limitReq:offsetReq">
+                    <tr ng-repeat="invoice in invoices |slice:limitReq:offsetReq" ng-class="{warning : sortTotalPrice(invoice)<0}">
                         <td>{{invoice.ID}}</td>
+                        <td>{{ invoice.type | translate }}</td>
                         <td>{{invoice.customer.name}}</td>
                         <td class="text-center">{{invoice.created | date:'dd-MMMM-yyyy'}}</td>
-                        <td>{{invoice.totalPrice}} &euro;</td>
+                        <td>{{invoice.totalPrice}} <span ng-show="invoice.totalPrice!=''">&euro;</span></td>
                         <td class="text-center"><a class=" btn btn-primary fa fa-eye"
                                ng-href="#/invoice/list/{{invoice.ID}}"
                                target="_blank"></a></td>
                         <td class="text-center"><a class=" btn btn-danger fa fa-file-pdf-o"
                                target="_self" ng-href="{{generateLink(invoice.ID)}}"
                                download="invoice-{{invoice.ID}}.pdf"></a></td>
-                        <td class="text-center"><a class=" btn btn-warning fa fa-credit-card"
-                                  ng-go="/invoice/refund/{{invoice.ID}}"></a></td>
+                        <td class="text-center"><button ng-disabled="!isRefundable(invoice)" class=" btn btn-warning fa fa-credit-card"
+                                  ng-go="/invoice/refund/{{invoice.ID}}"></button></td>
                     </tr>
                     </tbody>
                     </table>

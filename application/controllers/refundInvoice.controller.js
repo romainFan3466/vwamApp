@@ -59,6 +59,7 @@ AppModule.controller("RefundInvoiceController", [
                     refund.items.push(itemR);
                 }
             });
+            refund.type = "Invoice";
 
             return refund;
         };
