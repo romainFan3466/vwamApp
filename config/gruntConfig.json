@@ -170,7 +170,7 @@
                         "version" :  "<%= pkg.version %>"
                     },
                     "meta"  : {
-                        "title"      : "Washing App",
+                        "title"      : "Vwam App",
                         "author"     : "Rofa",
                         "description": "Web washing app by R."
                     }
@@ -266,7 +266,7 @@
                         "!config/appConfig.json",
                         "!application/php/configDB.php",
                         "!application/php/RSAkey/**/*",
-                        "!themes/default/localizable/**/*"
+                        "!themes/default/localizable/local/**/*"
                     ],
                     "dest": "./gitReposit"
                 }

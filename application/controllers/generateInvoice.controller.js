@@ -194,6 +194,9 @@ AppModule.controller("GenerateInvoiceController", [
         $scope.generateAgain = function(){
             _init();
             $scope.addedSuccess= false;
+            $scope.customer = {};
+            $scope.found= false;
+            $scope.retrieved.customer ="";
         };
 
 

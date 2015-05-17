@@ -149,11 +149,11 @@
         </div>
 
 
-        <div class="row">
+        <div class="row" ng-show="!addedSuccess">
             <div class="form-group center-block text-center">
                 <button class="btn btn-success"
                         type="submit"
-                        ng-disabled="customerChoice=='one' && found==false && !addedSuccess">
+                        ng-disabled="(customerChoice=='one' && found==false)">
                     <span class="fa fa-cogs"></span> {{ 'common.generate' | translate }}</button>
             </div>
         </div>

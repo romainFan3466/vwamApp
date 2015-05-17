@@ -84,10 +84,10 @@
                         <h6><strong>{{ 'invoice.receipt_number' | translate }} :</strong> {{obj.item.name.receiptID}}
                         &nbsp;<strong>{{ 'common.created' | translate }} :</strong> {{obj.item.name.created}}</h6>
 
-                        <h6 ng-show="obj.item.name.matriculation!=null && obj.item.name.matriculation.first!=null ">
+                        <h6 ng-show="obj.item.name.matriculation!='' && obj.item.name.matriculation.first!='' ">
                             <strong>{{ 'invoice.registration' | translate }} 1 :</strong> {{obj.item.name.matriculation.first}}
                         </h6>
-                        <h6 ng-show="obj.item.name.matriculation!=null && obj.item.name.matriculation.second!=null ">
+                        <h6 ng-show="obj.item.name.matriculation!='' && obj.item.name.matriculation.second!='' ">
                             <strong>{{ 'invoice.registration' | translate }} 2 :</strong> {{obj.item.name.matriculation.second}}
                         </h6>
                         <h6 ng-show="obj.item.name.comment!=''">
